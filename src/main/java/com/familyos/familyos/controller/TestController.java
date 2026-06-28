@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 
-    @GetMapping("/api/t1")
-    public String t1() {
-        return "Hello World";
+    @GetMapping("/api/test")
+    public String test() {
+        return "Welcome to Family OS! This is a test endpoint.";
     }
 }

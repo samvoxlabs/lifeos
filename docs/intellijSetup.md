@@ -166,4 +166,3 @@ Additional Resources
 - SDKMAN: https://sdkman.io/
 
 If you want, I can also provide a short script or checklist to automate JDK checks and a sample run configuration JSON you can import into IntelliJ. Let me know which OS you want the automation for.
-

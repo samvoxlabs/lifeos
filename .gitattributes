@@ -1,2 +1,10 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
+
+# Enforce text handling for docs
+*.md text
+*.yml text
+*.yaml text
+
+# Mark generated folders as linguist-vendored
+target/ linguist-vendored

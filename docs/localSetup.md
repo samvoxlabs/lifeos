@@ -24,7 +24,7 @@ java -version
 
 Expected output should show a Java 21 distribution. If not installed, see the IntelliJ setup doc for recommended distributions and install commands:
 
-`src/main/java/com/familyos/familyos/docs/intellijSetup.md`
+`docs/intellijSetup.md`
 
 3) Environment variables / .env
 
@@ -64,6 +64,38 @@ By default Spring Boot starts on port 8080. You can change it in `src/main/resou
 ```bash
 ./mvnw test
 ```
+
+Quick verification (smoke test)
+
+After the application starts (default port 8080), verify it's running by opening the health/test endpoint in your browser or using curl:
+
+```bash
+# In a browser:
+http://localhost:8080/api/test
+
+# Or with curl:
+curl -v http://localhost:8080/api/test
+
+# Expected response: Hello World
+```
+
+Swagger / OpenAPI UI (POC)
+
+When running the application locally you can also view an auto-generated API documentation UI (Swagger) provided by springdoc-openapi.
+
+Open in a browser:
+
+```bash
+http://localhost:8080/swagger-ui/index.html
+```
+
+Raw OpenAPI JSON is available at:
+
+```bash
+http://localhost:8080/v3/api-docs
+```
+
+Note: for this POC the security configuration permits access to these endpoints locally. Do not enable the same permissive settings in production.
 
 6) Common troubleshooting
 

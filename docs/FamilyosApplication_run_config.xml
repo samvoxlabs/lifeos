@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="ProjectRunConfigurationManager">
+  <!--
+    Import this file in IntelliJ: Run | Edit Configurations... | Import Configurations
+    If the module name doesn't match your project module, open the imported configuration and set the correct module.
+  -->
+  <configuration default="false" name="FamilyosApplication" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.familyos.familyos.FamilyosApplication" />
+    <!-- Update module name if your IntelliJ module has a different name -->
+    <module name="familyos" />
+    <option name="PROGRAM_PARAMETERS" value="" />
+    <envs>
+      <!-- Example: <env name="SPRING_PROFILES_ACTIVE" value="local" /> -->
+    </envs>
+    <option name="VM_PARAMETERS" value="" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <method v="2" />
+  </configuration>
+</component>
