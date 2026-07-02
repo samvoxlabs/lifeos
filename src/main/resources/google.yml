@@ -1,0 +1,7 @@
+google:
+  apis:
+    gmail-base-url: https://gmail.googleapis.com/gmail/v1
+
+  gmail:
+    user-id: me
+    max-results: 10

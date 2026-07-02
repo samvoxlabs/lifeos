@@ -52,31 +52,6 @@ FamilyOS is a Spring Boot-based backend service. It uses Java 21 (see `pom.xml`)
 - Importable IntelliJ run configuration: `docs/FamilyosApplication_run_config.xml`
 - Project `pom.xml`: contains dependencies and Java version (Java 21)
 
-### Swagger (OpenAPI)
-
-If you want to quickly view or share the API contract without opening the full IDE, use the auto-generated Swagger UI provided by springdoc-openapi.
-
-- If you have a running instance (local or deployed), open:
-
-  ```
-  http://<host>:<port>/swagger-ui/index.html
-  ```
-
-- To run the packaged jar locally (no IDE required):
-
-  ```bash
-  ./mvnw -DskipTests package
-  java -jar target/*.jar
-  # then open http://localhost:8080/swagger-ui/index.html
-  ```
-
-- To fetch the raw OpenAPI JSON (useful for automated tools):
-
-  ```bash
-  curl http://localhost:8080/v3/api-docs
-  ```
-
-Note: Swagger UI is enabled as a local POC; secure or disable it in production as needed.
 
 ## Code & community
 

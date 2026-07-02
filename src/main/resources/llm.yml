@@ -1,0 +1,6 @@
+llm:
+  default-provider: ${LLM_DEFAULT_PROVIDER:gemini}
+  gemini:
+    api-key: ${GEMINI_API_KEY:}
+    model: ${GEMINI_MODEL:gemini-2.5-flash}
+    base-url: https://generativelanguage.googleapis.com/v1beta

@@ -1,3 +1,25 @@
 spring:
   application:
     name: familyos
+
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - classpath:google.yml
+      - classpath:llm.yml
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - openid
+              - email
+              - profile
+              - https://www.googleapis.com/auth/gmail.readonly
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-authentication-method: client_secret_post
