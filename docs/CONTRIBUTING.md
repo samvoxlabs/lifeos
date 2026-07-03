@@ -28,7 +28,7 @@ Code style and quality
 Pull request checklist
 - [ ] The branch builds and tests pass locally.
 - [ ] The PR description explains the change and the reason.
-- [ ] No secrets or credentials are included (use environment variables or `docs/.env.example`).
+- [ ] No secrets or credentials are included (use environment variables or `.env.example`).
 
 Communication
 - If the change is non-trivial, open an issue first to discuss design and scope.

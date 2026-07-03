@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class JwtService {
@@ -49,10 +50,7 @@ public class JwtService {
      */
     public boolean validateToken(String token) {
         try {
-            Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token);
+            parseClaims(token);
             return true;
         } catch (ExpiredJwtException ex) {
             return false;
@@ -69,12 +67,7 @@ public class JwtService {
      */
     public String extractEmail(String token) {
         try {
-            return Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
+            return parseClaims(token).getSubject();
         } catch (JwtException ex) {
             return "";
         }
@@ -88,12 +81,7 @@ public class JwtService {
      */
     public String extractUserId(String token) {
         try {
-            return Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("userId", String.class);
+            return parseClaims(token).get("userId", String.class);
         } catch (JwtException ex) {
             return "";
         }
@@ -107,12 +95,7 @@ public class JwtService {
      */
     public Date extractExpiration(String token) {
         try {
-            return Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getExpiration();
+            return parseClaims(token).getExpiration();
         } catch (JwtException ex) {
             return null;
         }
@@ -126,16 +109,41 @@ public class JwtService {
      */
     public boolean isTokenExpired(String token) {
         try {
-            Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token);
-            return false; // Token is valid and not expired
+            parseClaims(token);
+            return false;
         } catch (ExpiredJwtException ex) {
-            return true; // Token is expired
+            return true;
         } catch (JwtException ex) {
-            return false; // Token is invalid
+            return false;
         }
     }
-}
 
+    public Optional<AuthenticatedUser> extractAuthenticatedUser(String token) {
+        try {
+            Claims claims = parseClaims(token);
+            String userId = claims.get("userId", String.class);
+            String email = claims.getSubject();
+            String name = claims.get("name", String.class);
+            String provider = claims.get("provider", String.class);
+
+            if (userId == null || userId.isBlank()
+                    || email == null || email.isBlank()
+                    || name == null || name.isBlank()
+                    || provider == null || provider.isBlank()) {
+                return Optional.empty();
+            }
+
+            return Optional.of(new AuthenticatedUser(userId, email, name, provider));
+        } catch (JwtException ex) {
+            return Optional.empty();
+        }
+    }
+
+    private Claims parseClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+}

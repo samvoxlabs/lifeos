@@ -15,6 +15,7 @@ Contents
 - [Quick start (local)](#quick-start-local)
 - [Docker Setup](#docker-setup)
 - [Documentation and useful links](#documentation-and-useful-links)
+- [Phase 1 documentation](#phase-1-documentation)
 - [Architecture docs](#architecture-docs)
 - [Roadmap](#roadmap)
 - [Development notes](#development-notes)
@@ -43,6 +44,39 @@ LifeOS (formerly FamilyOS) is a Spring Boot-based backend service. It uses Java 
 - **Migrations:** Flyway
 - **Authentication:** Spring Security + OAuth2 (Google) + JWT
 - **Build:** Maven
+
+### Authentication Flow
+
+1. `GET /oauth2/authorization/google`
+2. Google login completes through Spring OAuth2
+3. `OAuthSuccessHandler` persists the user, Google account, and Google tokens
+4. LifeOS issues a JWT to the browser
+5. The frontend stores the JWT and sends it on every API request
+6. Protected endpoints validate the JWT through `JwtAuthenticationFilter`
+7. Google access tokens are refreshed transparently when Gmail or other Google APIs need them
+
+### Protected Endpoints
+
+These endpoints are public:
+
+- `/oauth2/**`
+- `/login/**`
+- `/error`
+- `/actuator/health`
+- `/api/health`
+
+Everything else requires a valid LifeOS JWT.
+
+### Required Environment Variables
+
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `JWT_SECRET`
+- `DB_HOST`
+- `DB_PORT`
+- `DB_NAME`
+- `DB_USER`
+- `DB_PASSWORD`
 
 ## Docker Setup
 
@@ -165,15 +199,20 @@ The app will start on port 8080 by default (unless overridden in `src/main/resou
 - Docker & Database setup: See [Docker Setup](#docker-setup) section above
 - Local environment & run instructions: `docs/localSetup.md`
 - Getting started & reference: `docs/HELP.md`
-- Contribution guide (detailed): `docs/CONTRIBUTING.md` (short pointer at repo root: `CONTRIBUTING.md`)
-- Repository guide (what lives where): `docs/REPO_GUIDE.md`
+- Contribution guide: `docs/CONTRIBUTING.md`
+- Repository guide: `docs/REPO_GUIDE.md`
 - Architecture docs: `docs/architecture/README.md`
-- Roadmap: `docs/roadmap/`
+- Roadmap: `docs/roadmap/README.md`
 - Example env file: `.env.example` (copy to `.env` locally)
 - Runtime configuration: `src/main/resources/application.yml`
-- Environment variables: `.env` (copy from `.env.example`)
 - Flyway migrations: `src/main/resources/db/migration/`
 - Project `pom.xml`: contains dependencies and Java version (Java 21)
+
+## Phase 1 documentation
+
+- Milestone summary: `docs/milestones/phase1-authentication.md`
+- Developer guide: `docs/development/phase1-developer-guide.md`
+- Roadmap after Phase 1: `docs/roadmap/README.md`
 
 ## Architecture docs
 
@@ -181,7 +220,7 @@ See `docs/architecture/README.md` for the ADR index and architecture notes.
 
 ## Roadmap
 
-See `docs/roadmap/` for milestone plans and the backlog.
+See `docs/roadmap/README.md` for the remaining roadmap and `docs/roadmap/backlog.md` for the backlog.
 
 
 ## Code & community

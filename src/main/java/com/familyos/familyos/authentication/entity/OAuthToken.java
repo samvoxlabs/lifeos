@@ -1,17 +1,34 @@
 package com.familyos.familyos.authentication.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "oauth_tokens", indexes = {
-        @Index(name = "idx_user_id", columnList = "user_id"),
-        @Index(name = "idx_provider", columnList = "provider")
-})
+@Table(
+    name = "oauth_tokens",
+    indexes = {
+        @Index(name = "idx_oauth_tokens_account_id", columnList = "account_id"),
+        @Index(name = "idx_oauth_tokens_expires_at", columnList = "expires_at")
+    }
+)
 public class OAuthToken {
 
     @Id
@@ -19,12 +36,9 @@ public class OAuthToken {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_oauth_tokens_user_id"))
-    private User user;
-
-    @Column(nullable = false)
-    private String provider;
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "account_id", nullable = false, unique = true, foreignKey = @ForeignKey(name = "fk_oauth_tokens_account_id"))
+    private OAuthAccount account;
 
     @Column(name = "access_token", nullable = false, columnDefinition = "TEXT")
     private String accessToken;
@@ -32,8 +46,11 @@ public class OAuthToken {
     @Column(name = "refresh_token", columnDefinition = "TEXT")
     private String refreshToken;
 
-    @Column(name = "token_type")
+    @Column(name = "token_type", length = 50)
     private String tokenType;
+
+    @Column(name = "scopes", nullable = false, columnDefinition = "TEXT")
+    private String scopes;
 
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
@@ -46,20 +63,18 @@ public class OAuthToken {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    // Constructors
     public OAuthToken() {
     }
 
-    public OAuthToken(User user, String provider, String accessToken, String refreshToken, String tokenType, LocalDateTime expiresAt) {
-        this.user = user;
-        this.provider = provider;
+    public OAuthToken(OAuthAccount account, String accessToken, String refreshToken, String tokenType, String scopes, LocalDateTime expiresAt) {
+        this.account = account;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.tokenType = tokenType;
+        this.scopes = scopes;
         this.expiresAt = expiresAt;
     }
 
-    // Getters and Setters
     public UUID getId() {
         return id;
     }
@@ -68,20 +83,12 @@ public class OAuthToken {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public OAuthAccount getAccount() {
+        return account;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getProvider() {
-        return provider;
-    }
-
-    public void setProvider(String provider) {
-        this.provider = provider;
+    public void setAccount(OAuthAccount account) {
+        this.account = account;
     }
 
     public String getAccessToken() {
@@ -106,6 +113,27 @@ public class OAuthToken {
 
     public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
+    }
+
+    public String getScopes() {
+        return scopes;
+    }
+
+    public void setScopes(String scopes) {
+        this.scopes = scopes;
+    }
+
+    public Set<String> scopeSet() {
+        if (scopes == null || scopes.isBlank()) {
+            return Set.of();
+        }
+        return Arrays.stream(scopes.split("\\s+"))
+            .filter(scope -> !scope.isBlank())
+            .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public void setScopeSet(Set<String> scopeSet) {
+        this.scopes = scopeSet == null ? "" : String.join(" ", scopeSet);
     }
 
     public LocalDateTime getExpiresAt() {
@@ -133,22 +161,6 @@ public class OAuthToken {
     }
 
     public boolean isExpired() {
-        if (expiresAt == null) {
-            return false;
-        }
-        return LocalDateTime.now().isAfter(expiresAt);
-    }
-
-    @Override
-    public String toString() {
-        return "OAuthToken{" +
-                "id=" + id +
-                ", user=" + user.getId() +
-                ", provider='" + provider + '\'' +
-                ", tokenType='" + tokenType + '\'' +
-                ", expiresAt=" + expiresAt +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+        return expiresAt != null && LocalDateTime.now().isAfter(expiresAt);
     }
 }
