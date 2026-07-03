@@ -95,6 +95,33 @@
       ]
     },
     {
+      "name": "Calendar",
+      "item": [
+        {
+          "name": "Get Events",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/calendar/events",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["calendar", "events"]
+            },
+            "description": "Get upcoming Google Calendar events for current user"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "LLM",
       "item": [
         {
