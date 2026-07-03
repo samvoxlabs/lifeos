@@ -1,6 +1,6 @@
 package com.familyos.familyos.authentication.repository;
 
-import com.familyos.familyos.authentication.model.User;
+import com.familyos.familyos.authentication.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

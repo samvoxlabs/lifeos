@@ -1,11 +1,11 @@
 package com.familyos.familyos.authentication.service;
 
 import com.familyos.familyos.dto.AuthenticatedUser;
+import com.familyos.familyos.config.properties.JwtProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
-import com.familyos.familyos.authentication.jwt.JwtProperties;
 import javax.crypto.SecretKey;
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package com.familyos.familyos.authentication.model;
+package com.familyos.familyos.authentication.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;

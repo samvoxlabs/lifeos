@@ -1,5 +1,6 @@
 package com.familyos.familyos.authentication.jwt;
 
+import com.familyos.familyos.config.properties.JwtProperties;
 import com.familyos.familyos.authentication.service.JwtService;
 import com.familyos.familyos.dto.AuthenticatedUser;
 import org.junit.jupiter.api.BeforeEach;

@@ -166,7 +166,8 @@ The app will start on port 8080 by default (unless overridden in `src/main/resou
 - Contribution guide (detailed): `docs/CONTRIBUTING.md` (short pointer at repo root: `CONTRIBUTING.md`)
 - Repository guide (what lives where): `docs/REPO_GUIDE.md`
 - Example env file: `.env.example` (copy to `.env` locally)
-- Database configuration: `src/main/resources/database.yml`
+- Runtime configuration: `src/main/resources/application.yml`
+- Environment variables: `.env` (copy from `.env.example`)
 - Flyway migrations: `src/main/resources/db/migration/`
 - Project `pom.xml`: contains dependencies and Java version (Java 21)
 
@@ -184,6 +185,8 @@ The app will start on port 8080 by default (unless overridden in `src/main/resou
 ## Development notes
 
 - Main application class: `com.familyos.familyos.FamilyosApplication` (`src/main/java/com/familyos/familyos/FamilyosApplication.java`).
+- Configuration properties live under `com.familyos.familyos.config.properties`.
+- `application.yml` is the single runtime config entrypoint and imports `.env` locally.
 - Database migrations are managed by Flyway: `src/main/resources/db/migration/`
 - Hibernate DDL is set to `validate` - schema changes must be made via Flyway migrations
 - Tests can be run with:
@@ -204,5 +207,4 @@ If you'd like to contribute, please:
 ## Need help?
 
 Open an issue or contact the maintainers listed in `pom.xml` (if configured).
-
 

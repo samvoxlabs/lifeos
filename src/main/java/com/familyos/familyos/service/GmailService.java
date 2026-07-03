@@ -1,6 +1,6 @@
-package com.familyos.familyos.services;
+package com.familyos.familyos.service;
 
-import com.familyos.familyos.authentication.model.User;
+import com.familyos.familyos.authentication.entity.User;
 import com.familyos.familyos.authentication.repository.OAuthTokenRepository;
 import com.familyos.familyos.authentication.service.UserService;
 import com.familyos.familyos.dto.GmailMessageDto;

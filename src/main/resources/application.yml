@@ -2,14 +2,16 @@ spring:
   application:
     name: lifeos
 
+  # ============================================
+  # Configuration Profiles & Imports
+  # ============================================
   config:
     import:
       - optional:file:.env[.properties]
-      - classpath:google.yml
-      - classpath:llm.yml
-      - classpath:jwt.yml
-      - classpath:database.yml
 
+  # ============================================
+  # Security - OAuth2
+  # ============================================
   security:
     oauth2:
       client:
@@ -25,3 +27,70 @@ spring:
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             client-authentication-method: client_secret_post
+
+# ============================================
+# JWT Authentication
+# ============================================
+jwt:
+  secret: ${JWT_SECRET:this-is-a-development-secret-key-that-is-long-enough-for-hs256-algorithm-32chars}
+  expiration-ms: ${JWT_EXPIRATION_MS:3600000}
+
+# ============================================
+# Google APIs
+# ============================================
+google:
+  apis:
+    gmail-base-url: ${GOOGLE_GMAIL_BASE_URL:https://gmail.googleapis.com/gmail/v1}
+  gmail:
+    user-id: ${GOOGLE_GMAIL_USER_ID:me}
+    max-results: ${GOOGLE_GMAIL_MAX_RESULTS:10}
+
+# ============================================
+# LLM Provider Configuration
+# ============================================
+llm:
+  default-provider: ${LLM_DEFAULT_PROVIDER:gemini}
+  gemini:
+    api-key: ${GEMINI_API_KEY:}
+    model: ${GEMINI_MODEL:gemini-2.5-flash}
+    base-url: ${GEMINI_BASE_URL:https://generativelanguage.googleapis.com/v1beta}
+
+  # ============================================
+  # Database
+  # ============================================
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:lifeos}
+    username: ${DB_USER:lifeos}
+    password: ${DB_PASSWORD:lifeos}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      auto-commit: true
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: ${SPRING_JPA_SHOW_SQL:false}
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 20
+          fetch_size: 50
+          use_scrollable_resultset: true
+        order_inserts: true
+        order_updates: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 1.0
+    locations: classpath:db/migration
+    validate-on-migrate: true
+    clean-disabled: true

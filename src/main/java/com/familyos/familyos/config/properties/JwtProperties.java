@@ -1,4 +1,4 @@
-package com.familyos.familyos.authentication.jwt;
+package com.familyos.familyos.config.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

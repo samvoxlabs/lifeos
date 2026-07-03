@@ -1,7 +1,7 @@
 package com.familyos.familyos.llm.factory;
 
+import com.familyos.familyos.config.properties.LlmProperties;
 import com.familyos.familyos.llm.LlmProvider;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,10 +17,10 @@ public class LlmProviderFactory {
   private final Map<String, LlmProvider> providers;
 
   public LlmProviderFactory(
-    @Value("${llm.default-provider:gemini}") String defaultProvider,
+    LlmProperties llmProperties,
     List<LlmProvider> providers
   ) {
-    this.defaultProvider = normalize(defaultProvider);
+    this.defaultProvider = normalize(llmProperties.defaultProvider());
     this.providers = providers.stream()
       .collect(Collectors.toUnmodifiableMap(
         provider -> normalize(provider.providerName()),

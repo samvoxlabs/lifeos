@@ -1,7 +1,7 @@
 package com.familyos.familyos.authentication.service;
 
-import com.familyos.familyos.authentication.model.OAuthToken;
-import com.familyos.familyos.authentication.model.User;
+import com.familyos.familyos.authentication.entity.OAuthToken;
+import com.familyos.familyos.authentication.entity.User;
 import com.familyos.familyos.authentication.repository.OAuthTokenRepository;
 import com.familyos.familyos.authentication.repository.UserRepository;
 import org.slf4j.Logger;

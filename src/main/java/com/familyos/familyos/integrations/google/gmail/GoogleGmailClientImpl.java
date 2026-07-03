@@ -1,5 +1,6 @@
 package com.familyos.familyos.integrations.google.gmail;
 
+import com.familyos.familyos.config.properties.GoogleProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -12,13 +13,14 @@ import java.util.Map;
 public class GoogleGmailClientImpl implements GoogleGmailClient {
 
     private static final Logger log = LoggerFactory.getLogger(GoogleGmailClientImpl.class);
-    private static final String GMAIL_API_BASE_URL = "https://gmail.googleapis.com/gmail/v1";
 
     private final RestClient restClient;
+    private final GoogleProperties googleProperties;
 
-    public GoogleGmailClientImpl() {
+    public GoogleGmailClientImpl(GoogleProperties googleProperties) {
+        this.googleProperties = googleProperties;
         this.restClient = RestClient.builder()
-                .baseUrl(GMAIL_API_BASE_URL)
+                .baseUrl(googleProperties.apis().gmailBaseUrl())
                 .build();
     }
 
@@ -27,7 +29,8 @@ public class GoogleGmailClientImpl implements GoogleGmailClient {
         log.debug("Fetching {} messages from Gmail API", maxResults);
 
         Map<String, Object> listResponse = restClient.get()
-                .uri("/users/me/messages?maxResults={maxResults}", maxResults)
+                .uri("/users/{userId}/messages?maxResults={maxResults}", 
+                     googleProperties.gmail().userId(), maxResults)
                 .header("Authorization", "Bearer " + accessToken)
                 .retrieve()
                 .body(Map.class);
@@ -46,8 +49,8 @@ public class GoogleGmailClientImpl implements GoogleGmailClient {
         log.debug("Fetching details for message: {}", messageId);
 
         Map<String, Object> response = restClient.get()
-                .uri("/users/me/messages/{id}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date",
-                        messageId)
+                .uri("/users/{userId}/messages/{id}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date",
+                        googleProperties.gmail().userId(), messageId)
                 .header("Authorization", "Bearer " + accessToken)
                 .retrieve()
                 .body(Map.class);

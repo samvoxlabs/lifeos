@@ -1,3 +1,0 @@
-jwt:
-  secret: ${JWT_SECRET:this-is-a-development-secret-key-that-is-long-enough-for-hs256-algorithm-32chars}
-  expiration-ms: ${JWT_EXPIRATION_MS:3600000}

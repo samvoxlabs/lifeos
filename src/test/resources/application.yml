@@ -46,4 +46,12 @@ jwt:
   secret: test-secret-key-that-is-definitely-long-enough-for-hs256-algorithm-minimum-32-bytes-required
   expiration-ms: 3600000
 
+llm:
+  default-provider: gemini
 
+google:
+  apis:
+    gmail-base-url: https://gmail.googleapis.com/gmail/v1
+  gmail:
+    user-id: me
+    max-results: 10

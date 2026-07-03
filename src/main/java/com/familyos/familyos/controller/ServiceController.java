@@ -1,7 +1,7 @@
 package com.familyos.familyos.controller;
 
 import com.familyos.familyos.dto.GmailMessageDto;
-import com.familyos.familyos.services.GmailService;
+import com.familyos.familyos.service.GmailService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

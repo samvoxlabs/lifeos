@@ -2,7 +2,7 @@ package com.familyos.familyos.authentication.oauth;
 
 import com.familyos.familyos.authentication.service.JwtService;
 import com.familyos.familyos.authentication.service.UserService;
-import com.familyos.familyos.authentication.model.User;
+import com.familyos.familyos.authentication.entity.User;
 import com.familyos.familyos.dto.AuthenticatedUser;
 import com.familyos.familyos.dto.LoginResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -117,4 +117,3 @@ public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         }
     }
 }
-

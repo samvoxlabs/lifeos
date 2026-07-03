@@ -78,7 +78,7 @@ Developers should copy those values into a local `.env` file at the project root
 
 ### Spring OAuth client registration
 
-`application.yml` now imports local environment values and `google.yml`, then registers Google as an OAuth2 client.
+`application.yml` now imports local environment values and registers Google as an OAuth2 client.
 
 Relevant file:
 
@@ -94,11 +94,11 @@ The Google registration currently includes:
 
 ### Google service configuration
 
-Google-specific service settings are separated into `google.yml`.
+Google-specific service settings live in `application.yml` and are bound through `@ConfigurationProperties`.
 
 Relevant file:
 
-- `src/main/resources/google.yml`
+- `src/main/resources/application.yml`
 
 Current Gmail defaults:
 
@@ -130,7 +130,7 @@ Relevant files:
 - `src/main/java/com/familyos/familyos/llm/LlmResponse.java`
 - `src/main/java/com/familyos/familyos/llm/gemini/GeminiProvider.java`
 - `src/main/java/com/familyos/familyos/llm/gemini/GeminiClient.java`
-- `src/main/java/com/familyos/familyos/llm/gemini/GeminiProperties.java`
+- `src/main/java/com/familyos/familyos/config/properties/GeminiProperties.java`
 - `src/main/java/com/familyos/familyos/llm/factory/LlmProviderFactory.java`
 - `src/main/java/com/familyos/familyos/controller/LlmController.java`
 
@@ -144,7 +144,7 @@ llm/
 |-- gemini/
 |   |-- GeminiProvider.java
 |   |-- GeminiClient.java
-|   `-- GeminiProperties.java
+|   `-- (uses config/properties/GeminiProperties.java)
 |-- openai/
 |-- anthropic/
 `-- factory/
@@ -297,15 +297,13 @@ Make sure `.env` is ignored by git. Never commit OAuth credentials.
 
 ### Step 7 - Configure Spring Boot
 
-`src/main/resources/application.yml` imports `.env`, imports `google.yml`, and configures Google OAuth:
+`src/main/resources/application.yml` imports `.env` and configures Google OAuth:
 
 ```yaml
 spring:
   config:
     import:
       - optional:file:.env[.properties]
-      - classpath:google.yml
-
   security:
     oauth2:
       client:
@@ -323,39 +321,7 @@ spring:
             client-authentication-method: client_secret_post
 ```
 
-`src/main/resources/google.yml` keeps Google service settings separate:
-
-```yaml
-google:
-  apis:
-    gmail-base-url: https://gmail.googleapis.com/gmail/v1
-
-  gmail:
-    user-id: me
-    max-results: 10
-```
-
-`src/main/resources/application.yml` imports `llm.yml`:
-
-```yaml
-spring:
-  config:
-    import:
-      - optional:file:.env[.properties]
-      - classpath:google.yml
-      - classpath:llm.yml
-```
-
-The LLM settings live in `src/main/resources/llm.yml`:
-
-```yaml
-llm:
-  default-provider: ${LLM_DEFAULT_PROVIDER:gemini}
-  gemini:
-    api-key: ${GEMINI_API_KEY:}
-    model: ${GEMINI_MODEL:gemini-2.5-flash}
-    base-url: https://generativelanguage.googleapis.com/v1beta
-```
+Google and LLM settings now live in `src/main/resources/application.yml` and are bound through `@ConfigurationProperties`.
 
 The app can start without `GEMINI_API_KEY`, but `/llm/generate` requires it.
 
@@ -485,7 +451,7 @@ Current behavior:
 - Spring's OAuth2 client dependency is useful for the web login and authorization code flow, while Google client libraries are useful after tokens exist and the app needs to call Google APIs.
 - The current permissive security setup is helpful for early development, but it must be revisited before production usage.
 - Token handling is a separate design decision. The app still needs a safe approach for storing, refreshing, and revoking user tokens.
-- Keeping Google service settings in `google.yml` makes it easier to grow from Gmail-only POC settings into multiple Google service integrations.
+- Keeping Google service settings in `application.yml` makes it easier to grow from Gmail-only POC settings into multiple Google service integrations.
 - Source code and Maven dependencies need to stay aligned. If a dependency such as Springdoc is removed, related configuration classes must also be removed or replaced.
 - The LLM boundary should stay provider-neutral. Feature services should prepare clean content and metadata; provider adapters should handle model-specific request formats.
 

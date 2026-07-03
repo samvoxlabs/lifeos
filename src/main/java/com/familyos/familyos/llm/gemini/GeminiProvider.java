@@ -1,5 +1,6 @@
 package com.familyos.familyos.llm.gemini;
 
+import com.familyos.familyos.config.properties.GeminiProperties;
 import com.familyos.familyos.llm.LlmProvider;
 import com.familyos.familyos.llm.LlmRequest;
 import com.familyos.familyos.llm.LlmResponse;
