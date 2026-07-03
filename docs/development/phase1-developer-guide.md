@@ -105,6 +105,7 @@ curl -H "Authorization: Bearer $JWT" http://localhost:8080/gmail/messages
 4. Google OAuth login
 5. JWT-authenticated API calls
 6. Gmail message retrieval
+7. Review `docs/ROADMAP.md` for Phase 2 planning
 
 ## Environment variables
 

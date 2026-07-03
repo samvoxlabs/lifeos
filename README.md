@@ -202,7 +202,7 @@ The app will start on port 8080 by default (unless overridden in `src/main/resou
 - Contribution guide: `docs/CONTRIBUTING.md`
 - Repository guide: `docs/REPO_GUIDE.md`
 - Architecture docs: `docs/architecture/README.md`
-- Roadmap: `docs/roadmap/README.md`
+- Roadmap: `docs/ROADMAP.md`
 - Example env file: `.env.example` (copy to `.env` locally)
 - Runtime configuration: `src/main/resources/application.yml`
 - Flyway migrations: `src/main/resources/db/migration/`
@@ -212,7 +212,7 @@ The app will start on port 8080 by default (unless overridden in `src/main/resou
 
 - Milestone summary: `docs/milestones/phase1-authentication.md`
 - Developer guide: `docs/development/phase1-developer-guide.md`
-- Roadmap after Phase 1: `docs/roadmap/README.md`
+- Roadmap after Phase 1: `docs/ROADMAP.md`
 
 ## Architecture docs
 
@@ -220,7 +220,7 @@ See `docs/architecture/README.md` for the ADR index and architecture notes.
 
 ## Roadmap
 
-See `docs/roadmap/README.md` for the remaining roadmap and `docs/roadmap/backlog.md` for the backlog.
+See `docs/ROADMAP.md` for the remaining roadmap and `docs/roadmap/backlog.md` for the backlog.
 
 
 ## Code & community

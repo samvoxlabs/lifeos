@@ -143,3 +143,9 @@ curl -H "Authorization: Bearer $JWT" http://localhost:8080/gmail/messages
 4. OAuth login
 5. Protected API calls
 6. Gmail access and token refresh
+
+## Known Limitations
+
+- Phase 1 only covers Google OAuth, JWT auth, and Gmail access.
+- Calendar, Drive, AI extraction, core domain objects, and dashboard APIs are reserved for later phases.
+- Automatic Google token refresh is implemented only for the Gmail path today.
