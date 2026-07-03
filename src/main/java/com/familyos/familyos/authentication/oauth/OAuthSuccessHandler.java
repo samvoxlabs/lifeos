@@ -1,8 +1,10 @@
 package com.familyos.familyos.authentication.oauth;
 
-import com.familyos.familyos.authentication.service.JwtService;
-import com.familyos.familyos.authentication.service.UserService;
 import com.familyos.familyos.authentication.entity.User;
+import com.familyos.familyos.authentication.service.JwtService;
+import com.familyos.familyos.authentication.service.OAuthAccountService;
+import com.familyos.familyos.authentication.service.OAuthTokenService;
+import com.familyos.familyos.authentication.service.UserService;
 import com.familyos.familyos.dto.AuthenticatedUser;
 import com.familyos.familyos.dto.LoginResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,13 +30,18 @@ public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private static final Logger log = LoggerFactory.getLogger(OAuthSuccessHandler.class);
 
     private final UserService userService;
+    private final OAuthAccountService oauthAccountService;
+    private final OAuthTokenService oauthTokenService;
     private final JwtService jwtService;
     private final OAuth2AuthorizedClientService authorizedClientService;
     private final ObjectMapper objectMapper;
 
-    public OAuthSuccessHandler(UserService userService, JwtService jwtService,
+    public OAuthSuccessHandler(UserService userService, OAuthAccountService oauthAccountService,
+                               OAuthTokenService oauthTokenService, JwtService jwtService,
                                OAuth2AuthorizedClientService authorizedClientService) {
         this.userService = userService;
+        this.oauthAccountService = oauthAccountService;
+        this.oauthTokenService = oauthTokenService;
         this.jwtService = jwtService;
         this.authorizedClientService = authorizedClientService;
         this.objectMapper = new ObjectMapper();
@@ -48,34 +55,43 @@ public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
             OAuth2AuthenticationToken oauth2Token = (OAuth2AuthenticationToken) authentication;
             OAuth2User oauth2User = oauth2Token.getPrincipal();
             String provider = oauth2Token.getAuthorizedClientRegistrationId();
+            String principalName = oauth2Token.getName();
 
             String email = oauth2User.getAttribute("email");
             String name = oauth2User.getAttribute("name");
+            String providerAccountId = oauth2User.getAttribute("sub");
+            if (providerAccountId == null || providerAccountId.isBlank()) {
+                providerAccountId = principalName;
+            }
 
             log.info("OAuth2 login successful for: {} (provider: {})", email, provider);
 
             // Find or create user
             User user = userService.findOrCreateUser(email, name, provider);
+            var oauthAccount = oauthAccountService.findOrCreateAccount(user, provider, providerAccountId, email, name);
 
             // Extract and save OAuth tokens
             OAuth2AuthorizedClient authorizedClient = authorizedClientService
-                    .loadAuthorizedClient(provider, email);
+                    .loadAuthorizedClient(provider, principalName);
 
             if (authorizedClient != null) {
                 String accessToken = authorizedClient.getAccessToken().getTokenValue();
                 String refreshToken = authorizedClient.getRefreshToken() != null
                         ? authorizedClient.getRefreshToken().getTokenValue()
                         : null;
-                Long expiresIn = authorizedClient.getAccessToken().getExpiresAt() != null
-                        ? authorizedClient.getAccessToken().getExpiresAt().getEpochSecond() - System.currentTimeMillis() / 1000
-                        : null;
-
-                LocalDateTime expiresAt = expiresIn != null && expiresIn > 0
-                        ? LocalDateTime.now().plusSeconds(expiresIn)
+                LocalDateTime expiresAt = authorizedClient.getAccessToken().getExpiresAt() != null
+                        ? LocalDateTime.ofInstant(authorizedClient.getAccessToken().getExpiresAt(), java.time.ZoneId.systemDefault())
                         : null;
 
                 log.debug("Saving OAuth tokens for user: {}", email);
-                userService.saveOAuthTokens(user, provider, accessToken, refreshToken, "Bearer", expiresAt);
+                oauthTokenService.saveToken(
+                        oauthAccount,
+                        accessToken,
+                        refreshToken,
+                        authorizedClient.getAccessToken().getTokenType().getValue(),
+                        authorizedClient.getAccessToken().getScopes(),
+                        expiresAt
+                );
             } else {
                 log.warn("No authorized client found for user: {}, provider: {}", email, provider);
             }

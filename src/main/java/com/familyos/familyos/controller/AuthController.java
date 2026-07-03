@@ -1,14 +1,18 @@
 package com.familyos.familyos.controller;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import com.familyos.familyos.authentication.service.AuthenticationService;
+import com.familyos.familyos.dto.AuthenticatedUser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
 public class AuthController {
+
+  private final AuthenticationService authenticationService;
+
+  public AuthController(AuthenticationService authenticationService) {
+    this.authenticationService = authenticationService;
+  }
 
   @GetMapping("/")
   public String home() {
@@ -16,7 +20,7 @@ public class AuthController {
   }
 
   @GetMapping("/user")
-  public Map<String, Object> user(@AuthenticationPrincipal OAuth2User user) {
-    return user.getAttributes();
+  public AuthenticatedUser user() {
+    return authenticationService.currentUser();
   }
 }

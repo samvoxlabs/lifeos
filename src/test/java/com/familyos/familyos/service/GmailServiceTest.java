@@ -1,8 +1,12 @@
 package com.familyos.familyos.service;
 
+import com.familyos.familyos.authentication.entity.OAuthAccount;
 import com.familyos.familyos.authentication.entity.OAuthToken;
 import com.familyos.familyos.authentication.entity.User;
-import com.familyos.familyos.authentication.repository.OAuthTokenRepository;
+import com.familyos.familyos.authentication.exception.UnauthorizedException;
+import com.familyos.familyos.authentication.service.OAuthAccountService;
+import com.familyos.familyos.authentication.service.OAuthTokenService;
+import com.familyos.familyos.authentication.service.TokenRefreshService;
 import com.familyos.familyos.authentication.service.UserService;
 import com.familyos.familyos.dto.GmailMessageDto;
 import com.familyos.familyos.integrations.google.gmail.GoogleGmailClient;
@@ -19,7 +23,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,7 +32,13 @@ class GmailServiceTest {
     private UserService userService;
 
     @Mock
-    private OAuthTokenRepository oauthTokenRepository;
+    private OAuthAccountService oauthAccountService;
+
+    @Mock
+    private OAuthTokenService oauthTokenService;
+
+    @Mock
+    private TokenRefreshService tokenRefreshService;
 
     @Mock
     private GoogleGmailClient googleGmailClient;
@@ -38,21 +47,24 @@ class GmailServiceTest {
 
     @BeforeEach
     void setUp() {
-        gmailService = new GmailService(userService, oauthTokenRepository, googleGmailClient);
+        gmailService = new GmailService(userService, oauthAccountService, oauthTokenService, tokenRefreshService, googleGmailClient);
     }
 
     @Test
     void readLatestMessagesMapsGoogleMessagesToDtos() {
         User user = user("user@example.com");
-        OAuthToken token = new OAuthToken(user, "google", "access-token", "refresh-token", "Bearer", LocalDateTime.now().plusHours(1));
+        OAuthAccount account = new OAuthAccount(user, "google", "subject-1", "user@example.com", "Test User");
+        OAuthToken token = new OAuthToken(account, "access-token", "refresh-token", "Bearer", "openid email", LocalDateTime.now().plusHours(1));
 
-        when(userService.findByEmail("user@example.com")).thenReturn(Optional.of(user));
-        when(oauthTokenRepository.findByUserAndProvider(user, "google")).thenReturn(Optional.of(token));
+        when(userService.findById(user.getId())).thenReturn(Optional.of(user));
+        when(oauthAccountService.findByUserAndProvider(user, "google")).thenReturn(Optional.of(account));
+        when(oauthTokenService.findByAccount(account)).thenReturn(Optional.of(token));
+        when(tokenRefreshService.getValidAccessToken(token)).thenReturn("access-token");
         when(googleGmailClient.fetchMessages("access-token", 10)).thenReturn(List.of(
                 new GoogleGmailMessage("1", "thread-1", "sender@example.com", "Subject", "Mon, 1 Jan 2024", "Snippet")
         ));
 
-        List<GmailMessageDto> result = gmailService.readLatestMessages("user@example.com");
+        List<GmailMessageDto> result = gmailService.readLatestMessages(user.getId().toString());
 
         assertEquals(1, result.size());
         assertEquals("1", result.get(0).id());
@@ -62,20 +74,41 @@ class GmailServiceTest {
 
     @Test
     void readLatestMessagesThrowsWhenUserMissing() {
-        when(userService.findByEmail("missing@example.com")).thenReturn(Optional.empty());
+        UUID userId = UUID.randomUUID();
+        when(userService.findById(userId)).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class, () -> gmailService.readLatestMessages("missing@example.com"));
-        verifyNoInteractions(oauthTokenRepository, googleGmailClient);
+        assertThrows(UnauthorizedException.class, () -> gmailService.readLatestMessages(userId.toString()));
+        verifyNoInteractions(oauthAccountService, oauthTokenService, tokenRefreshService, googleGmailClient);
     }
 
     @Test
     void readLatestMessagesThrowsWhenTokenMissing() {
         User user = user("user@example.com");
-        when(userService.findByEmail("user@example.com")).thenReturn(Optional.of(user));
-        when(oauthTokenRepository.findByUserAndProvider(user, "google")).thenReturn(Optional.empty());
+        OAuthAccount account = new OAuthAccount(user, "google", "subject-1", "user@example.com", "Test User");
+        when(userService.findById(user.getId())).thenReturn(Optional.of(user));
+        when(oauthAccountService.findByUserAndProvider(user, "google")).thenReturn(Optional.of(account));
+        when(oauthTokenService.findByAccount(account)).thenReturn(Optional.empty());
 
-        assertThrows(IllegalArgumentException.class, () -> gmailService.readLatestMessages("user@example.com"));
-        verifyNoInteractions(googleGmailClient);
+        assertThrows(UnauthorizedException.class, () -> gmailService.readLatestMessages(user.getId().toString()));
+        verifyNoInteractions(tokenRefreshService, googleGmailClient);
+    }
+
+    @Test
+    void readLatestMessagesRefreshesExpiredToken() {
+        User user = user("user@example.com");
+        OAuthAccount account = new OAuthAccount(user, "google", "subject-1", "user@example.com", "Test User");
+        OAuthToken token = new OAuthToken(account, "expired-token", "refresh-token", "Bearer", "openid email", LocalDateTime.now().minusHours(1));
+
+        when(userService.findById(user.getId())).thenReturn(Optional.of(user));
+        when(oauthAccountService.findByUserAndProvider(user, "google")).thenReturn(Optional.of(account));
+        when(oauthTokenService.findByAccount(account)).thenReturn(Optional.of(token));
+        when(tokenRefreshService.getValidAccessToken(token)).thenReturn("fresh-token");
+        when(googleGmailClient.fetchMessages("fresh-token", 10)).thenReturn(List.of());
+
+        gmailService.readLatestMessages(user.getId().toString());
+
+        verify(tokenRefreshService).getValidAccessToken(token);
+        verify(googleGmailClient).fetchMessages("fresh-token", 10);
     }
 
     private User user(String email) {

@@ -3,7 +3,7 @@
 This short guide explains the purpose of the small onboarding/automation files that were added to the repository and why they live under `docs/` or at the repository root. The goal is to help new contributors quickly understand what each file does and why it matters.
 
 Quick checklist
-- Where to find canonical docs: `docs/` (read `docs/intellijSetup.md`, `docs/localSetup.md`, `docs/HELP.md`)
+- Where to find canonical docs: `docs/` (read `docs/intellijSetup.md`, `docs/localSetup.md`, `docs/HELP.md`, `docs/development/phase1-developer-guide.md`)
 - Important contributor files (root): `README.md`, `CONTRIBUTING.md`, `.editorconfig`, `.gitattributes`
 - Automation: CI workflow (`.github/workflows/ci.yml`) and Dependabot (`.github/dependabot.yml`)
 
@@ -42,7 +42,7 @@ Files and why they exist
   - Purpose: automatically open dependency update PRs for Maven dependencies on a schedule.
   - Why important: keeps dependencies up-to-date and reduces the manual work of dependency upgrades.
 
-- `docs/.env.example`
+- `.env.example`
   - Purpose: example environment variable file with non-secret placeholders.
   - Why important: shows required environment variables and prevents accidental commits of real secrets. Developers copy it to `.env` locally.
 
@@ -55,7 +55,7 @@ Recommended practices about IDE files
 - Keep the importable run configuration in `docs/` for optional import (or place specific files in `.idea/runConfigurations/` only after team agreement).
 
 Security and secrets
-- Never commit real secrets or credentials. Use `docs/.env.example` for placeholders and keep `.env` in `.gitignore` (already configured).
+- Never commit real secrets or credentials. Use `.env.example` for placeholders and keep `.env` in `.gitignore` (already configured).
 - Consider using secret scanners and repository-level secret policies in CI.
 
 What to do next (suggested small steps)
@@ -68,4 +68,3 @@ If you’d like, I can also:
 - Add `CODE_OF_CONDUCT.md` and a license (tell me which).
 - Move the run configuration under `.idea/runConfigurations/` (only if you confirm committing IDE configs is desired).
 - Create a short `docs/ONBOARDING.md` that collects the most common first-day tasks for new team members.
-

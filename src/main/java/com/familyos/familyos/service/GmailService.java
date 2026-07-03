@@ -1,7 +1,12 @@
 package com.familyos.familyos.service;
 
+import com.familyos.familyos.authentication.entity.OAuthAccount;
+import com.familyos.familyos.authentication.entity.OAuthToken;
 import com.familyos.familyos.authentication.entity.User;
-import com.familyos.familyos.authentication.repository.OAuthTokenRepository;
+import com.familyos.familyos.authentication.exception.UnauthorizedException;
+import com.familyos.familyos.authentication.service.OAuthAccountService;
+import com.familyos.familyos.authentication.service.OAuthTokenService;
+import com.familyos.familyos.authentication.service.TokenRefreshService;
 import com.familyos.familyos.authentication.service.UserService;
 import com.familyos.familyos.dto.GmailMessageDto;
 import com.familyos.familyos.integrations.google.gmail.GoogleGmailClient;
@@ -20,34 +25,42 @@ public class GmailService {
     private static final int DEFAULT_MAX_RESULTS = 10;
 
     private final UserService userService;
-    private final OAuthTokenRepository oauthTokenRepository;
+    private final OAuthAccountService oauthAccountService;
+    private final OAuthTokenService oauthTokenService;
+    private final TokenRefreshService tokenRefreshService;
     private final GoogleGmailClient googleGmailClient;
 
-    public GmailService(UserService userService, OAuthTokenRepository oauthTokenRepository,
-                       GoogleGmailClient googleGmailClient) {
+    public GmailService(UserService userService, OAuthAccountService oauthAccountService, OAuthTokenService oauthTokenService,
+                       TokenRefreshService tokenRefreshService, GoogleGmailClient googleGmailClient) {
         this.userService = userService;
-        this.oauthTokenRepository = oauthTokenRepository;
+        this.oauthAccountService = oauthAccountService;
+        this.oauthTokenService = oauthTokenService;
+        this.tokenRefreshService = tokenRefreshService;
         this.googleGmailClient = googleGmailClient;
     }
 
-    public List<GmailMessageDto> readLatestMessages(String userEmail) {
-        log.debug("Reading latest Gmail messages for user: {}", userEmail);
+    public List<GmailMessageDto> readLatestMessages(String userId) {
+        log.debug("Reading latest Gmail messages for user: {}", userId);
 
         // Lookup authenticated user
-        User user = userService.findByEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + userEmail));
+        User user;
+        try {
+            user = userService.findById(java.util.UUID.fromString(userId))
+                    .orElseThrow(() -> new UnauthorizedException("Authenticated user not found"));
+        } catch (IllegalArgumentException ex) {
+            throw new UnauthorizedException("Authenticated user not found");
+        }
 
-        // Lookup OAuthToken for Google provider
-        var oauthToken = oauthTokenRepository.findByUserAndProvider(user, GOOGLE_PROVIDER)
-                .orElseThrow(() -> new IllegalArgumentException("No Google OAuth token found for user: " + userEmail));
+        // Lookup OAuth account and token for Google provider
+        OAuthAccount oauthAccount = oauthAccountService.findByUserAndProvider(user, GOOGLE_PROVIDER)
+                .orElseThrow(() -> new UnauthorizedException("Google account not connected"));
 
-        log.debug("Found Google OAuth token for user: {}", userEmail);
-
-        // Get access token
-        String accessToken = oauthToken.getAccessToken();
+        OAuthToken oauthToken = oauthTokenService.findByAccount(oauthAccount)
+                .orElseThrow(() -> new UnauthorizedException("Google token not available"));
+        String accessToken = tokenRefreshService.getValidAccessToken(oauthToken);
 
         // Call Gmail API via integration layer
-        log.debug("Calling Gmail API for user: {}", userEmail);
+        log.debug("Calling Gmail API for user: {}", user.getEmail());
         List<GoogleGmailMessage> googleMessages = googleGmailClient.fetchMessages(accessToken, DEFAULT_MAX_RESULTS);
 
         // Convert to DTOs (provider-agnostic)
