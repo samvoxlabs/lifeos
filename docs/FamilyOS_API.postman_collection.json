@@ -1,0 +1,184 @@
+{
+  "info": {
+    "name": "FamilyOS API",
+    "description": "Postman collection for FamilyOS API endpoints. After importing, set the environment variables (base_url and token) before making requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/health",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["api", "health"]
+            },
+            "description": "Check service health status"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Home",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            },
+            "description": "Get home page message"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["user"]
+            },
+            "description": "Get current authenticated user information"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Gmail",
+      "item": [
+        {
+          "name": "Get Messages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/gmail/messages",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["gmail", "messages"]
+            },
+            "description": "Get latest Gmail messages for current user"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "LLM",
+      "item": [
+        {
+          "name": "Generate (LLM)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"provider\": \"gemini\",\n  \"useCase\": \"general\",\n  \"systemPrompt\": \"You are a helpful assistant.\",\n  \"content\": \"What is the capital of France?\",\n  \"metadata\": {}\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/llm/generate",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["llm", "generate"]
+            },
+            "description": "Generate LLM response. Provider can be 'gemini', 'openai', etc."
+          },
+          "response": []
+        },
+        {
+          "name": "Test LLM",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/llm/test?prompt=Say%20hello",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["llm", "test"],
+              "query": [
+                {
+                  "key": "prompt",
+                  "value": "Say hello",
+                  "description": "Test prompt to send to LLM"
+                }
+              ]
+            },
+            "description": "Test LLM endpoint with simple prompt"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Test",
+      "item": [
+        {
+          "name": "Test Endpoint",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/test",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["api", "test"]
+            },
+            "description": "Simple test endpoint"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string",
+      "description": "Base URL for the API. Change port if using SERVER_PORT environment variable."
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token from authentication. Get a token by logging in and copy the 'token' value from the response."
+    }
+  ]
+}
