@@ -12,6 +12,9 @@ public record JwtProperties(
         if (secret == null || secret.isBlank()) {
             throw new IllegalArgumentException("jwt.secret must not be blank");
         }
+        if (secret.length() < 32) {
+            throw new IllegalArgumentException("jwt.secret must be at least 32 characters for HS256");
+        }
         if (expirationMs == null || expirationMs <= 0) {
             throw new IllegalArgumentException("jwt.expiration-ms must be greater than 0");
         }
