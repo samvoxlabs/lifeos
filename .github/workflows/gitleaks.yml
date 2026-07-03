@@ -11,5 +11,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run gitleaks
         uses: zricethezav/gitleaks-action@v2
-        with:
-          args: --redact
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
