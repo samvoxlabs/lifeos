@@ -2,7 +2,7 @@ package com.familyos.familyos.controller;
 
 import com.familyos.familyos.dto.GmailMessageDto;
 import com.familyos.familyos.services.GmailService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,14 +13,14 @@ import java.util.List;
 @RequestMapping("/gmail")
 public class ServiceController {
 
-  private final GmailService gmailService;
+    private final GmailService gmailService;
 
-  public ServiceController(GmailService gmailService) {
-    this.gmailService = gmailService;
-  }
+    public ServiceController(GmailService gmailService) {
+        this.gmailService = gmailService;
+    }
 
-  @GetMapping("/messages")
-  public List<GmailMessageDto> messages(OAuth2AuthenticationToken authentication) {
-    return gmailService.readLatestMessages(authentication);
-  }
+    @GetMapping("/messages")
+    public List<GmailMessageDto> messages(@AuthenticationPrincipal String userEmail) {
+        return gmailService.readLatestMessages(userEmail);
+    }
 }
