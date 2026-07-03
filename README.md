@@ -15,6 +15,8 @@ Contents
 - [Quick start (local)](#quick-start-local)
 - [Docker Setup](#docker-setup)
 - [Documentation and useful links](#documentation-and-useful-links)
+- [Architecture docs](#architecture-docs)
+- [Roadmap](#roadmap)
 - [Development notes](#development-notes)
 - [Contributing](#contributing)
 - [Need help?](#need-help)
@@ -165,11 +167,21 @@ The app will start on port 8080 by default (unless overridden in `src/main/resou
 - Getting started & reference: `docs/HELP.md`
 - Contribution guide (detailed): `docs/CONTRIBUTING.md` (short pointer at repo root: `CONTRIBUTING.md`)
 - Repository guide (what lives where): `docs/REPO_GUIDE.md`
+- Architecture docs: `docs/architecture/README.md`
+- Roadmap: `docs/roadmap/`
 - Example env file: `.env.example` (copy to `.env` locally)
 - Runtime configuration: `src/main/resources/application.yml`
 - Environment variables: `.env` (copy from `.env.example`)
 - Flyway migrations: `src/main/resources/db/migration/`
 - Project `pom.xml`: contains dependencies and Java version (Java 21)
+
+## Architecture docs
+
+See `docs/architecture/README.md` for the ADR index and architecture notes.
+
+## Roadmap
+
+See `docs/roadmap/` for milestone plans and the backlog.
 
 
 ## Code & community
@@ -207,4 +219,3 @@ If you'd like to contribute, please:
 ## Need help?
 
 Open an issue or contact the maintainers listed in `pom.xml` (if configured).
-
