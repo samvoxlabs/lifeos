@@ -1,6 +1,6 @@
 spring:
   application:
-    name: familyos
+    name: lifeos
 
   config:
     import:
@@ -8,6 +8,7 @@ spring:
       - classpath:google.yml
       - classpath:llm.yml
       - classpath:jwt.yml
+      - classpath:database.yml
 
   security:
     oauth2:
