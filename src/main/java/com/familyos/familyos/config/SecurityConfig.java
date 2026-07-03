@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .requestMatchers("/oauth/**").permitAll()
                 .requestMatchers("/actuator/**").permitAll()
                 .requestMatchers("/").permitAll()
+                .requestMatchers("/api/health").permitAll()
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().authenticated()
             )
@@ -44,4 +45,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-
