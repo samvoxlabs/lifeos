@@ -67,7 +67,7 @@ curl http://localhost:8080/
 3. You'll be redirected with a JSON response containing:
    ```json
    {
-     "token": "eyJhbGciOiJIUzUxMiJ9...",
+     "token": "<YOUR_JWT_TOKEN>",
      "user_id": "...",
      "email": "...",
      "name": "..."
