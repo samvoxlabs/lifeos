@@ -2,16 +2,10 @@ spring:
   application:
     name: lifeos
 
-  # ============================================
-  # Configuration Profiles & Imports
-  # ============================================
   config:
     import:
       - optional:file:.env[.properties]
 
-  # ============================================
-  # Security - OAuth2
-  # ============================================
   security:
     oauth2:
       client:
@@ -28,36 +22,6 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             client-authentication-method: client_secret_post
 
-# ============================================
-# JWT Authentication
-# ============================================
-jwt:
-  secret: ${JWT_SECRET:this-is-a-development-secret-key-that-is-long-enough-for-hs256-algorithm-32chars}
-  expiration-ms: ${JWT_EXPIRATION_MS:3600000}
-
-# ============================================
-# Google APIs
-# ============================================
-google:
-  apis:
-    gmail-base-url: ${GOOGLE_GMAIL_BASE_URL:https://gmail.googleapis.com/gmail/v1}
-  gmail:
-    user-id: ${GOOGLE_GMAIL_USER_ID:me}
-    max-results: ${GOOGLE_GMAIL_MAX_RESULTS:10}
-
-# ============================================
-# LLM Provider Configuration
-# ============================================
-llm:
-  default-provider: ${LLM_DEFAULT_PROVIDER:gemini}
-  gemini:
-    api-key: ${GEMINI_API_KEY:}
-    model: ${GEMINI_MODEL:gemini-2.5-flash}
-    base-url: ${GEMINI_BASE_URL:https://generativelanguage.googleapis.com/v1beta}
-
-  # ============================================
-  # Database
-  # ============================================
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:lifeos}
     username: ${DB_USER:lifeos}
@@ -94,3 +58,21 @@ llm:
     locations: classpath:db/migration
     validate-on-migrate: true
     clean-disabled: true
+
+jwt:
+  secret: ${JWT_SECRET:this-is-a-development-secret-key-that-is-long-enough-for-hs256-algorithm-32chars}
+  expiration-ms: ${JWT_EXPIRATION_MS:3600000}
+
+google:
+  apis:
+    gmail-base-url: ${GOOGLE_GMAIL_BASE_URL:https://gmail.googleapis.com/gmail/v1}
+  gmail:
+    user-id: ${GOOGLE_GMAIL_USER_ID:me}
+    max-results: ${GOOGLE_GMAIL_MAX_RESULTS:10}
+
+llm:
+  default-provider: ${LLM_DEFAULT_PROVIDER:gemini}
+  gemini:
+    api-key: ${GEMINI_API_KEY:}
+    model: ${GEMINI_MODEL:gemini-2.5-flash}
+    base-url: ${GEMINI_BASE_URL:https://generativelanguage.googleapis.com/v1beta}

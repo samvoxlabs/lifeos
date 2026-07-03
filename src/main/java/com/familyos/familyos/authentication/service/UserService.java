@@ -1,15 +1,12 @@
 package com.familyos.familyos.authentication.service;
 
-import com.familyos.familyos.authentication.entity.OAuthToken;
 import com.familyos.familyos.authentication.entity.User;
-import com.familyos.familyos.authentication.repository.OAuthTokenRepository;
 import com.familyos.familyos.authentication.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -18,11 +15,8 @@ public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
-    private final OAuthTokenRepository oauthTokenRepository;
-
-    public UserService(UserRepository userRepository, OAuthTokenRepository oauthTokenRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.oauthTokenRepository = oauthTokenRepository;
     }
 
     @Transactional
@@ -42,29 +36,6 @@ public class UserService {
         log.info("User created: {}", email);
         
         return savedUser;
-    }
-
-    @Transactional
-    public void saveOAuthTokens(User user, String provider, String accessToken, String refreshToken, 
-                               String tokenType, LocalDateTime expiresAt) {
-        log.debug("Saving OAuth tokens for user: {}, provider: {}", user.getEmail(), provider);
-        
-        Optional<OAuthToken> existingToken = oauthTokenRepository.findByUserAndProvider(user, provider);
-        
-        OAuthToken oauthToken;
-        if (existingToken.isPresent()) {
-            oauthToken = existingToken.get();
-            oauthToken.setAccessToken(accessToken);
-            oauthToken.setRefreshToken(refreshToken);
-            oauthToken.setTokenType(tokenType);
-            oauthToken.setExpiresAt(expiresAt);
-            log.debug("Updated OAuth token for user: {}, provider: {}", user.getEmail(), provider);
-        } else {
-            oauthToken = new OAuthToken(user, provider, accessToken, refreshToken, tokenType, expiresAt);
-            log.debug("Created new OAuth token for user: {}, provider: {}", user.getEmail(), provider);
-        }
-        
-        oauthTokenRepository.save(oauthToken);
     }
 
     @Transactional

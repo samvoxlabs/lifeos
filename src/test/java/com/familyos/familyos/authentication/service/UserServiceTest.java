@@ -1,38 +1,29 @@
 package com.familyos.familyos.authentication.service;
 
-import com.familyos.familyos.authentication.entity.OAuthToken;
 import com.familyos.familyos.authentication.entity.User;
-import com.familyos.familyos.authentication.repository.OAuthTokenRepository;
 import com.familyos.familyos.authentication.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private OAuthTokenRepository oauthTokenRepository;
 
     private UserService userService;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository, oauthTokenRepository);
+        userRepository = mock(UserRepository.class);
+        userService = new UserService(userRepository);
     }
 
     @Test
@@ -59,20 +50,6 @@ class UserServiceTest {
 
         assertEquals("user@example.com", result.getEmail());
         verify(userRepository).save(any(User.class));
-    }
-
-    @Test
-    void saveOAuthTokensUpdatesExistingRecord() {
-        User user = user("user@example.com", "Test User", "google");
-        OAuthToken token = new OAuthToken(user, "google", "old-access", "old-refresh", "Bearer", LocalDateTime.now().minusHours(1));
-        when(oauthTokenRepository.findByUserAndProvider(user, "google")).thenReturn(Optional.of(token));
-
-        userService.saveOAuthTokens(user, "google", "new-access", "new-refresh", "Bearer", LocalDateTime.now().plusHours(1));
-
-        ArgumentCaptor<OAuthToken> captor = ArgumentCaptor.forClass(OAuthToken.class);
-        verify(oauthTokenRepository).save(captor.capture());
-        assertEquals("new-access", captor.getValue().getAccessToken());
-        assertEquals("new-refresh", captor.getValue().getRefreshToken());
     }
 
     @Test

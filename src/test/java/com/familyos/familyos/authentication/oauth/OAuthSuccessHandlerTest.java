@@ -1,7 +1,10 @@
 package com.familyos.familyos.authentication.oauth;
 
 import com.familyos.familyos.authentication.entity.User;
+import com.familyos.familyos.authentication.entity.OAuthAccount;
 import com.familyos.familyos.authentication.service.JwtService;
+import com.familyos.familyos.authentication.service.OAuthAccountService;
+import com.familyos.familyos.authentication.service.OAuthTokenService;
 import com.familyos.familyos.authentication.service.UserService;
 import com.familyos.familyos.config.properties.JwtProperties;
 import com.familyos.familyos.dto.LoginResponse;
@@ -38,6 +41,8 @@ import static org.mockito.Mockito.*;
 class OAuthSuccessHandlerTest {
 
     private UserService userService;
+    private OAuthAccountService oauthAccountService;
+    private OAuthTokenService oauthTokenService;
     private JwtService jwtService;
     private OAuth2AuthorizedClientService authorizedClientService;
     private OAuthSuccessHandler handler;
@@ -45,17 +50,22 @@ class OAuthSuccessHandlerTest {
     @BeforeEach
     void setUp() {
         userService = mock(UserService.class);
+        oauthAccountService = mock(OAuthAccountService.class);
+        oauthTokenService = mock(OAuthTokenService.class);
         jwtService = mock(JwtService.class);
         authorizedClientService = mock(OAuth2AuthorizedClientService.class);
-        handler = new OAuthSuccessHandler(userService, jwtService, authorizedClientService);
+        handler = new OAuthSuccessHandler(userService, oauthAccountService, oauthTokenService, jwtService, authorizedClientService);
     }
 
     @Test
     void shouldPersistUserTokensAndReturnJwtResponse() throws Exception {
         User user = createUser();
+        OAuthAccount account = new OAuthAccount(user, "google", "subject-1", "user@example.com", "Test User");
         when(userService.findOrCreateUser("user@example.com", "Test User", "google")).thenReturn(user);
+        when(oauthAccountService.findOrCreateAccount(eq(user), eq("google"), eq("subject-1"), eq("user@example.com"), eq("Test User")))
+                .thenReturn(account);
         when(jwtService.generateToken(any())).thenReturn("lifeos.jwt.token");
-        when(authorizedClientService.loadAuthorizedClient(eq("google"), eq("user@example.com")))
+        when(authorizedClientService.loadAuthorizedClient(eq("google"), eq("subject-1")))
                 .thenReturn(createAuthorizedClient());
 
         MockHttpServletResponse response = new MockHttpServletResponse();
@@ -74,12 +84,13 @@ class OAuthSuccessHandlerTest {
                 ArgumentCaptor.forClass(com.familyos.familyos.dto.AuthenticatedUser.class);
         verify(jwtService).generateToken(userCaptor.capture());
         assertEquals(user.getEmail(), userCaptor.getValue().email());
-        verify(userService).saveOAuthTokens(
-                eq(user),
-                eq("google"),
+        verify(oauthAccountService).findOrCreateAccount(eq(user), eq("google"), eq("subject-1"), eq("user@example.com"), eq("Test User"));
+        verify(oauthTokenService).saveToken(
+                eq(account),
                 eq("access-token"),
                 eq("refresh-token"),
                 eq("Bearer"),
+                eq(Set.of("openid", "email")),
                 any(LocalDateTime.class)
         );
     }
@@ -89,13 +100,14 @@ class OAuthSuccessHandlerTest {
         User user = createUser();
         when(userService.findOrCreateUser("user@example.com", "Test User", "google")).thenReturn(user);
         when(jwtService.generateToken(any())).thenReturn("lifeos.jwt.token");
-        when(authorizedClientService.loadAuthorizedClient("google", "user@example.com")).thenReturn(null);
+        when(authorizedClientService.loadAuthorizedClient("google", "subject-1")).thenReturn(null);
 
         MockHttpServletResponse response = new MockHttpServletResponse();
         handler.onAuthenticationSuccess(new MockHttpServletRequest(), response, authentication());
 
         assertEquals(200, response.getStatus());
-        verify(userService, never()).saveOAuthTokens(any(), any(), any(), any(), any(), any());
+        verify(oauthAccountService).findOrCreateAccount(eq(user), eq("google"), eq("subject-1"), eq("user@example.com"), eq("Test User"));
+        verifyNoInteractions(oauthTokenService);
     }
 
     private OAuth2AuthenticationToken authentication() {
@@ -127,7 +139,8 @@ class OAuthSuccessHandlerTest {
                         OAuth2AccessToken.TokenType.BEARER,
                         "access-token",
                         Instant.now(),
-                        Instant.now().plusSeconds(3600)
+                        Instant.now().plusSeconds(3600),
+                        Set.of("openid", "email")
                 ),
                 new OAuth2RefreshToken("refresh-token", Instant.now())
         );
