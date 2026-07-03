@@ -92,20 +92,12 @@ curl -H "Authorization: Bearer $JWT" http://localhost:8080/gmail/messages
 
 ### Postman
 
-- Set auth type to `Bearer Token`.
-- Paste the LifeOS JWT.
-- Call `/api/test` and `/gmail/messages`.
-- Use `/llm/test` or `/llm/generate` to verify the LLM layer if needed.
+- See `docs/development/phase1-api-testing.md` for the full request list, cURL examples, and Postman setup.
 
 ### Recommended order
 
-1. `./mvnw test`
-2. `docker compose -f docker/compose.yml up -d`
-3. `./mvnw spring-boot:run`
-4. Google OAuth login
-5. JWT-authenticated API calls
-6. Gmail message retrieval
-7. Review `docs/ROADMAP.md` for Phase 2 planning
+1. Follow `docs/development/phase1-api-testing.md`.
+2. Review `docs/ROADMAP.md` for Phase 2 planning.
 
 ## Environment variables
 

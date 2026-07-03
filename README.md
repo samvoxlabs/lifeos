@@ -182,12 +182,35 @@ docker compose -f docker/compose.yml up -d
 From the project root, run:
 
 ```bash
+./run.sh
+```
+
+This script will:
+1. Check for any process running on port 8080
+2. Kill it if found (prevents "port already in use" errors)
+3. Start the Spring Boot application
+
+**Alternative:** To run without the cleanup script:
+```bash
 ./mvnw spring-boot:run
 ```
 
-The app will start on port 8080 by default (unless overridden in `src/main/resources/application.yml`).
+**Custom port:** Use the `SERVER_PORT` environment variable:
+```bash
+SERVER_PORT=9090 ./run.sh
+```
 
-### Running Tests
+The app will start on port 8080 by default (or your custom `SERVER_PORT`).
+
+### JWT Secret Configuration
+
+The JWT secret must be **at least 32 characters long** for HS256 algorithm compliance. It's configured in `.env`:
+
+```bash
+JWT_SECRET=your-super-secure-development-secret-key-that-is-at-least-32-chars-long
+```
+
+If you get a "WeakKeyException" error, your secret is too short. Update `.env` with a longer secret.
 
 ```bash
 ./mvnw test
@@ -203,15 +226,18 @@ The app will start on port 8080 by default (unless overridden in `src/main/resou
 - Repository guide: `docs/REPO_GUIDE.md`
 - Architecture docs: `docs/architecture/README.md`
 - Roadmap: `docs/ROADMAP.md`
+- **API Testing:** Import `docs/FamilyOS_API.postman_collection.json` into Postman for complete API documentation
 - Example env file: `.env.example` (copy to `.env` locally)
 - Runtime configuration: `src/main/resources/application.yml`
 - Flyway migrations: `src/main/resources/db/migration/`
 - Project `pom.xml`: contains dependencies and Java version (Java 21)
+- Startup script: `run.sh` (auto-cleans port 8080 before starting)
 
 ## Phase 1 documentation
 
 - Milestone summary: `docs/milestones/phase1-authentication.md`
 - Developer guide: `docs/development/phase1-developer-guide.md`
+- API testing guide: `docs/development/phase1-api-testing.md`
 - Roadmap after Phase 1: `docs/ROADMAP.md`
 
 ## Architecture docs

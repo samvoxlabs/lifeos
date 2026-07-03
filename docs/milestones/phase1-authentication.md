@@ -114,35 +114,7 @@ Automatic Google Token Refresh
 
 ## Testing Guide
 
-### Browser flow
-
-1. Open `/oauth2/authorization/google`.
-2. Sign in with a Google test account.
-3. Confirm LifeOS returns a JWT.
-4. Call a protected endpoint with `Authorization: Bearer <jwt>`.
-
-### cURL examples
-
-```bash
-curl http://localhost:8080/api/health
-curl -H "Authorization: Bearer $JWT" http://localhost:8080/api/test
-curl -H "Authorization: Bearer $JWT" http://localhost:8080/gmail/messages
-```
-
-### Postman
-
-- Use `Bearer Token` auth with the LifeOS JWT.
-- Call `/api/test` and `/gmail/messages` to verify protected access.
-- Use `/api/health` without auth to confirm public access.
-
-### Recommended validation order
-
-1. `./mvnw test`
-2. `docker compose -f docker/compose.yml up -d`
-3. `./mvnw spring-boot:run`
-4. OAuth login
-5. Protected API calls
-6. Gmail access and token refresh
+See `docs/development/phase1-api-testing.md` for the full browser flow, Postman setup, cURL examples, and recommended validation order.
 
 ## Known Limitations
 
