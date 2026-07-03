@@ -37,6 +37,9 @@ This project uses `dotenv-java` to read environment variables from the environme
 # Example keys
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
+LLM_DEFAULT_PROVIDER=gemini
+GEMINI_API_KEY=your-gemini-api-key
+GEMINI_MODEL=gemini-2.5-flash
 # Other keys used by the app
 ```
 
@@ -79,23 +82,6 @@ curl -v http://localhost:8080/api/test
 # Expected response: Hello World
 ```
 
-Swagger / OpenAPI UI (POC)
-
-When running the application locally you can also view an auto-generated API documentation UI (Swagger) provided by springdoc-openapi.
-
-Open in a browser:
-
-```bash
-http://localhost:8080/swagger-ui/index.html
-```
-
-Raw OpenAPI JSON is available at:
-
-```bash
-http://localhost:8080/v3/api-docs
-```
-
-Note: for this POC the security configuration permits access to these endpoints locally. Do not enable the same permissive settings in production.
 
 6) Common troubleshooting
 
@@ -110,4 +96,3 @@ Note: for this POC the security configuration permits access to these endpoints 
 - Maven wrapper: `mvnw` (Linux/macOS), `mvnw.cmd` (Windows)
 
 If you'd like, I can add a sample `.env.example` to the repository, or create an importable IntelliJ run configuration file that preloads environment variables. Tell me which you'd prefer.
-
