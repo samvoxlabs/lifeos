@@ -63,7 +63,7 @@ spring:
     clean-disabled: true
 
 jwt:
-  secret: ${JWT_SECRET:this-is-a-development-secret-key-that-is-long-enough-for-hs256-algorithm-must-be-at-least-256-bits-or-32-bytes}
+  secret: ${JWT_SECRET}
   expiration-ms: ${JWT_EXPIRATION_MS:3600000}
 
 google:
