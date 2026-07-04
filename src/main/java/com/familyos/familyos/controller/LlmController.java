@@ -1,8 +1,7 @@
 package com.familyos.familyos.controller;
 
-import com.familyos.familyos.llm.LlmRequest;
 import com.familyos.familyos.llm.LlmResponse;
-import com.familyos.familyos.llm.factory.LlmProviderFactory;
+import com.familyos.familyos.service.LlmService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,40 +12,56 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/llm")
+@RequestMapping("/api/llm")
 public class LlmController {
 
-  private final LlmProviderFactory providerFactory;
+  private final LlmService llmService;
 
-  public LlmController(LlmProviderFactory providerFactory) {
-    this.providerFactory = providerFactory;
+  public LlmController(LlmService llmService) {
+    this.llmService = llmService;
   }
 
   @PostMapping("/generate")
-  public LlmResponse generate(@RequestBody LlmGenerateRequest request) {
-    return providerFactory.providerOrDefault(request.provider()).generate(new LlmRequest(
-      request.useCase() == null ? "general" : request.useCase(),
+  public ApiLlmResponse generate(@RequestBody ApiLlmRequest request) {
+    LlmResponse response = llmService.generate(
+      request.provider(),
+      "general",
       request.systemPrompt(),
-      request.content(),
-      request.metadata() == null ? Map.of() : request.metadata()
-    ));
-  }
-
-  @GetMapping("/test")
-  public LlmResponse test(@RequestParam(defaultValue = "Say hello") String prompt) {
-    return providerFactory.providerOrDefault(null).generate(new LlmRequest(
-      "test",
-      "You are a concise assistant.",
-      prompt,
+      request.userPrompt(),
       Map.of()
-    ));
+    );
+    return new ApiLlmResponse(
+      response.provider(),
+      response.model(),
+      response.content()
+    );
   }
 
-  public record LlmGenerateRequest(
-    String provider,
-    String useCase,
+  @GetMapping("/health")
+  public HealthResponse health() {
+    LlmService.ProviderHealth health = llmService.checkHealth();
+    return new HealthResponse(
+      health.provider(),
+      health.healthy(),
+      health.message()
+    );
+  }
+
+  public record ApiLlmRequest(
     String systemPrompt,
-    String content,
-    Map<String, Object> metadata
+    String userPrompt,
+    String provider
+  ) {}
+
+  public record ApiLlmResponse(
+    String provider,
+    String model,
+    String response
+  ) {}
+
+  public record HealthResponse(
+    String provider,
+    boolean healthy,
+    String message
   ) {}
 }
