@@ -149,6 +149,60 @@
       ]
     },
     {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "Get Task Items",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/google-tasks/items",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["google-tasks", "items"]
+            },
+            "description": "Get Google Tasks items for current user"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "People",
+      "item": [
+        {
+          "name": "Get Contacts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/people/contacts",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["people", "contacts"]
+            },
+            "description": "Get Google Contacts for current user"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "LLM",
       "item": [
         {

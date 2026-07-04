@@ -7,13 +7,17 @@ public record GoogleProperties(
     Apis apis,
     Gmail gmail,
     Calendar calendar,
-    Drive drive
+    Drive drive,
+    Tasks tasks,
+    People people
 ) {
     
     public record Apis(
         String gmailBaseUrl,
         String calendarBaseUrl,
-        String driveBaseUrl
+        String driveBaseUrl,
+        String tasksBaseUrl,
+        String peopleBaseUrl
     ) {}
     
     public record Gmail(
@@ -27,6 +31,14 @@ public record GoogleProperties(
     ) {}
 
     public record Drive(
+        Integer maxResults
+    ) {}
+
+    public record Tasks(
+        Integer maxResults
+    ) {}
+
+    public record People(
         Integer maxResults
     ) {}
 }

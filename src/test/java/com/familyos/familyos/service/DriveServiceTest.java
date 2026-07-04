@@ -55,11 +55,15 @@ class DriveServiceTest {
                 new GoogleProperties.Apis(
                         "https://gmail.googleapis.com/gmail/v1",
                         "https://www.googleapis.com/calendar/v3",
-                        "https://www.googleapis.com/drive/v3"
+                        "https://www.googleapis.com/drive/v3",
+                        "https://tasks.googleapis.com/tasks/v1",
+                        "https://people.googleapis.com/v1"
                 ),
                 new GoogleProperties.Gmail("me", 10),
                 new GoogleProperties.Calendar("primary", 10),
-                new GoogleProperties.Drive(10)
+                new GoogleProperties.Drive(10),
+                new GoogleProperties.Tasks(10),
+                new GoogleProperties.People(20)
         );
         driveService = new DriveService(
                 userService,
