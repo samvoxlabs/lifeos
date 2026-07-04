@@ -1,0 +1,200 @@
+# LifeOS Implementation Roadmap
+
+This document tracks the implementation phases, feature branches, and current development status for the LifeOS project.
+
+## Git Workflow
+
+```text
+main
+    ↓
+feature/<feature-name>
+    ↓
+Pull Request
+    ↓
+Squash Merge
+    ↓
+main
+```
+
+Rules:
+
+* Never develop directly on `main`.
+* One feature branch = one Pull Request.
+* One Pull Request = one logical capability.
+* Delete the feature branch after merge.
+* Create the next feature branch from the latest `main`.
+
+---
+
+## Current Status
+
+**Current Phase:** Phase 4 – Rule Engine
+
+**Current Branch:** Ready for next feature branch
+
+**Next Objective:**
+
+Determine which documents should be processed by AI, including:
+
+* Configurable rules
+* Metadata filtering
+* Content filtering
+* Priority scoring
+
+---
+
+## Phase 1 – Authentication Foundation ✅
+
+**Branch**
+
+* `feature/oauth`
+
+**Completed**
+
+* Google OAuth2 Login
+* Spring Security
+* JWT Authentication
+* User Persistence
+* Google Token Persistence
+* Protected APIs
+
+---
+
+## Phase 2 – Google Integrations
+
+**Objective**
+
+Connect LifeOS to Google services and retrieve normalized data.
+
+**Feature Branches**
+
+* `feature/google-core`
+* `feature/google-gmail`
+* `feature/google-calendar`
+* `feature/google-drive`
+
+---
+
+## Phase 3 – LLM Foundation ✅
+
+**Objective**
+
+Introduce a provider-agnostic AI layer.
+
+**Feature Branch**
+
+* `feature/llm-core` (merged to main)
+
+**Completed Deliverables**
+
+* LLM provider abstraction (Strategy pattern)
+* Multi-provider support (Gemini, Groq, OpenRouter)
+* Provider-agnostic service layer (LlmService)
+* Configuration-driven provider selection (application.yml)
+* REST API endpoints (/api/llm/generate, /api/llm/health)
+* JWT authentication integration
+* Comprehensive testing guide (docs/development/phase3-api-testing.md)
+* Postman collections (phase3-postman_collection.json, FamilyOS_API.postman_collection.json)
+
+**PR:** #15 (merged)
+
+---
+
+## Phase 4 – Rule Engine
+
+**Objective**
+
+Determine which documents should be processed by AI.
+
+**Feature Branch**
+
+* `feature/rule-engine`
+
+**Deliverables**
+
+* Configurable rules
+* Metadata filtering
+* Content filtering
+* Priority scoring
+
+---
+
+## Phase 5 – AI Extraction
+
+**Objective**
+
+Apply the Rule Engine and extract structured information from documents.
+
+**Feature Branch**
+
+* `feature/document-extraction`
+
+**Deliverables**
+
+* Apply rules before LLM
+* Send normalized documents to the LLM
+* Receive structured JSON
+* Confidence scoring
+* Structured extraction model
+
+---
+
+## Phase 6 – Domain & Persistence
+
+**Objective**
+
+Convert extracted information into LifeOS domain objects and persist them.
+
+**Feature Branch**
+
+* `feature/domain-persistence`
+
+**Deliverables**
+
+* Persist extracted results
+* Task model
+* Event model
+* Reminder model
+* Deduplication
+* Domain mapping
+
+---
+
+## Phase 7 – Frontend APIs
+
+**Objective**
+
+Expose LifeOS data to the frontend.
+
+**Feature Branches**
+
+* `feature/dashboard-api`
+* `feature/task-api`
+* `feature/event-api`
+* `feature/reminder-api`
+* `feature/search-api`
+
+**Deliverables**
+
+* Dashboard API
+* Task API
+* Event API
+* Reminder API
+* Search API
+
+---
+
+## Scope Rule
+
+Before implementing any new feature:
+
+1. Verify the current phase.
+2. Verify the current feature branch.
+3. Confirm the requested work belongs to the current phase.
+4. If it belongs to a future phase:
+
+    * Explain the architectural boundary.
+    * Recommend the appropriate feature branch.
+    * Do not implement it without approval.
+
+Keep every Pull Request focused on **one logical capability**.

@@ -1,0 +1,307 @@
+{
+  "info": {
+    "_postman_id": "phase4-rule-engine",
+    "name": "Phase 4 – Rule Engine",
+    "description": "Testing Rule Engine decision-making engine",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Rule Engine Tests",
+      "item": [
+        {
+          "name": "Test SenderRule – School",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-school-001\",\n  \"sender\": \"Lincoln Elementary School\",\n  \"subject\": \"Permission Slip Required\",\n  \"content\": \"Please sign and return the permission slip for the field trip\",\n  \"labels\": [],\n  \"priority\": \"high\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/rules/evaluate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "rules", "evaluate"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test SenderRule – Hospital",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-hospital-001\",\n  \"sender\": \"City Hospital\",\n  \"subject\": \"Appointment Confirmation\",\n  \"content\": \"Your upcoming appointment is confirmed for next Tuesday\",\n  \"labels\": [],\n  \"priority\": \"high\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/rules/evaluate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "rules", "evaluate"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test SenderRule – Bank",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-bank-001\",\n  \"sender\": \"First National Bank\",\n  \"subject\": \"Account Statement Available\",\n  \"content\": \"Your monthly statement is ready to review\",\n  \"labels\": [],\n  \"priority\": \"normal\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/rules/evaluate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "rules", "evaluate"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Label Rule Tests",
+      "item": [
+        {
+          "name": "Test LabelRule – Promotions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-promo-001\",\n  \"sender\": \"Online Retailer\",\n  \"subject\": \"50% Off Sale – This Weekend Only!\",\n  \"content\": \"Limited time offer on selected items. Shop now before stock runs out!\",\n  \"labels\": [\"promotions\"],\n  \"priority\": \"low\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/rules/evaluate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "rules", "evaluate"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test LabelRule – Spam",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-spam-001\",\n  \"sender\": \"Unknown Sender\",\n  \"subject\": \"You've Won a Prize!\",\n  \"content\": \"Click here to claim your prize now! Limited slots available.\",\n  \"labels\": [\"spam\"],\n  \"priority\": \"low\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/rules/evaluate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "rules", "evaluate"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Keyword Rule Tests",
+      "item": [
+        {
+          "name": "Test KeywordRule – Appointment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-appt-001\",\n  \"sender\": \"Dr. Smith Clinic\",\n  \"subject\": \"Appointment Reminder\",\n  \"content\": \"Your appointment is scheduled for Friday at 2:30 PM. Please arrive 15 minutes early.\",\n  \"labels\": [],\n  \"priority\": \"high\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/rules/evaluate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "rules", "evaluate"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test KeywordRule – Invoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-inv-001\",\n  \"sender\": \"Vendor Services\",\n  \"subject\": \"Invoice #INV-2024-001\",\n  \"content\": \"Please find attached the invoice for services rendered. Payment is due by end of month.\",\n  \"labels\": [],\n  \"priority\": \"high\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/rules/evaluate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "rules", "evaluate"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test KeywordRule – Deadline",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-deadline-001\",\n  \"sender\": \"Project Manager\",\n  \"subject\": \"Project Deadline Approaching\",\n  \"content\": \"The deadline for project submission is next Friday. Please ensure all deliverables are complete.\",\n  \"labels\": [],\n  \"priority\": \"high\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/rules/evaluate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "rules", "evaluate"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Default Decision Test",
+      "item": [
+        {
+          "name": "Test Default Decision – No Match",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-default-001\",\n  \"sender\": \"John Doe\",\n  \"subject\": \"Casual Chat\",\n  \"content\": \"Hey, how have you been doing lately? Let's catch up soon!\",\n  \"labels\": [],\n  \"priority\": \"normal\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/rules/evaluate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "rules", "evaluate"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
