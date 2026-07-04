@@ -122,6 +122,33 @@
       ]
     },
     {
+      "name": "Drive",
+      "item": [
+        {
+          "name": "Get Files",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/drive/files",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["drive", "files"]
+            },
+            "description": "Get recent Google Drive files for current user"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "LLM",
       "item": [
         {

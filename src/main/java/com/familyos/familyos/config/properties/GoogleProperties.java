@@ -6,12 +6,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record GoogleProperties(
     Apis apis,
     Gmail gmail,
-    Calendar calendar
+    Calendar calendar,
+    Drive drive
 ) {
     
     public record Apis(
         String gmailBaseUrl,
-        String calendarBaseUrl
+        String calendarBaseUrl,
+        String driveBaseUrl
     ) {}
     
     public record Gmail(
@@ -21,6 +23,10 @@ public record GoogleProperties(
 
     public record Calendar(
         String calendarId,
+        Integer maxResults
+    ) {}
+
+    public record Drive(
         Integer maxResults
     ) {}
 }
