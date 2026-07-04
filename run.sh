@@ -33,10 +33,24 @@ fi
 
 # Check database connectivity
 echo "🔍 Verifying database connectivity on port $DB_PORT..."
-if timeout 10 bash -c "cat < /dev/null > /dev/tcp/127.0.0.1/$DB_PORT"; then
-    echo "✅ Database is accessible"
-else
-    echo "❌ Database is not accessible. Please check your Docker setup."
+max_attempts=10
+attempt=0
+while [ $attempt -lt $max_attempts ]; do
+    if nc -z 127.0.0.1 $DB_PORT 2>/dev/null; then
+        echo "✅ Database is accessible"
+        break
+    fi
+    attempt=$((attempt + 1))
+    if [ $attempt -lt $max_attempts ]; then
+        sleep 1
+    fi
+done
+
+if [ $attempt -eq $max_attempts ]; then
+    echo "❌ Database is not accessible after $max_attempts attempts."
+    echo "Tip: Check if Docker container 'lifeos-postgres' is running and healthy:"
+    echo "  docker ps | grep lifeos-postgres"
+    echo "  docker logs lifeos-postgres"
     exit 1
 fi
 
