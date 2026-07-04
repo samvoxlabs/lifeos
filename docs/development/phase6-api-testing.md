@@ -221,7 +221,7 @@ Returns persisted reminder actions.
 
 ```bash
 curl -X POST "$BASE_URL/api/domain/process" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  --oauth2-bearer "YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "sourceDocument": {
@@ -258,7 +258,7 @@ curl -X POST "$BASE_URL/api/domain/process" \
 
 ```bash
 curl -X POST "$BASE_URL/api/domain/process" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  --oauth2-bearer "YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "sourceDocument": {
@@ -281,9 +281,9 @@ curl -X POST "$BASE_URL/api/domain/process" \
 ### Retrieval endpoints
 
 ```bash
-curl -X GET "$BASE_URL/api/tasks" -H "Authorization: Bearer YOUR_JWT_TOKEN"
-curl -X GET "$BASE_URL/api/events" -H "Authorization: Bearer YOUR_JWT_TOKEN"
-curl -X GET "$BASE_URL/api/reminders" -H "Authorization: Bearer YOUR_JWT_TOKEN"
+curl -X GET "$BASE_URL/api/tasks" --oauth2-bearer "YOUR_JWT_TOKEN"
+curl -X GET "$BASE_URL/api/events" --oauth2-bearer "YOUR_JWT_TOKEN"
+curl -X GET "$BASE_URL/api/reminders" --oauth2-bearer "YOUR_JWT_TOKEN"
 ```
 
 ## Expected Responses
