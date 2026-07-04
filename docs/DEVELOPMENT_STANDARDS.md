@@ -99,7 +99,7 @@ Every phase includes: `docs/development/phaseX-api-testing.md`
 
 ### Postman Collection Format
 
-Every phase includes: `docs/development/phaseX-postman_collection.json`
+Every phase includes: `docs/postman/phaseX.postman_collection.json`
 
 **Template**: `docs/templates/postman-collection-template.json`
 
@@ -283,4 +283,3 @@ Ask first, implement second.
 | Date | Change |
 |------|--------|
 | 2026-07-04 | Initial standards document |
-

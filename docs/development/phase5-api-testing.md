@@ -39,14 +39,36 @@ Authorization: Bearer {{token}}
 
 ## Quick Start
 
+### 1. Start the Application
+
 ```bash
 ./run.sh
 ```
 
-Then import the phase 5 Postman collection and set:
+The app will be available at `http://localhost:8080`.
+
+### 2. Get Authentication Token
+
+Phase 5 extraction endpoint requires JWT authentication.
+
+Open in browser:
+
+```text
+http://localhost:8080/oauth2/authorization/google
+```
+
+After login, copy the `token` value from the JSON response.
+
+### 3. Configure Postman (Optional)
+
+Import the phase 5 Postman collection and set:
 
 * `baseUrl = http://localhost:8080`
 * `token = <your JWT>`
+
+### 4. Test the Extraction Flow
+
+Use curl or Postman with your JWT token to validate success, skipped, and error scenarios.
 
 ## API Overview
 
@@ -130,7 +152,7 @@ Flow:
 
 ```bash
 curl -X POST http://localhost:8080/api/extraction/process \
-  -H "Authorization: Bearer $TOKEN" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "id":"doc-1",
@@ -147,7 +169,7 @@ curl -X POST http://localhost:8080/api/extraction/process \
 
 ```bash
 curl -X POST http://localhost:8080/api/extraction/process \
-  -H "Authorization: Bearer $TOKEN" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "id":"doc-2",
@@ -164,7 +186,7 @@ curl -X POST http://localhost:8080/api/extraction/process \
 
 ```bash
 curl -X POST http://localhost:8080/api/extraction/process \
-  -H "Authorization: Bearer $TOKEN" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "id":"doc-3",
@@ -205,7 +227,7 @@ curl -X POST http://localhost:8080/api/extraction/process \
 * `src/test/java/com/familyos/familyos/extraction/`
 * `docs/development/phase5-api-testing.md`
 * `docs/postman/phase5.postman_collection.json`
-* `docs/FamilyOS_API.postman_collection.json`
+* `docs/postman/FamilyOS_API.postman_collection.json`
 * `docs/roadmap/implementation-roadmap.md`
 
 ## Next Phase

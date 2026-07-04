@@ -48,18 +48,18 @@ Because Phase 2 adds new Google scopes, sign out and run Google OAuth again if y
 Import:
 
 ```text
-docs/FamilyOS_API.postman_collection.json
+docs/postman/FamilyOS_API.postman_collection.json
 ```
 
 The collection includes these variables:
-- `base_url`
+- `baseUrl`
 - `token`
 
 ### Set variables
 
 1. Open the collection variables.
 2. Set `token` to the JWT returned from Google login.
-3. Update `base_url` only if you are not using port 8080.
+3. Update `baseUrl` only if you are not using port 8080.
 
 ## Manual testing flow
 
@@ -182,7 +182,7 @@ The app refreshes Google access tokens automatically. If a request still fails, 
 
 ## Files to know
 
-- Postman collection: `docs/FamilyOS_API.postman_collection.json`
+- Postman collection: `docs/postman/FamilyOS_API.postman_collection.json`
 - Startup script: `run.sh`
 - Environment sample: `.env.example`
 - App config: `src/main/resources/application.yml`

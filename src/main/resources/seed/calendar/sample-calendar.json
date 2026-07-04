@@ -1,0 +1,19 @@
+[
+  {
+    "id": "seed-calendar-1",
+    "sender": "calendar@familyos.local",
+    "subject": "Pediatric Appointment",
+    "content": "Pediatric appointment on Monday at 10:30 AM.",
+    "labels": ["health"],
+    "priority": "high",
+    "source": "calendar",
+    "provider": "google",
+    "sourceType": "calendar",
+    "externalId": "seed-calendar-event-1",
+    "rawContent": "Pediatric appointment on Monday at 10:30 AM.",
+    "metadata": {
+      "seed": true,
+      "category": "calendar"
+    }
+  }
+]

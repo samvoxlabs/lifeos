@@ -28,13 +28,13 @@ Rules:
 
 ## Current Status
 
-**Current Phase:** Phase 5 – AI Extraction ✅
+**Current Phase:** Phase 6 - Domain and Persistence
 
-**Current Branch:** `feature/phase5-ai-extraction`
+**Current Branch:** `feature/phase6-domain-persistence`
 
-**Next Objective:** Phase 6 – Domain & Persistence
+**Next Objective:** Phase 7 - Frontend APIs
 
-Move extracted candidates into LifeOS domain objects and persistence after the extraction pipeline is merged.
+Persist First, Process Second with SourceDocument as the operational system of record.
 
 ---
 
@@ -89,7 +89,7 @@ Introduce a provider-agnostic AI layer.
 * REST API endpoints (/api/llm/generate, /api/llm/health)
 * JWT authentication integration
 * Comprehensive testing guide (docs/development/phase3-api-testing.md)
-* Postman collections (phase3-postman_collection.json, FamilyOS_API.postman_collection.json)
+* Postman collections (`docs/postman/phase3.postman_collection.json`, `docs/postman/FamilyOS_API.postman_collection.json`)
 
 **PR:** #15 (merged)
 
@@ -114,7 +114,7 @@ Determine which documents should be processed by the LLM using configurable rule
 * RuleEngineService facade layer
 * REST API endpoint (/api/rules/evaluate)
 * Comprehensive testing guide (docs/development/phase4-api-testing.md)
-* Postman collections (phase4-postman_collection.json)
+* Postman collections (`docs/postman/phase4.postman_collection.json`)
 * 33 unit tests (all passing)
 * Clean, modular architecture suitable for future phases
 
@@ -147,24 +147,38 @@ Apply the Rule Engine and extract structured information from documents.
 
 ---
 
-## Phase 6 – Domain & Persistence
+## Phase 6 - Domain and Persistence
 
 **Objective**
 
-Convert extracted information into LifeOS domain objects and persist them.
+Implement Persist First, Process Second so every imported document is persisted before Rule Engine + LLM processing.
 
 **Feature Branch**
 
-* `feature/domain-persistence`
+* `feature/phase6-domain-persistence`
 
 **Deliverables**
 
-* Persist extracted results
-* Task model
-* Event model
-* Reminder model
-* Deduplication
-* Domain mapping
+* SourceDocument as canonical system of record
+* Processing lifecycle: NEW, PROCESSING, PROCESSED, FAILED, SKIPPED
+* Processing pipeline from persisted source documents only
+* Idempotent deduplication by provider + external ID + source type
+* Extraction and Action persistence model
+* Task, Event, and Reminder domain action types
+* ActionMapper for AI-to-domain mapping
+* Flyway schema migration and PostgreSQL operational persistence
+* Startup seed-import support from shared seed repository layout
+* Testing endpoints:
+  * `POST /api/domain/process`
+  * `GET /api/tasks`
+  * `GET /api/events`
+  * `GET /api/reminders`
+
+**Data Strategy**
+
+* PostgreSQL is the operational database and processing queue.
+* Google Drive is the shared seed repository (not operational storage).
+* Seed imports are idempotent and run only when SourceDocument is empty.
 
 ---
 
@@ -223,7 +237,7 @@ Every feature branch must follow the standards defined in:
 2. **Unit Tests** (minimum 3+ per component)
 3. **Integration Tests** (where appropriate)
 4. **API Testing Guide** (`docs/development/phaseX-api-testing.md`)
-5. **Postman Collection** (`docs/development/phaseX-postman_collection.json`)
+5. **Postman Collection** (`docs/postman/phaseX.postman_collection.json`)
 6. **Roadmap Update** (`docs/roadmap/implementation-roadmap.md`)
 7. **README Update** (if required)
 

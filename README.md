@@ -35,7 +35,7 @@ Contents
 
 LifeOS (formerly FamilyOS) is a Spring Boot-based backend service. It uses Java 21 (see `pom.xml`) and is built with Maven. This repository contains the application code under `src/main/java` and resources under `src/main/resources`.
 
-Runtime state is persisted in PostgreSQL, while canonical user data lives in Google Drive JSON snapshots managed through `/storage/*`.
+Runtime and operational processing state are persisted in PostgreSQL. Google Drive is used as a shared seed/snapshot repository, not as the operational database.
 
 ### Technology Stack
 
@@ -82,6 +82,10 @@ Use the explicit storage APIs to move data between Drive and PostgreSQL:
 - `GET /storage/status`
 
 The app does not auto-sync on startup or shutdown. On first login, bootstrap creates the Drive folder structure and default JSON files automatically.
+
+### Persist First Processing Model
+
+For Phase 6, imported documents are persisted first as `SourceDocument` rows in PostgreSQL, then processed through Rule Engine and LLM workflows. Processing lifecycle statuses are tracked as `NEW`, `PROCESSING`, `PROCESSED`, `FAILED`, or `SKIPPED`.
 
 Drive stores each user under `LifeOS/users/{userId}/` with `manifest.json`, `profile.json`, `settings.json`, `configuration/email-rules.json`, `configuration/calendar-rules.json`, `configuration/prompts.json`, `knowledge/*.json`, and `integrations/*.json`. Business services continue reading and writing PostgreSQL only.
 
@@ -244,7 +248,7 @@ If you get a "WeakKeyException" error, your secret is too short. Update `.env` w
 - Repository guide: `docs/REPO_GUIDE.md`
 - Architecture docs: `docs/architecture/README.md`
 - Roadmap: `docs/ROADMAP.md`
-- **API Testing:** Import `docs/FamilyOS_API.postman_collection.json` into Postman for complete API documentation
+- **API Testing:** Import `docs/postman/FamilyOS_API.postman_collection.json` into Postman for complete API documentation
 - Example env file: `.env.example` (copy to `.env` locally)
 - Runtime configuration: `src/main/resources/application.yml`
 - Flyway migrations: `src/main/resources/db/migration/`

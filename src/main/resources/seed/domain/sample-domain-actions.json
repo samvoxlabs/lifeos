@@ -1,0 +1,96 @@
+[
+  {
+    "sourceDocument": {
+      "id": "seed-domain-task-1",
+      "sender": "school@example.com",
+      "subject": "Permission slip reminder",
+      "content": "Please sign and return the permission slip by tomorrow.",
+      "labels": ["school"],
+      "priority": "high",
+      "source": "email",
+      "provider": "google",
+      "sourceType": "gmail",
+      "externalId": "seed-domain-msg-task-1",
+      "rawContent": "Please sign and return the permission slip by tomorrow.",
+      "metadata": {
+        "model": "seed-model",
+        "llmProvider": "seed",
+        "promptVersion": "seed-v1"
+      }
+    },
+    "extractionResult": {
+      "summary": "Permission slip needs signature.",
+      "confidence": 0.97,
+      "actions": [
+        {
+          "type": "TASK",
+          "title": "Sign permission slip",
+          "description": "Sign and return to school"
+        }
+      ]
+    }
+  },
+  {
+    "sourceDocument": {
+      "id": "seed-domain-event-1",
+      "sender": "clinic@example.com",
+      "subject": "Appointment confirmation",
+      "content": "Your pediatric appointment is scheduled for Monday at 10:30 AM.",
+      "labels": ["health"],
+      "priority": "high",
+      "source": "email",
+      "provider": "google",
+      "sourceType": "gmail",
+      "externalId": "seed-domain-msg-event-1",
+      "rawContent": "Your pediatric appointment is scheduled for Monday at 10:30 AM.",
+      "metadata": {
+        "model": "seed-model",
+        "llmProvider": "seed",
+        "promptVersion": "seed-v1"
+      }
+    },
+    "extractionResult": {
+      "summary": "Doctor appointment scheduled.",
+      "confidence": 0.95,
+      "actions": [
+        {
+          "type": "EVENT",
+          "title": "Pediatric appointment",
+          "description": "Clinic visit Monday 10:30 AM",
+          "dueDate": "2026-07-06T10:30:00"
+        }
+      ]
+    }
+  },
+  {
+    "sourceDocument": {
+      "id": "seed-domain-reminder-1",
+      "sender": "bank@example.com",
+      "subject": "Bill payment reminder",
+      "content": "Electricity bill is due this Friday.",
+      "labels": ["finance"],
+      "priority": "normal",
+      "source": "email",
+      "provider": "google",
+      "sourceType": "gmail",
+      "externalId": "seed-domain-msg-reminder-1",
+      "rawContent": "Electricity bill is due this Friday.",
+      "metadata": {
+        "model": "seed-model",
+        "llmProvider": "seed",
+        "promptVersion": "seed-v1"
+      }
+    },
+    "extractionResult": {
+      "summary": "Utility bill due reminder.",
+      "confidence": 0.92,
+      "actions": [
+        {
+          "type": "REMINDER",
+          "title": "Pay electricity bill",
+          "description": "Payment due Friday"
+        }
+      ]
+    }
+  }
+]

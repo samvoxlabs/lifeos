@@ -266,7 +266,7 @@ All Phase 3 requests require authentication. To use Postman:
 
 **Option A: Import the collection and set token as variable**
 
-1. Import: `docs/development/phase3-postman_collection.json` or `docs/FamilyOS_API.postman_collection.json`
+1. Import: `docs/postman/phase3.postman_collection.json` or `docs/postman/FamilyOS_API.postman_collection.json`
 2. Go to **Environment** tab
 3. Add or edit environment variable:
    - Key: `token`

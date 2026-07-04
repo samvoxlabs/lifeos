@@ -123,6 +123,170 @@ Persistence
 
 ---
 
+## Architecture Principles
+
+Standard processing pipeline:
+
+External Source  
+→ NormalizedDocument  
+→ SourceDocument (Persist First)  
+→ Rule Engine  
+→ LLM  
+→ ExtractionResult  
+→ ActionMapper  
+→ Domain Entities  
+→ REST APIs
+
+Principles:
+
+- Each layer has a single responsibility.
+- Layers communicate via DTOs or interfaces.
+- External provider models must never leak into the domain layer.
+
+---
+
+## Persist First Principle
+
+- Every imported document must first become a SourceDocument.
+- SourceDocument is the system of record.
+- The application must never process Gmail, Calendar, Drive, or other external providers directly.
+- Processing always starts from persisted SourceDocuments.
+
+Benefits:
+
+- Restart recovery
+- Retries
+- Duplicate prevention
+- Future background processing support
+
+---
+
+## SourceDocument Guidelines
+
+SourceDocument should contain:
+
+- provider
+- sourceType
+- externalId
+- metadata
+- rawContent
+- processingStatus
+- timestamps
+
+SourceDocument must not contain AI extraction results.
+
+Extraction results belong in the Extraction entity.
+
+---
+
+## Duplicate Prevention
+
+Every imported document is uniquely identified by:
+
+`(provider, sourceType, externalId)`
+
+Synchronization flow:
+
+1. Read external document.
+2. Check for existing SourceDocument by unique key.
+3. Insert only when it does not exist.
+
+Never create duplicate SourceDocuments.
+
+---
+
+## Processing Lifecycle
+
+Processing states:
+
+`NEW` → `PROCESSING` → `PROCESSED`
+
+Alternative terminal states:
+
+- `FAILED`
+- `SKIPPED`
+
+Rules:
+
+- Only `NEW` documents enter the Rule Engine.
+- Already processed documents must never be processed automatically again.
+
+---
+
+## Database Strategy
+
+- PostgreSQL is the operational database.
+- Google Drive is not the operational database.
+- Application state always lives in PostgreSQL.
+- Google Drive is used only for:
+  - Shared seed data
+  - Sample datasets
+  - Exports
+  - Future backups
+
+---
+
+## Seed Data Strategy
+
+Shared development workflow:
+
+- Shared seed data is stored in Google Drive.
+- On application startup:
+  - If SourceDocument is empty, import shared seed data.
+  - Otherwise, continue normally.
+- Seed imports must be idempotent.
+- Do not import seed data on every startup.
+
+---
+
+## Development Database Strategy
+
+Each feature branch may use its own PostgreSQL database.
+
+Example:
+
+- `lifeos_main`
+- `lifeos_phase5`
+- `lifeos_phase6`
+
+All databases may share the same PostgreSQL Docker container and Docker volume.
+
+This isolates Flyway migrations and test data while preserving persistence across restarts.
+
+---
+
+## AI Layer Boundaries
+
+ExtractionResult represents only structured output from the LLM.
+
+ExtractionResult must never contain:
+
+- provider
+- sourceType
+- externalId
+- metadata
+- rawContent
+
+These belong to SourceDocument.
+
+ActionMapper is responsible for converting AI DTOs into domain entities.
+
+---
+
+## Future Development Rules
+
+Before implementing any work:
+
+1. Determine the current roadmap phase.
+2. Verify the requested work belongs entirely to that phase.
+3. If the request spans multiple phases:
+   - Stop implementation.
+   - Identify the architectural boundary.
+   - Recommend splitting into multiple feature branches.
+4. Keep every Pull Request focused on one logical capability.
+
+---
+
 ## Before Every Implementation
 
 Always explain:
