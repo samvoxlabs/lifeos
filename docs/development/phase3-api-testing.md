@@ -80,14 +80,14 @@ http://localhost:8080/oauth2/authorization/google
 **Step 3:** After redirect, you'll see a JSON response with your token:
 ```json
 {
-  "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI...",
-  "user_id": "...",
-  "email": "...",
-  "name": "..."
+  "token": "<your-jwt-token>",
+  "user_id": "unique-user-id",
+  "email": "your-email@gmail.com",
+  "name": "Your Name"
 }
 ```
 
-**Step 4:** Copy the entire `token` value. You'll use this for all requests.
+**Step 4:** Copy the entire `token` value (a long JWT string). You'll use this for all requests.
 
 ---
 
