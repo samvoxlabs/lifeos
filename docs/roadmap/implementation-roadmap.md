@@ -28,18 +28,19 @@ Rules:
 
 ## Current Status
 
-**Current Phase:** Phase 4 – Rule Engine
+**Current Phase:** Phase 5 – AI Extraction
 
 **Current Branch:** Ready for next feature branch
 
 **Next Objective:**
 
-Determine which documents should be processed by AI, including:
+Apply the Rule Engine and extract structured information from documents, including:
 
-* Configurable rules
-* Metadata filtering
-* Content filtering
-* Priority scoring
+* Apply rules before LLM
+* Send normalized documents to the LLM
+* Receive structured JSON
+* Confidence scoring
+* Structured extraction model
 
 ---
 
@@ -100,22 +101,30 @@ Introduce a provider-agnostic AI layer.
 
 ---
 
-## Phase 4 – Rule Engine
+## Phase 4 – Rule Engine ✅
 
 **Objective**
 
-Determine which documents should be processed by AI.
+Determine which documents should be processed by the LLM using configurable rules.
 
 **Feature Branch**
 
-* `feature/rule-engine`
+* `feature/phase4-rule-engine` (merged to main, PR #16)
 
-**Deliverables**
+**Completed Deliverables**
 
-* Configurable rules
-* Metadata filtering
-* Content filtering
-* Priority scoring
+* Rule abstraction (interface with priority-based execution)
+* Three rule implementations (SenderRule, LabelRule, KeywordRule)
+* Priority-based rule evaluation (Strategy pattern)
+* Spring Bean auto-discovery for extensibility (Open/Closed Principle)
+* RuleEngineService facade layer
+* REST API endpoint (/api/rules/evaluate)
+* Comprehensive testing guide (docs/development/phase4-api-testing.md)
+* Postman collections (phase4-postman_collection.json)
+* 33 unit tests (all passing)
+* Clean, modular architecture suitable for future phases
+
+**PR:** #16 (merged)
 
 ---
 
