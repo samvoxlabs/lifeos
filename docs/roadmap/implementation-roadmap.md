@@ -207,3 +207,42 @@ Before implementing any new feature:
     * Do not implement it without approval.
 
 Keep every Pull Request focused on **one logical capability**.
+
+---
+
+## Development Standards
+
+Every feature branch must follow the standards defined in:
+
+* `docs/DEVELOPMENT_STANDARDS.md` – Complete workflow and requirements
+* `COPILOT.md` → **Definition of Done** – Delivery checklist
+* `docs/templates/` – Reusable templates for documentation
+
+### Deliverables for Every Phase
+
+1. **Feature Implementation** (Java code + tests)
+2. **Unit Tests** (minimum 3+ per component)
+3. **Integration Tests** (where appropriate)
+4. **API Testing Guide** (`docs/development/phaseX-api-testing.md`)
+5. **Postman Collection** (`docs/development/phaseX-postman_collection.json`)
+6. **Roadmap Update** (`docs/roadmap/implementation-roadmap.md`)
+7. **README Update** (if required)
+
+All deliverables are part of the feature implementation, not follow-up tasks.
+
+### PR Checklist
+
+Every Pull Request must verify:
+
+- [ ] Scope matches current feature branch
+- [ ] No out-of-scope features implemented
+- [ ] Build succeeds: `mvn clean package -DskipTests`
+- [ ] All tests pass: `mvn test`
+- [ ] API Testing Guide created/updated
+- [ ] Postman Collection created/updated
+- [ ] Implementation Roadmap updated
+- [ ] README updated (if required)
+- [ ] Commit message explains *why*
+- [ ] Co-authored-by trailer included
+
+This ensures consistency across all phases and faster code review.
