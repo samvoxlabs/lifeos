@@ -21,9 +21,9 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/llm/health",
+              "raw": "{{baseUrl}}/api/llm/health",
               "protocol": "http",
-              "host": ["{{base_url}}"],
+              "host": ["{{baseUrl}}"],
               "path": ["api", "llm", "health"]
             },
             "description": "Check health status of the default LLM provider (configured via LLM_DEFAULT_PROVIDER environment variable)"
@@ -52,9 +52,9 @@
               "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant. Be concise and direct.\",\n  \"userPrompt\": \"What are the top 3 features of LifeOS?\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
-              "host": ["{{base_url}}"],
+              "host": ["{{baseUrl}}"],
               "path": ["api", "llm", "generate"]
             },
             "description": "Generate LLM response using default provider (systemPrompt and userPrompt required)"
@@ -82,9 +82,9 @@
               "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant. Be concise and direct.\",\n  \"userPrompt\": \"What is Gemini?\",\n  \"provider\": \"gemini\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
-              "host": ["{{base_url}}"],
+              "host": ["{{baseUrl}}"],
               "path": ["api", "llm", "generate"]
             },
             "description": "Generate LLM response explicitly using Gemini provider (optional provider parameter overrides default)"
@@ -112,9 +112,9 @@
               "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant. Be concise and direct.\",\n  \"userPrompt\": \"What is Groq?\",\n  \"provider\": \"groq\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
-              "host": ["{{base_url}}"],
+              "host": ["{{baseUrl}}"],
               "path": ["api", "llm", "generate"]
             },
             "description": "Generate LLM response explicitly using Groq provider (optional provider parameter overrides default)"
@@ -142,9 +142,9 @@
               "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant. Be concise and direct.\",\n  \"userPrompt\": \"What is OpenRouter?\",\n  \"provider\": \"openrouter\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
-              "host": ["{{base_url}}"],
+              "host": ["{{baseUrl}}"],
               "path": ["api", "llm", "generate"]
             },
             "description": "Generate LLM response explicitly using OpenRouter provider (optional provider parameter overrides default)"
@@ -177,9 +177,9 @@
               "raw": "{\n  \"systemPrompt\": \"You are a test assistant.\",\n  \"userPrompt\": \"Testing Gemini provider\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
-              "host": ["{{base_url}}"],
+              "host": ["{{baseUrl}}"],
               "path": ["api", "llm", "generate"]
             },
             "description": "Test 1: Start with Gemini (set LLM_DEFAULT_PROVIDER=gemini in environment, restart app, then run this)"
@@ -207,9 +207,9 @@
               "raw": "{\n  \"systemPrompt\": \"You are a test assistant.\",\n  \"userPrompt\": \"Testing Groq provider\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
-              "host": ["{{base_url}}"],
+              "host": ["{{baseUrl}}"],
               "path": ["api", "llm", "generate"]
             },
             "description": "Test 2: Change to Groq (set LLM_DEFAULT_PROVIDER=groq in environment, restart app, then run this)"
@@ -237,9 +237,9 @@
               "raw": "{\n  \"systemPrompt\": \"You are a test assistant.\",\n  \"userPrompt\": \"Testing OpenRouter provider\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
-              "host": ["{{base_url}}"],
+              "host": ["{{baseUrl}}"],
               "path": ["api", "llm", "generate"]
             },
             "description": "Test 3: Change to OpenRouter (set LLM_DEFAULT_PROVIDER=openrouter in environment, restart app, then run this)"
@@ -272,9 +272,9 @@
               "raw": "{\n  \"userPrompt\": \"This should fail due to missing systemPrompt\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
-              "host": ["{{base_url}}"],
+              "host": ["{{baseUrl}}"],
               "path": ["api", "llm", "generate"]
             },
             "description": "Expected: 400 Bad Request (systemPrompt is required)"
@@ -302,9 +302,9 @@
               "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant.\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
-              "host": ["{{base_url}}"],
+              "host": ["{{baseUrl}}"],
               "path": ["api", "llm", "generate"]
             },
             "description": "Expected: 400 Bad Request (userPrompt is required)"
@@ -332,9 +332,9 @@
               "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant.\",\n  \"userPrompt\": \"This should fail due to invalid provider\",\n  \"provider\": \"invalid_provider\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
-              "host": ["{{base_url}}"],
+              "host": ["{{baseUrl}}"],
               "path": ["api", "llm", "generate"]
             },
             "description": "Expected: 400 Bad Request (provider not found)"
@@ -346,7 +346,7 @@
   ],
   "variable": [
     {
-      "key": "base_url",
+      "key": "baseUrl",
       "value": "http://localhost:8080",
       "type": "string",
       "description": "Base URL for the API. Default is localhost:8080. Change if using different port (SERVER_PORT env var)."

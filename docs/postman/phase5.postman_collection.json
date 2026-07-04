@@ -1,0 +1,140 @@
+{
+  "info": {
+    "_postman_id": "phase5-ai-extraction",
+    "name": "Phase 5 – AI Extraction",
+    "description": "Testing the AI Extraction pipeline. It evaluates a NormalizedDocument, applies the Rule Engine, and calls the configured LLM only when processing is allowed.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Extraction Pipeline",
+      "item": [
+        {
+          "name": "Process – Successful Extraction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-1\",\n  \"sender\": \"John Doe\",\n  \"subject\": \"Parent-teacher meeting\",\n  \"content\": \"The meeting is next Friday at 3 PM.\",\n  \"labels\": [\"school\"],\n  \"priority\": \"1\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/extraction/process",
+              "protocol": "http",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "extraction", "process"]
+            },
+            "description": "Rule Engine returns PROCESS, the configured LLM is invoked, and the JSON response is parsed into ExtractionResult."
+          },
+          "response": [
+            {
+              "name": "Success response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"SUCCESS\",\n  \"result\": {\n    \"summary\": \"Parent-teacher meeting next Friday.\",\n    \"confidence\": 0.96,\n    \"actions\": [\n      {\n        \"type\": \"EVENT\",\n        \"title\": \"Parent-teacher meeting\",\n        \"description\": \"Meet with teacher\",\n        \"dueDate\": \"2026-08-15T15:00:00\"\n      }\n    ]\n  },\n  \"ruleResult\": null,\n  \"message\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Process – Rule Skipped",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-2\",\n  \"sender\": \"Spam Sender\",\n  \"subject\": \"Buy now\",\n  \"content\": \"Special offer just for you.\",\n  \"labels\": [\"spam\"],\n  \"priority\": \"0\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/extraction/process",
+              "protocol": "http",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "extraction", "process"]
+            },
+            "description": "Rule Engine returns IGNORE or another non-PROCESS decision, so the LLM is not invoked."
+          },
+          "response": [
+            {
+              "name": "Skipped response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"SKIPPED\",\n  \"result\": null,\n  \"ruleResult\": {\n    \"decision\": \"IGNORE\",\n    \"matchedRule\": \"default\",\n    \"reason\": \"Marked as spam\",\n    \"priorityScore\": 0\n  },\n  \"message\": \"Document skipped by Rule Engine: IGNORE\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Process – Error Response",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-3\",\n  \"sender\": \"Test Sender\",\n  \"subject\": \"Test\",\n  \"content\": \"Test\",\n  \"labels\": [],\n  \"priority\": \"1\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/extraction/process",
+              "protocol": "http",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "extraction", "process"]
+            },
+            "description": "Demonstrates the error shape returned when JSON parsing, provider access, or prompt loading fails."
+          },
+          "response": [
+            {
+              "name": "Error response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"ERROR\",\n  \"result\": null,\n  \"ruleResult\": null,\n  \"message\": \"Extraction failed: Failed to parse LLM response as JSON: ...\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string",
+      "description": "Base URL for the API."
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token from authentication."
+    }
+  ]
+}

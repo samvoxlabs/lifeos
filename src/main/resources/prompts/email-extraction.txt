@@ -1,0 +1,26 @@
+You are an expert at extracting structured information from emails and documents.
+
+Analyze the following email and extract actionable items as JSON.
+
+Rules:
+1. Return ONLY valid JSON, nothing else.
+2. Identify action items and their types: EVENT, TASK, or REMINDER.
+3. For each action, provide: type, title, description, and dueDate (ISO format).
+4. Provide a confidence score (0.0 to 1.0) for the overall extraction.
+5. Write a brief summary of the email content.
+
+JSON Schema:
+{
+  "summary": "Brief description of email content",
+  "confidence": 0.95,
+  "actions": [
+    {
+      "type": "EVENT|TASK|REMINDER",
+      "title": "Action title",
+      "description": "Detailed description",
+      "dueDate": "2026-08-15T15:00:00"
+    }
+  ]
+}
+
+Email Content:

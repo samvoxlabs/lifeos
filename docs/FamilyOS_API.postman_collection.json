@@ -14,10 +14,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/api/health",
+              "raw": "{{baseUrl}}/api/health",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -39,10 +39,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/",
+              "raw": "{{baseUrl}}/",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 ""
@@ -65,10 +65,10 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/user",
+              "raw": "{{baseUrl}}/user",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "user"
@@ -96,10 +96,10 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/gmail/messages",
+              "raw": "{{baseUrl}}/gmail/messages",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "gmail",
@@ -123,10 +123,10 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/gmail/allowed-messages",
+              "raw": "{{baseUrl}}/gmail/allowed-messages",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "gmail",
@@ -150,10 +150,10 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/gmail/allowlist",
+              "raw": "{{baseUrl}}/gmail/allowlist",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "gmail",
@@ -182,10 +182,10 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/storage/status",
+              "raw": "{{baseUrl}}/storage/status",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "storage",
@@ -209,10 +209,10 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/storage/bootstrap",
+              "raw": "{{baseUrl}}/storage/bootstrap",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "storage",
@@ -236,10 +236,10 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/storage/save",
+              "raw": "{{baseUrl}}/storage/save",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "storage",
@@ -268,10 +268,10 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/calendar/events",
+              "raw": "{{baseUrl}}/calendar/events",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "calendar",
@@ -300,10 +300,10 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/drive/files",
+              "raw": "{{baseUrl}}/drive/files",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "drive",
@@ -332,10 +332,10 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/google-tasks/items",
+              "raw": "{{baseUrl}}/google-tasks/items",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "google-tasks",
@@ -364,10 +364,10 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/people/contacts",
+              "raw": "{{baseUrl}}/people/contacts",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "people",
@@ -399,10 +399,10 @@
               "raw": "{\n  \"provider\": \"gemini\",\n  \"useCase\": \"general\",\n  \"systemPrompt\": \"You are a helpful assistant.\",\n  \"content\": \"What is the capital of France?\",\n  \"metadata\": {}\n}"
             },
             "url": {
-              "raw": "{{base_url}}/llm/generate",
+              "raw": "{{baseUrl}}/llm/generate",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "llm",
@@ -419,10 +419,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/llm/test?prompt=Say%20hello",
+              "raw": "{{baseUrl}}/llm/test?prompt=Say%20hello",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "llm",
@@ -453,10 +453,10 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/llm/health",
+              "raw": "{{baseUrl}}/api/llm/health",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -490,10 +490,10 @@
               "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant. Be concise and direct.\",\n  \"userPrompt\": \"What are the top 3 features of LifeOS?\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -527,10 +527,10 @@
               "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant.\",\n  \"userPrompt\": \"What is Gemini?\",\n  \"provider\": \"gemini\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -564,10 +564,10 @@
               "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant.\",\n  \"userPrompt\": \"What is Groq?\",\n  \"provider\": \"groq\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -601,10 +601,10 @@
               "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant.\",\n  \"userPrompt\": \"What is OpenRouter?\",\n  \"provider\": \"openrouter\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/llm/generate",
+              "raw": "{{baseUrl}}/api/llm/generate",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -627,10 +627,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/api/test",
+              "raw": "{{baseUrl}}/api/test",
               "protocol": "http",
               "host": [
-                "{{base_url}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "api",
@@ -668,8 +668,8 @@
               "raw": "{\n  \"id\": \"doc-school-001\",\n  \"sender\": \"Lincoln Elementary School\",\n  \"subject\": \"Permission Slip Required\",\n  \"content\": \"Please sign and return the permission slip for the field trip\",\n  \"labels\": [],\n  \"priority\": \"high\",\n  \"source\": \"email\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/rules/evaluate",
-              "host": ["{{base_url}}"],
+              "raw": "{{baseUrl}}/api/rules/evaluate",
+              "host": ["{{baseUrl}}"],
               "path": ["api", "rules", "evaluate"]
             },
             "description": "Test SenderRule matching – School sender should be PROCESS (priority 95)"
@@ -697,8 +697,8 @@
               "raw": "{\n  \"id\": \"doc-hospital-001\",\n  \"sender\": \"City Hospital\",\n  \"subject\": \"Appointment Confirmation\",\n  \"content\": \"Your upcoming appointment is confirmed for next Tuesday\",\n  \"labels\": [],\n  \"priority\": \"high\",\n  \"source\": \"email\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/rules/evaluate",
-              "host": ["{{base_url}}"],
+              "raw": "{{baseUrl}}/api/rules/evaluate",
+              "host": ["{{baseUrl}}"],
               "path": ["api", "rules", "evaluate"]
             },
             "description": "Test SenderRule matching – Hospital sender should be PROCESS (priority 95)"
@@ -726,8 +726,8 @@
               "raw": "{\n  \"id\": \"doc-bank-001\",\n  \"sender\": \"First National Bank\",\n  \"subject\": \"Account Statement Available\",\n  \"content\": \"Your monthly statement is ready to review\",\n  \"labels\": [],\n  \"priority\": \"normal\",\n  \"source\": \"email\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/rules/evaluate",
-              "host": ["{{base_url}}"],
+              "raw": "{{baseUrl}}/api/rules/evaluate",
+              "host": ["{{baseUrl}}"],
               "path": ["api", "rules", "evaluate"]
             },
             "description": "Test SenderRule matching – Bank sender should be PROCESS (priority 95)"
@@ -755,8 +755,8 @@
               "raw": "{\n  \"id\": \"doc-promo-001\",\n  \"sender\": \"Online Retailer\",\n  \"subject\": \"50% Off Sale – This Weekend Only!\",\n  \"content\": \"Limited time offer on selected items. Shop now before stock runs out!\",\n  \"labels\": [\"promotions\"],\n  \"priority\": \"low\",\n  \"source\": \"email\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/rules/evaluate",
-              "host": ["{{base_url}}"],
+              "raw": "{{baseUrl}}/api/rules/evaluate",
+              "host": ["{{baseUrl}}"],
               "path": ["api", "rules", "evaluate"]
             },
             "description": "Test LabelRule matching – Promotions label should be IGNORE (priority 10)"
@@ -784,8 +784,8 @@
               "raw": "{\n  \"id\": \"doc-spam-001\",\n  \"sender\": \"Unknown Sender\",\n  \"subject\": \"You've Won a Prize!\",\n  \"content\": \"Click here to claim your prize now! Limited slots available.\",\n  \"labels\": [\"spam\"],\n  \"priority\": \"low\",\n  \"source\": \"email\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/rules/evaluate",
-              "host": ["{{base_url}}"],
+              "raw": "{{baseUrl}}/api/rules/evaluate",
+              "host": ["{{baseUrl}}"],
               "path": ["api", "rules", "evaluate"]
             },
             "description": "Test LabelRule matching – Spam label should be IGNORE (priority 10)"
@@ -813,8 +813,8 @@
               "raw": "{\n  \"id\": \"doc-appt-001\",\n  \"sender\": \"Dr. Smith Clinic\",\n  \"subject\": \"Appointment Reminder\",\n  \"content\": \"Your appointment is scheduled for Friday at 2:30 PM. Please arrive 15 minutes early.\",\n  \"labels\": [],\n  \"priority\": \"high\",\n  \"source\": \"email\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/rules/evaluate",
-              "host": ["{{base_url}}"],
+              "raw": "{{baseUrl}}/api/rules/evaluate",
+              "host": ["{{baseUrl}}"],
               "path": ["api", "rules", "evaluate"]
             },
             "description": "Test KeywordRule matching – 'appointment' keyword should be PROCESS (priority 80)"
@@ -842,8 +842,8 @@
               "raw": "{\n  \"id\": \"doc-inv-001\",\n  \"sender\": \"Vendor Services\",\n  \"subject\": \"Invoice #INV-2024-001\",\n  \"content\": \"Please find attached the invoice for services rendered. Payment is due by end of month.\",\n  \"labels\": [],\n  \"priority\": \"high\",\n  \"source\": \"email\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/rules/evaluate",
-              "host": ["{{base_url}}"],
+              "raw": "{{baseUrl}}/api/rules/evaluate",
+              "host": ["{{baseUrl}}"],
               "path": ["api", "rules", "evaluate"]
             },
             "description": "Test KeywordRule matching – 'invoice' keyword should be PROCESS (priority 80)"
@@ -871,8 +871,8 @@
               "raw": "{\n  \"id\": \"doc-deadline-001\",\n  \"sender\": \"Project Manager\",\n  \"subject\": \"Project Deadline Approaching\",\n  \"content\": \"The deadline for project submission is next Friday. Please ensure all deliverables are complete.\",\n  \"labels\": [],\n  \"priority\": \"high\",\n  \"source\": \"email\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/rules/evaluate",
-              "host": ["{{base_url}}"],
+              "raw": "{{baseUrl}}/api/rules/evaluate",
+              "host": ["{{baseUrl}}"],
               "path": ["api", "rules", "evaluate"]
             },
             "description": "Test KeywordRule matching – 'deadline' keyword should be PROCESS (priority 80)"
@@ -900,11 +900,103 @@
               "raw": "{\n  \"id\": \"doc-default-001\",\n  \"sender\": \"John Doe\",\n  \"subject\": \"Casual Chat\",\n  \"content\": \"Hey, how have you been doing lately? Let's catch up soon!\",\n  \"labels\": [],\n  \"priority\": \"normal\",\n  \"source\": \"email\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/rules/evaluate",
-              "host": ["{{base_url}}"],
+              "raw": "{{baseUrl}}/api/rules/evaluate",
+              "host": ["{{baseUrl}}"],
               "path": ["api", "rules", "evaluate"]
             },
             "description": "Test default behavior – No matching rules should return LOW_PRIORITY (priority 50)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AI Extraction",
+      "item": [
+        {
+          "name": "Process – Successful Extraction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-1\",\n  \"sender\": \"John Doe\",\n  \"subject\": \"Parent-teacher meeting\",\n  \"content\": \"The meeting is next Friday at 3 PM.\",\n  \"labels\": [\"school\"],\n  \"priority\": \"1\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/extraction/process",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "extraction", "process"]
+            },
+            "description": "Process a normalized document when the Rule Engine allows processing."
+          },
+          "response": []
+        },
+        {
+          "name": "Process – Rule Skipped",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-2\",\n  \"sender\": \"Spam Sender\",\n  \"subject\": \"Buy now\",\n  \"content\": \"Special offer just for you.\",\n  \"labels\": [\"spam\"],\n  \"priority\": \"0\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/extraction/process",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "extraction", "process"]
+            },
+            "description": "The Rule Engine skips the document so the LLM is not invoked."
+          },
+          "response": []
+        },
+        {
+          "name": "Process – Error Response",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"doc-3\",\n  \"sender\": \"Test Sender\",\n  \"subject\": \"Test\",\n  \"content\": \"Test\",\n  \"labels\": [],\n  \"priority\": \"1\",\n  \"source\": \"email\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/extraction/process",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "extraction", "process"]
+            },
+            "description": "Shows the error shape when parsing or provider access fails."
           },
           "response": []
         }
@@ -913,7 +1005,7 @@
   ],
   "variable": [
     {
-      "key": "base_url",
+      "key": "baseUrl",
       "value": "http://localhost:8080",
       "type": "string",
       "description": "Base URL for the API. Change port if using SERVER_PORT environment variable."
