@@ -1,0 +1,7 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allow historical placeholder JWT example in PR #10 docs"
+paths = ['''docs/development/phase1-api-testing\.md''']
+regexes = ['''"token":\s*"[A-Za-z0-9._-]{16,}\.\.\."''']

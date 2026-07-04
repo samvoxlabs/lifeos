@@ -91,6 +91,229 @@
             "description": "Get latest Gmail messages for current user"
           },
           "response": []
+        },
+        {
+          "name": "Get Allowed Messages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/gmail/allowed-messages",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["gmail", "allowed-messages"]
+            },
+            "description": "Get Gmail messages matching configured sender/subject allowlists"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Gmail Allowlist",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/gmail/allowlist",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["gmail", "allowlist"]
+            },
+            "description": "Read the persisted Gmail allowlist"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Storage",
+      "item": [
+        {
+          "name": "Get Storage Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/storage/status",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["storage", "status"]
+            },
+            "description": "Get Drive/DB storage sync status"
+          },
+          "response": []
+        },
+        {
+          "name": "Load Storage",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/storage/bootstrap",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["storage", "bootstrap"]
+            },
+            "description": "Bootstrap JSON from Google Drive into PostgreSQL runtime data"
+          },
+          "response": []
+        },
+        {
+          "name": "Save Storage",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/storage/save",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["storage", "save"]
+            },
+            "description": "Export PostgreSQL runtime data to Google Drive JSON"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Calendar",
+      "item": [
+        {
+          "name": "Get Events",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/calendar/events",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["calendar", "events"]
+            },
+            "description": "Get upcoming Google Calendar events for current user"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Drive",
+      "item": [
+        {
+          "name": "Get Files",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/drive/files",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["drive", "files"]
+            },
+            "description": "Get recent Google Drive files for current user"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "Get Task Items",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/google-tasks/items",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["google-tasks", "items"]
+            },
+            "description": "Get Google Tasks items for current user"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "People",
+      "item": [
+        {
+          "name": "Get Contacts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/people/contacts",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["people", "contacts"]
+            },
+            "description": "Get Google Contacts for current user"
+          },
+          "response": []
         }
       ]
     },
