@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "FamilyOS Phase 3 – LLM Foundation",
-    "description": "Postman collection for Phase 3 LLM Foundation API endpoints. Tests multi-provider LLM integration (Gemini, Groq, OpenRouter). Import the main FamilyOS_API collection and set base_url and token environment variables before using. See docs/development/phase3-api-testing.md for authentication setup.",
+    "description": "Postman collection for Phase 3 LLM Foundation API endpoints. Tests multi-provider LLM integration (Gemini, Groq, OpenRouter). Import the main FamilyOS_API collection and set baseUrl and token environment variables before using. See docs/development/phase3-api-testing.md for authentication setup.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [

@@ -1,0 +1,221 @@
+{
+  "info": {
+    "_postman_id": "phase6-domain-persistence",
+    "name": "Phase 6 - Domain and Persistence",
+    "description": "Persist First, Process Second domain pipeline testing.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Domain and Persistence",
+      "item": [
+        {
+          "name": "Process - Persist First (Auto Pipeline)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sourceDocument\": {\n    \"id\": \"doc-2\",\n    \"sender\": \"important@school.org\",\n    \"subject\": \"Meeting reminder\",\n    \"content\": \"Meeting next Friday at 3 PM\",\n    \"labels\": [\"school\"],\n    \"priority\": \"high\",\n    \"source\": \"email\",\n    \"provider\": \"google\",\n    \"sourceType\": \"gmail\",\n    \"externalId\": \"msg-2\",\n    \"rawContent\": \"Meeting next Friday at 3 PM\",\n    \"metadata\": {}\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/domain/process",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "domain",
+                "process"
+              ]
+            },
+            "description": "Persists SourceDocument as NEW, then processes through Rule Engine + LLM pipeline."
+          },
+          "response": []
+        },
+        {
+          "name": "Process - Persist Extraction Result",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sourceDocument\": {\n    \"id\": \"doc-1\",\n    \"sender\": \"school@example.com\",\n    \"subject\": \"Parent teacher meeting\",\n    \"content\": \"Meeting next week\",\n    \"labels\": [\"school\"],\n    \"priority\": \"1\",\n    \"source\": \"email\",\n    \"provider\": \"google\",\n    \"sourceType\": \"gmail\",\n    \"externalId\": \"msg-1\",\n    \"rawContent\": \"Meeting next week\",\n    \"metadata\": {\n      \"model\": \"gemini-2.5-flash\",\n      \"llmProvider\": \"google\",\n      \"promptVersion\": \"v1\"\n    }\n  },\n  \"extractionResult\": {\n    \"summary\": \"Meeting and follow up\",\n    \"confidence\": 0.95,\n    \"actions\": [\n      {\"type\":\"TASK\",\"title\":\"Confirm attendance\",\"description\":\"Reply to teacher\"},\n      {\"type\":\"EVENT\",\"title\":\"Parent teacher meeting\",\"description\":\"At school\"},\n      {\"type\":\"REMINDER\",\"title\":\"Bring documents\",\"description\":\"Bring report card\"}\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/domain/process",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "domain",
+                "process"
+              ]
+            },
+            "description": "Persists source document, extraction, and mapped domain actions with deterministic payload."
+          },
+          "response": [
+            {
+              "name": "Success response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"sourceDocument\": {\n    \"id\": \"f9d5ef87-2b0e-4a70-986b-8cf6f3a68a1a\",\n    \"externalId\": \"msg-1\",\n    \"provider\": \"google\",\n    \"sourceType\": \"gmail\",\n    \"receivedAt\": \"2026-07-04T12:00:00\",\n    \"createdAt\": \"2026-07-04T12:00:00\",\n    \"updatedAt\": \"2026-07-04T12:00:01\",\n    \"processingStatus\": \"PROCESSED\"\n  },\n  \"extraction\": {\n    \"id\": \"2df6fbe8-e1b6-49f1-b9cf-b1cc6b7dc56f\",\n    \"summary\": \"Meeting and follow up\",\n    \"confidence\": 0.95,\n    \"model\": \"gemini-2.5-flash\",\n    \"provider\": \"google\",\n    \"promptVersion\": \"v1\"\n  },\n  \"actions\": [\n    {\n      \"id\": \"f2aab8ca-7a6e-4f4f-a4cb-bf95b8f9f829\",\n      \"type\": \"TASK\",\n      \"title\": \"Confirm attendance\",\n      \"description\": \"Reply to teacher\",\n      \"status\": \"OPEN\",\n      \"confidence\": 0.95\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Process - Validation Error",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sourceDocument\": {\n    \"id\": \"doc-3\",\n    \"sender\": \"bank@example.com\",\n    \"subject\": \"Statement\",\n    \"content\": \"Monthly statement\",\n    \"labels\": [],\n    \"priority\": \"1\",\n    \"source\": \"email\",\n    \"provider\": \"\",\n    \"sourceType\": \"gmail\",\n    \"externalId\": \"msg-3\",\n    \"rawContent\": \"Monthly statement\",\n    \"metadata\": {}\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/domain/process",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "domain",
+                "process"
+              ]
+            },
+            "description": "Validation failure when required source document fields are missing."
+          },
+          "response": [
+            {
+              "name": "Bad request response",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"timestamp\": \"2026-01-01T12:00:00Z\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"message\": \"sourceDocument.provider is required\",\n  \"path\": \"/api/domain/process\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Tasks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks"
+              ]
+            },
+            "description": "Returns persisted task actions."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Events",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "events"
+              ]
+            },
+            "description": "Returns persisted event actions."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Reminders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/reminders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reminders"
+              ]
+            },
+            "description": "Returns persisted reminder actions."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

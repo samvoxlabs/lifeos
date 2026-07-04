@@ -39,14 +39,14 @@ If you get a `WeakKeyException` error, your secret is too short.
 ### Import the Collection
 
 1. In Postman, click **Import**
-2. Select `docs/FamilyOS_API.postman_collection.json`
+2. Select `docs/postman/FamilyOS_API.postman_collection.json`
 3. The collection and variables are imported together
 
 ### Set Variables
 
 1. Open the collection's **Variables** tab
 2. Set `token` = your JWT (from login response below)
-3. `base_url` is pre-configured to `http://localhost:8080` (update if using different port)
+3. `baseUrl` is pre-configured to `http://localhost:8080` (update if using different port)
 
 ## Manual Testing Flow
 
@@ -157,7 +157,7 @@ Gmail endpoints require a valid Google OAuth token. Ensure:
 
 ## Files Reference
 
-- Postman collection: `docs/FamilyOS_API.postman_collection.json`
+- Postman collection: `docs/postman/FamilyOS_API.postman_collection.json`
 - Startup script: `run.sh`
 - Configuration: `.env` (copy from `.env.example`)
 - Application config: `src/main/resources/application.yml`

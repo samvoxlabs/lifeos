@@ -1,0 +1,19 @@
+[
+  {
+    "id": "seed-gmail-1",
+    "sender": "school@example.com",
+    "subject": "Parent Teacher Meeting",
+    "content": "Parent teacher meeting next Friday at 3 PM.",
+    "labels": ["school"],
+    "priority": "high",
+    "source": "email",
+    "provider": "google",
+    "sourceType": "gmail",
+    "externalId": "seed-gmail-msg-1",
+    "rawContent": "Parent teacher meeting next Friday at 3 PM.",
+    "metadata": {
+      "seed": true,
+      "category": "gmail"
+    }
+  }
+]

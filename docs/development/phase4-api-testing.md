@@ -226,7 +226,7 @@ MANUAL_REVIEW  → Requires human review
 
 ## Using Postman
 
-1. **Import Collection**: `docs/development/phase4-postman_collection.json`
+1. **Import Collection**: `docs/postman/phase4.postman_collection.json`
 
 2. **Set Environment Variables**:
    - Right-click collection → Edit
@@ -280,7 +280,7 @@ MANUAL_REVIEW  → Requires human review
 
 * **Implementation**: `src/main/java/com/familyos/familyos/ruleengine/`
 * **Tests**: `src/test/java/com/familyos/familyos/ruleengine/`
-* **Postman Collection**: `docs/development/phase4-postman_collection.json`
+* **Postman Collection**: `docs/postman/phase4.postman_collection.json`
 
 ---
 

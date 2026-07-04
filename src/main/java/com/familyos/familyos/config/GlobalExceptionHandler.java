@@ -1,6 +1,8 @@
 package com.familyos.familyos.config;
 
 import com.familyos.familyos.authentication.exception.UnauthorizedException;
+import com.familyos.familyos.domain.exception.DomainPersistenceException;
+import com.familyos.familyos.domain.exception.DomainValidationException;
 import com.familyos.familyos.dto.ApiErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -32,6 +34,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiErrorResponse> handleBadRequest(IllegalArgumentException ex, HttpServletRequest request) {
         return error(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getRequestURI());
+    }
+
+    @ExceptionHandler(DomainValidationException.class)
+    public ResponseEntity<ApiErrorResponse> handleDomainValidation(DomainValidationException ex, HttpServletRequest request) {
+        return error(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getRequestURI());
+    }
+
+    @ExceptionHandler(DomainPersistenceException.class)
+    public ResponseEntity<ApiErrorResponse> handleDomainPersistence(DomainPersistenceException ex, HttpServletRequest request) {
+        return error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(HttpClientErrorException.Forbidden.class)

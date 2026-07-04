@@ -1,0 +1,19 @@
+[
+  {
+    "id": "seed-drive-1",
+    "sender": "drive@familyos.local",
+    "subject": "School Fee Receipt",
+    "content": "School fee receipt uploaded to shared drive folder.",
+    "labels": ["finance"],
+    "priority": "normal",
+    "source": "drive",
+    "provider": "google",
+    "sourceType": "drive",
+    "externalId": "seed-drive-file-1",
+    "rawContent": "School fee receipt uploaded to shared drive folder.",
+    "metadata": {
+      "seed": true,
+      "category": "drive"
+    }
+  }
+]

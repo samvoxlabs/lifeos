@@ -132,7 +132,7 @@ curl -X POST http://localhost:8080/api/[endpoint] \
 
 ## Using Postman
 
-1. **Import Collection**: `docs/development/phaseX-postman_collection.json`
+1. **Import Collection**: `docs/postman/phaseX.postman_collection.json`
 
 2. **Set Environment Variables**:
    - Right-click collection → Edit
@@ -181,7 +181,7 @@ curl -X POST http://localhost:8080/api/[endpoint] \
 
 * **Implementation**: `src/main/java/com/familyos/familyos/[package]/`
 * **Tests**: `src/test/java/com/familyos/familyos/[package]/`
-* **Postman Collection**: `docs/development/phaseX-postman_collection.json`
+* **Postman Collection**: `docs/postman/phaseX.postman_collection.json`
 * **API Testing Guide**: This file
 
 ---
