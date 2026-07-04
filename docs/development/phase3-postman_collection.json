@@ -1,0 +1,361 @@
+{
+  "info": {
+    "name": "FamilyOS Phase 3 – LLM Foundation",
+    "description": "Postman collection for Phase 3 LLM Foundation API endpoints. Tests multi-provider LLM integration (Gemini, Groq, OpenRouter). Import the main FamilyOS_API collection and set base_url and token environment variables before using. See docs/development/phase3-api-testing.md for authentication setup.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "LLM – Phase 3",
+      "item": [
+        {
+          "name": "Health Check – Default Provider",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from OAuth login. See phase3-api-testing.md for setup"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/llm/health",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["api", "llm", "health"]
+            },
+            "description": "Check health status of the default LLM provider (configured via LLM_DEFAULT_PROVIDER environment variable)"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate – Default Provider",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from OAuth login"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant. Be concise and direct.\",\n  \"userPrompt\": \"What are the top 3 features of LifeOS?\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["api", "llm", "generate"]
+            },
+            "description": "Generate LLM response using default provider (systemPrompt and userPrompt required)"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate – Explicit Gemini",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant. Be concise and direct.\",\n  \"userPrompt\": \"What is Gemini?\",\n  \"provider\": \"gemini\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["api", "llm", "generate"]
+            },
+            "description": "Generate LLM response explicitly using Gemini provider (optional provider parameter overrides default)"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate – Explicit Groq",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant. Be concise and direct.\",\n  \"userPrompt\": \"What is Groq?\",\n  \"provider\": \"groq\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["api", "llm", "generate"]
+            },
+            "description": "Generate LLM response explicitly using Groq provider (optional provider parameter overrides default)"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate – Explicit OpenRouter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant. Be concise and direct.\",\n  \"userPrompt\": \"What is OpenRouter?\",\n  \"provider\": \"openrouter\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["api", "llm", "generate"]
+            },
+            "description": "Generate LLM response explicitly using OpenRouter provider (optional provider parameter overrides default)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Provider Switching Tests",
+      "item": [
+        {
+          "name": "Test Provider Switch – Gemini",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"systemPrompt\": \"You are a test assistant.\",\n  \"userPrompt\": \"Testing Gemini provider\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["api", "llm", "generate"]
+            },
+            "description": "Test 1: Start with Gemini (set LLM_DEFAULT_PROVIDER=gemini in environment, restart app, then run this)"
+          },
+          "response": []
+        },
+        {
+          "name": "Test Provider Switch – Groq",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"systemPrompt\": \"You are a test assistant.\",\n  \"userPrompt\": \"Testing Groq provider\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["api", "llm", "generate"]
+            },
+            "description": "Test 2: Change to Groq (set LLM_DEFAULT_PROVIDER=groq in environment, restart app, then run this)"
+          },
+          "response": []
+        },
+        {
+          "name": "Test Provider Switch – OpenRouter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"systemPrompt\": \"You are a test assistant.\",\n  \"userPrompt\": \"Testing OpenRouter provider\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["api", "llm", "generate"]
+            },
+            "description": "Test 3: Change to OpenRouter (set LLM_DEFAULT_PROVIDER=openrouter in environment, restart app, then run this)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Error Handling Tests",
+      "item": [
+        {
+          "name": "Error – Missing systemPrompt",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userPrompt\": \"This should fail due to missing systemPrompt\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["api", "llm", "generate"]
+            },
+            "description": "Expected: 400 Bad Request (systemPrompt is required)"
+          },
+          "response": []
+        },
+        {
+          "name": "Error – Missing userPrompt",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["api", "llm", "generate"]
+            },
+            "description": "Expected: 400 Bad Request (userPrompt is required)"
+          },
+          "response": []
+        },
+        {
+          "name": "Error – Invalid Provider",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant.\",\n  \"userPrompt\": \"This should fail due to invalid provider\",\n  \"provider\": \"invalid_provider\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": ["{{base_url}}"],
+              "path": ["api", "llm", "generate"]
+            },
+            "description": "Expected: 400 Bad Request (provider not found)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string",
+      "description": "Base URL for the API. Default is localhost:8080. Change if using different port (SERVER_PORT env var)."
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token from OAuth login. Follow steps in docs/development/phase3-api-testing.md to get token from http://localhost:8080/oauth2/authorization/google"
+    }
+  ]
+}

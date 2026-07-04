@@ -16,8 +16,13 @@
             "url": {
               "raw": "{{base_url}}/api/health",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["api", "health"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "health"
+              ]
             },
             "description": "Check service health status"
           },
@@ -36,8 +41,12 @@
             "url": {
               "raw": "{{base_url}}/",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": [""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                ""
+              ]
             },
             "description": "Get home page message"
           },
@@ -58,8 +67,12 @@
             "url": {
               "raw": "{{base_url}}/user",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["user"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user"
+              ]
             },
             "description": "Get current authenticated user information"
           },
@@ -85,8 +98,13 @@
             "url": {
               "raw": "{{base_url}}/gmail/messages",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["gmail", "messages"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gmail",
+                "messages"
+              ]
             },
             "description": "Get latest Gmail messages for current user"
           },
@@ -107,8 +125,13 @@
             "url": {
               "raw": "{{base_url}}/gmail/allowed-messages",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["gmail", "allowed-messages"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gmail",
+                "allowed-messages"
+              ]
             },
             "description": "Get Gmail messages matching configured sender/subject allowlists"
           },
@@ -129,8 +152,13 @@
             "url": {
               "raw": "{{base_url}}/gmail/allowlist",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["gmail", "allowlist"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gmail",
+                "allowlist"
+              ]
             },
             "description": "Read the persisted Gmail allowlist"
           },
@@ -156,8 +184,13 @@
             "url": {
               "raw": "{{base_url}}/storage/status",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["storage", "status"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "storage",
+                "status"
+              ]
             },
             "description": "Get Drive/DB storage sync status"
           },
@@ -178,8 +211,13 @@
             "url": {
               "raw": "{{base_url}}/storage/bootstrap",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["storage", "bootstrap"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "storage",
+                "bootstrap"
+              ]
             },
             "description": "Bootstrap JSON from Google Drive into PostgreSQL runtime data"
           },
@@ -200,8 +238,13 @@
             "url": {
               "raw": "{{base_url}}/storage/save",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["storage", "save"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "storage",
+                "save"
+              ]
             },
             "description": "Export PostgreSQL runtime data to Google Drive JSON"
           },
@@ -227,8 +270,13 @@
             "url": {
               "raw": "{{base_url}}/calendar/events",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["calendar", "events"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "calendar",
+                "events"
+              ]
             },
             "description": "Get upcoming Google Calendar events for current user"
           },
@@ -254,8 +302,13 @@
             "url": {
               "raw": "{{base_url}}/drive/files",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["drive", "files"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "drive",
+                "files"
+              ]
             },
             "description": "Get recent Google Drive files for current user"
           },
@@ -281,8 +334,13 @@
             "url": {
               "raw": "{{base_url}}/google-tasks/items",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["google-tasks", "items"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "google-tasks",
+                "items"
+              ]
             },
             "description": "Get Google Tasks items for current user"
           },
@@ -308,8 +366,13 @@
             "url": {
               "raw": "{{base_url}}/people/contacts",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["people", "contacts"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "people",
+                "contacts"
+              ]
             },
             "description": "Get Google Contacts for current user"
           },
@@ -338,8 +401,13 @@
             "url": {
               "raw": "{{base_url}}/llm/generate",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["llm", "generate"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "llm",
+                "generate"
+              ]
             },
             "description": "Generate LLM response. Provider can be 'gemini', 'openai', etc."
           },
@@ -353,8 +421,13 @@
             "url": {
               "raw": "{{base_url}}/llm/test?prompt=Say%20hello",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["llm", "test"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "llm",
+                "test"
+              ],
               "query": [
                 {
                   "key": "prompt",
@@ -364,6 +437,182 @@
               ]
             },
             "description": "Test LLM endpoint with simple prompt"
+          },
+          "response": []
+        },
+        {
+          "name": "Phase 3 \u2013 Health Check",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from OAuth login"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/llm/health",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "llm",
+                "health"
+              ]
+            },
+            "description": "[Phase 3] Check health status of the default LLM provider (configured via LLM_DEFAULT_PROVIDER environment variable)"
+          },
+          "response": []
+        },
+        {
+          "name": "Phase 3 \u2013 Generate (Default Provider)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from OAuth login"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant. Be concise and direct.\",\n  \"userPrompt\": \"What are the top 3 features of LifeOS?\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "llm",
+                "generate"
+              ]
+            },
+            "description": "[Phase 3] Generate LLM response using default provider (systemPrompt and userPrompt required)"
+          },
+          "response": []
+        },
+        {
+          "name": "Phase 3 \u2013 Generate (Gemini)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from OAuth login"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant.\",\n  \"userPrompt\": \"What is Gemini?\",\n  \"provider\": \"gemini\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "llm",
+                "generate"
+              ]
+            },
+            "description": "[Phase 3] Generate LLM response explicitly using Gemini provider"
+          },
+          "response": []
+        },
+        {
+          "name": "Phase 3 \u2013 Generate (Groq)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from OAuth login"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant.\",\n  \"userPrompt\": \"What is Groq?\",\n  \"provider\": \"groq\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "llm",
+                "generate"
+              ]
+            },
+            "description": "[Phase 3] Generate LLM response explicitly using Groq provider"
+          },
+          "response": []
+        },
+        {
+          "name": "Phase 3 \u2013 Generate (OpenRouter)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text",
+                "description": "JWT token from OAuth login"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"systemPrompt\": \"You are a helpful assistant.\",\n  \"userPrompt\": \"What is OpenRouter?\",\n  \"provider\": \"openrouter\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/llm/generate",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "llm",
+                "generate"
+              ]
+            },
+            "description": "[Phase 3] Generate LLM response explicitly using OpenRouter provider"
           },
           "response": []
         }
@@ -380,8 +629,13 @@
             "url": {
               "raw": "{{base_url}}/api/test",
               "protocol": "http",
-              "host": ["{{base_url}}"],
-              "path": ["api", "test"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "test"
+              ]
             },
             "description": "Simple test endpoint"
           },

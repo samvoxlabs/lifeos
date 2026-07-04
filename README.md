@@ -69,6 +69,10 @@ These endpoints are public:
 
 Everything else requires a valid LifeOS JWT.
 
+### LLM Email Extraction
+
+- `POST /llm/email/extract` reads the current user's relevant Gmail messages, sends them through the configured LLM provider, and returns structured JSON.
+
 ### Storage Flow
 
 Use the explicit storage APIs to move data between Drive and PostgreSQL:
