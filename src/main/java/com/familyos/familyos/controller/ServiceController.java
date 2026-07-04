@@ -25,4 +25,9 @@ public class ServiceController {
     public List<GmailMessageDto> messages() {
         return gmailService.readLatestMessages(authenticationService.currentUser().id());
     }
+
+    @GetMapping("/allowed-messages")
+    public List<GmailMessageDto> allowedMessages() {
+        return gmailService.readAllowedMessages(authenticationService.currentUser().id());
+    }
 }

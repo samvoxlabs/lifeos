@@ -11,6 +11,8 @@ import com.familyos.familyos.authentication.service.UserService;
 import com.familyos.familyos.dto.GmailMessageDto;
 import com.familyos.familyos.integrations.google.gmail.GoogleGmailClient;
 import com.familyos.familyos.integrations.google.gmail.GoogleGmailMessage;
+import com.familyos.familyos.service.email.EmailRuleEngine;
+import com.familyos.familyos.service.email.NormalizedEmail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,11 +45,14 @@ class GmailServiceTest {
     @Mock
     private GoogleGmailClient googleGmailClient;
 
+    @Mock
+    private EmailRuleEngine emailRuleEngine;
+
     private GmailService gmailService;
 
     @BeforeEach
     void setUp() {
-        gmailService = new GmailService(userService, oauthAccountService, oauthTokenService, tokenRefreshService, googleGmailClient);
+        gmailService = new GmailService(userService, oauthAccountService, oauthTokenService, tokenRefreshService, googleGmailClient, emailRuleEngine);
     }
 
     @Test
@@ -109,6 +114,29 @@ class GmailServiceTest {
 
         verify(tokenRefreshService).getValidAccessToken(token);
         verify(googleGmailClient).fetchMessages("fresh-token", 10);
+    }
+
+    @Test
+    void readAllowedMessagesBuildsQueryFromAllowlist() {
+        User user = user("user@example.com");
+        OAuthAccount account = new OAuthAccount(user, "google", "subject-1", "user@example.com", "Test User");
+        OAuthToken token = new OAuthToken(account, "access-token", "refresh-token", "Bearer", "openid email", LocalDateTime.now().plusHours(1));
+        NormalizedEmail email = new NormalizedEmail("2", "thread-2", "allowed@example.com", "Invoice", "Mon, 1 Jan 2024", "Filtered");
+
+        when(userService.findById(user.getId())).thenReturn(Optional.of(user));
+        when(oauthAccountService.findByUserAndProvider(user, "google")).thenReturn(Optional.of(account));
+        when(oauthTokenService.findByAccount(account)).thenReturn(Optional.of(token));
+        when(tokenRefreshService.getValidAccessToken(token)).thenReturn("access-token");
+        when(googleGmailClient.fetchMessages("access-token", 10)).thenReturn(List.of(
+                new GoogleGmailMessage("2", "thread-2", "allowed@example.com", "Invoice", "Mon, 1 Jan 2024", "Filtered")
+        ));
+        when(emailRuleEngine.filterRelevantEmails(eq(account), any())).thenReturn(List.of(email));
+
+        List<GmailMessageDto> result = gmailService.readAllowedMessages(user.getId().toString());
+
+        assertEquals(1, result.size());
+        assertEquals("2", result.get(0).id());
+        verify(googleGmailClient).fetchMessages("access-token", 10);
     }
 
     private User user(String email) {

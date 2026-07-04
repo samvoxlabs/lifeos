@@ -10,5 +10,6 @@ This folder contains the canonical architecture notes for LifeOS.
 - [ADR-0005 Gmail Integration](./ADR-0005-gmail-integration.md)
 - [ADR-0006 Configuration](./ADR-0006-configuration.md)
 - [ADR-0007 Branching Strategy](./ADR-0007-branching-strategy.md)
+- [ADR-0008 Drive-Backed Storage](./ADR-0008-drive-backed-storage.md)
 
 Every significant architectural decision should be documented as an ADR before or alongside implementation.

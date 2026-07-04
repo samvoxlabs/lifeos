@@ -35,6 +35,8 @@ Contents
 
 LifeOS (formerly FamilyOS) is a Spring Boot-based backend service. It uses Java 21 (see `pom.xml`) and is built with Maven. This repository contains the application code under `src/main/java` and resources under `src/main/resources`.
 
+Runtime state is persisted in PostgreSQL, while canonical user data lives in Google Drive JSON snapshots managed through `/storage/*`.
+
 ### Technology Stack
 
 - **Framework:** Spring Boot 3.5.15
@@ -66,6 +68,18 @@ These endpoints are public:
 - `/api/health`
 
 Everything else requires a valid LifeOS JWT.
+
+### Storage Flow
+
+Use the explicit storage APIs to move data between Drive and PostgreSQL:
+
+- `POST /storage/bootstrap`
+- `POST /storage/save`
+- `GET /storage/status`
+
+The app does not auto-sync on startup or shutdown. On first login, bootstrap creates the Drive folder structure and default JSON files automatically.
+
+Drive stores each user under `LifeOS/users/{userId}/` with `manifest.json`, `profile.json`, `settings.json`, `configuration/email-rules.json`, `configuration/calendar-rules.json`, `configuration/prompts.json`, `knowledge/*.json`, and `integrations/*.json`. Business services continue reading and writing PostgreSQL only.
 
 ### Required Environment Variables
 

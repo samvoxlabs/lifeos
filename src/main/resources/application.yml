@@ -21,6 +21,10 @@ spring:
               - email
               - profile
               - https://www.googleapis.com/auth/gmail.readonly
+              - https://www.googleapis.com/auth/calendar.readonly
+              - https://www.googleapis.com/auth/drive.file
+              - https://www.googleapis.com/auth/tasks.readonly
+              - https://www.googleapis.com/auth/contacts.readonly
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             client-authentication-method: client_secret_post
@@ -63,15 +67,28 @@ spring:
     clean-disabled: true
 
 jwt:
-  secret: ${JWT_SECRET}
+  secret: ${JWT_SECRET:this-is-a-development-secret-key-that-is-long-enough-for-hs256-algorithm-must-be-at-least-256-bits-or-32-bytes}
   expiration-ms: ${JWT_EXPIRATION_MS:3600000}
 
 google:
   apis:
     gmail-base-url: ${GOOGLE_GMAIL_BASE_URL:https://gmail.googleapis.com/gmail/v1}
+    calendar-base-url: ${GOOGLE_CALENDAR_BASE_URL:https://www.googleapis.com/calendar/v3}
+    drive-base-url: ${GOOGLE_DRIVE_BASE_URL:https://www.googleapis.com/drive/v3}
+    tasks-base-url: ${GOOGLE_TASKS_BASE_URL:https://tasks.googleapis.com/tasks/v1}
+    people-base-url: ${GOOGLE_PEOPLE_BASE_URL:https://people.googleapis.com/v1}
   gmail:
     user-id: ${GOOGLE_GMAIL_USER_ID:me}
     max-results: ${GOOGLE_GMAIL_MAX_RESULTS:10}
+  calendar:
+    calendar-id: ${GOOGLE_CALENDAR_ID:primary}
+    max-results: ${GOOGLE_CALENDAR_MAX_RESULTS:10}
+  drive:
+    max-results: ${GOOGLE_DRIVE_MAX_RESULTS:10}
+  tasks:
+    max-results: ${GOOGLE_TASKS_MAX_RESULTS:10}
+  people:
+    max-results: ${GOOGLE_PEOPLE_MAX_RESULTS:20}
 
 llm:
   default-provider: ${LLM_DEFAULT_PROVIDER:gemini}

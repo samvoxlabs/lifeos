@@ -26,11 +26,22 @@ public class GoogleGmailClientImpl implements GoogleGmailClient {
 
     @Override
     public List<GoogleGmailMessage> fetchMessages(String accessToken, int maxResults) {
-        log.debug("Fetching {} messages from Gmail API", maxResults);
+        return fetchMessages(accessToken, maxResults, null);
+    }
 
+    @Override
+    public List<GoogleGmailMessage> fetchMessages(String accessToken, int maxResults, String query) {
+        log.debug("Fetching {} messages from Gmail API", maxResults);
         Map<String, Object> listResponse = restClient.get()
-                .uri("/users/{userId}/messages?maxResults={maxResults}", 
-                     googleProperties.gmail().userId(), maxResults)
+                .uri(uriBuilder -> {
+                    var builder = uriBuilder
+                            .path("/users/{userId}/messages")
+                            .queryParam("maxResults", maxResults);
+                    if (query != null && !query.isBlank()) {
+                        builder.queryParam("q", query);
+                    }
+                    return builder.build(googleProperties.gmail().userId());
+                })
                 .header("Authorization", "Bearer " + accessToken)
                 .retrieve()
                 .body(Map.class);

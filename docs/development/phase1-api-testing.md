@@ -65,14 +65,14 @@ curl http://localhost:8080/
 1. Open browser: `http://localhost:8080/oauth2/authorization/google`
 2. Sign in with a test Google account
 3. You'll be redirected with a JSON response containing:
-   ```json
-   {
-     "token": "<YOUR_JWT_TOKEN>",
-     "user_id": "...",
-     "email": "...",
-     "name": "..."
-   }
-   ```
+```json
+{
+  "token": "<YOUR_JWT_TOKEN>",
+  "user_id": "...",
+  "email": "...",
+  "name": "..."
+}
+```
 4. Copy the `token` value
 
 ### Step 3: Test Protected Endpoints
