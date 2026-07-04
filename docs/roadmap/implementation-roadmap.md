@@ -28,19 +28,13 @@ Rules:
 
 ## Current Status
 
-**Current Phase:** Phase 5 – AI Extraction
+**Current Phase:** Phase 5 – AI Extraction ✅
 
-**Current Branch:** Ready for next feature branch
+**Current Branch:** `feature/phase5-ai-extraction`
 
-**Next Objective:**
+**Next Objective:** Phase 6 – Domain & Persistence
 
-Apply the Rule Engine and extract structured information from documents, including:
-
-* Apply rules before LLM
-* Send normalized documents to the LLM
-* Receive structured JSON
-* Confidence scoring
-* Structured extraction model
+Move extracted candidates into LifeOS domain objects and persistence after the extraction pipeline is merged.
 
 ---
 
@@ -128,7 +122,7 @@ Determine which documents should be processed by the LLM using configurable rule
 
 ---
 
-## Phase 5 – AI Extraction
+## Phase 5 – AI Extraction ✅
 
 **Objective**
 
@@ -136,15 +130,20 @@ Apply the Rule Engine and extract structured information from documents.
 
 **Feature Branch**
 
-* `feature/document-extraction`
+* `feature/phase5-ai-extraction`
 
-**Deliverables**
+**Completed Deliverables**
 
-* Apply rules before LLM
-* Send normalized documents to the LLM
-* Receive structured JSON
-* Confidence scoring
-* Structured extraction model
+* Rule Engine pre-filtering before LLM invocation
+* External prompt templates for extraction
+* PromptBuilder and PromptLoader
+* Structured JSON parsing into ExtractionResult
+* Extraction controller: `POST /api/extraction/process`
+* Unit tests for prompt building, parsing, and orchestration
+* Integration test for the extraction endpoint
+* Phase 5 API testing guide
+* Phase 5 Postman collection
+* Consolidated API collection updated
 
 ---
 
