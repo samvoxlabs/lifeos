@@ -167,6 +167,14 @@ class JwtServiceTest {
     }
 
     @Test
+    void testJwtPropertiesValidation_ShortSecret() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new JwtProperties("too-short", 3600000L)
+        );
+        assertTrue(ex.getMessage().contains("at least 32 characters"));
+    }
+
+    @Test
     void testJwtPropertiesValidation_NullExpiration() {
         assertThrows(IllegalArgumentException.class, () -> 
             new JwtProperties("test-secret-key-that-is-long-enough-for-hs256-algorithm", null)
