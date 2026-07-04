@@ -16,8 +16,7 @@ All endpoints work with any configured provider without code changes.
 ## Prerequisites
 
 - Java 21 JDK installed
-- Docker and Docker Compose running
-- PostgreSQL container started: `docker compose -f docker/compose.yml up -d`
+- Docker installed (for PostgreSQL; auto-managed by `run.sh`)
 - Google account for OAuth authentication (or valid JWT token)
 - API keys for each LLM provider (optional; testing works with one):
   - Google Gemini: https://ai.google.dev/
@@ -26,20 +25,20 @@ All endpoints work with any configured provider without code changes.
 
 ## Quick Start
 
-### 1. Configure API keys
+### 1. Configure API keys (optional)
 
 Create a `.env` file in the project root with your API keys:
 
 ```env
 # Select your primary provider (gemini, groq, or openrouter)
-LLM_DEFAULT_PROVIDER=gemini
+LLM_DEFAULT_PROVIDER=groq
 
 # Gemini Configuration
 GEMINI_API_KEY=your-gemini-api-key
 GEMINI_MODEL=gemini-2.5-flash
 GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta
 
-# Groq Configuration (optional)
+# Groq Configuration (recommended for free testing)
 GROQ_API_KEY=your-groq-api-key
 GROQ_MODEL=llama-3.3-70b-versatile
 GROQ_BASE_URL=https://api.groq.com/openai/v1
@@ -50,25 +49,25 @@ OPENROUTER_MODEL=google/gemini-2.5-flash
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
 ```
 
-### 2. Start the application
+### 2. Start the Application
+
+Run the startup script from the project root:
 
 ```bash
 ./run.sh
 ```
 
-The script:
-- frees port 8080 if needed
-- starts the Spring Boot app
+This script automatically:
+- ✅ Starts PostgreSQL database container (if not running)
+- ✅ Verifies database connectivity
+- ✅ Frees port 8080 (kills any existing process)
+- ✅ Starts the FamilyOS application
 
-If you need another port:
+The app will be available at `http://localhost:8080`
 
-```bash
-SERVER_PORT=9090 ./run.sh
-```
+### 3. Get Authentication Token
 
-### 3. Authenticate (get JWT token)
-
-Phase 3 LLM endpoints require authentication. Get a JWT token from OAuth:
+Phase 3 LLM endpoints require JWT authentication:
 
 **Step 1:** Open in your browser:
 ```

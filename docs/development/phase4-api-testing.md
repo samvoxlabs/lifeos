@@ -15,40 +15,45 @@ This guide helps you test the Rule Engine implementation for Phase 4.
 
 ## Prerequisites
 
-1. **Running Application**: LifeOS backend must be running on `http://localhost:8080`
-2. **JWT Token**: Valid authentication token (see OAuth section below)
-3. **Postman** or `curl`: For API testing
-4. **No Database Required**: Phase 4 is stateless and doesn't require PostgreSQL
+1. **Docker**: For PostgreSQL database (optional, auto-started by `run.sh`)
+2. **Postman** or `curl`: For API testing
+3. Valid JWT token (see [Authentication](#authentication) section)
 
 ## Quick Start
 
 ### Step 1: Start the Application
 
+Run the startup script from the project root:
+
 ```bash
-cd /path/to/familyos
-mvn spring-boot:run
+./run.sh
 ```
 
-### Step 2: Authenticate (Required)
+This script will:
+- ✅ Check if PostgreSQL container is running (create/start if needed)
+- ✅ Verify database connectivity
+- ✅ Kill any existing process on port 8080
+- ✅ Start the FamilyOS application
 
-All `/api/rules/*` endpoints require JWT authentication.
+The app will be available at `http://localhost:8080`
 
-**Via Browser:**
+### Step 2: Get Authentication Token
+
+All `/api/rules/*` endpoints require JWT Bearer authentication.
+
+**Option A: Via Browser (Recommended)**
 ```
 http://localhost:8080/oauth2/authorization/google
 ```
 
-After login, copy the `token` field from the JSON response.
+After login, copy the `token` field from the JSON response. Use it as your JWT token.
 
-**Via curl:**
-```bash
-GOOGLE_AUTH_URL="http://localhost:8080/oauth2/authorization/google"
-curl -v $GOOGLE_AUTH_URL 2>&1 | grep -i "set-cookie"
-```
+**Option B: From test data**
+If you have a valid token from previous sessions, reuse it (tokens don't expire instantly).
 
 ### Step 3: Test the Rule Engine
 
-Use curl or Postman to POST to `/api/rules/evaluate` with your JWT token.
+Use curl or Postman with your JWT token to test the Rule Engine endpoints.
 
 ---
 
