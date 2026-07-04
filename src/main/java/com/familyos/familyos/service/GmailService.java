@@ -11,6 +11,8 @@ import com.familyos.familyos.authentication.service.UserService;
 import com.familyos.familyos.dto.GmailMessageDto;
 import com.familyos.familyos.integrations.google.gmail.GoogleGmailClient;
 import com.familyos.familyos.integrations.google.gmail.GoogleGmailMessage;
+import com.familyos.familyos.service.email.EmailRuleEngine;
+import com.familyos.familyos.service.email.NormalizedEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,14 +31,17 @@ public class GmailService {
     private final OAuthTokenService oauthTokenService;
     private final TokenRefreshService tokenRefreshService;
     private final GoogleGmailClient googleGmailClient;
+    private final EmailRuleEngine emailRuleEngine;
 
     public GmailService(UserService userService, OAuthAccountService oauthAccountService, OAuthTokenService oauthTokenService,
-                       TokenRefreshService tokenRefreshService, GoogleGmailClient googleGmailClient) {
+                       TokenRefreshService tokenRefreshService, GoogleGmailClient googleGmailClient,
+                       EmailRuleEngine emailRuleEngine) {
         this.userService = userService;
         this.oauthAccountService = oauthAccountService;
         this.oauthTokenService = oauthTokenService;
         this.tokenRefreshService = tokenRefreshService;
         this.googleGmailClient = googleGmailClient;
+        this.emailRuleEngine = emailRuleEngine;
     }
 
     public List<GmailMessageDto> readLatestMessages(String userId) {
@@ -70,8 +75,51 @@ public class GmailService {
                 .toList();
     }
 
+    public List<GmailMessageDto> readAllowedMessages(String userId) {
+        log.debug("Reading allowed Gmail messages for user: {}", userId);
+
+        User user;
+        try {
+            user = userService.findById(java.util.UUID.fromString(userId))
+                    .orElseThrow(() -> new UnauthorizedException("Authenticated user not found"));
+        } catch (IllegalArgumentException ex) {
+            throw new UnauthorizedException("Authenticated user not found");
+        }
+
+        OAuthAccount oauthAccount = oauthAccountService.findByUserAndProvider(user, GOOGLE_PROVIDER)
+                .orElseThrow(() -> new UnauthorizedException("Google account not connected"));
+
+        OAuthToken oauthToken = oauthTokenService.findByAccount(oauthAccount)
+                .orElseThrow(() -> new UnauthorizedException("Google token not available"));
+        String accessToken = tokenRefreshService.getValidAccessToken(oauthToken);
+
+        log.debug("Calling Gmail API for user: {}", user.getEmail());
+        List<GoogleGmailMessage> googleMessages = googleGmailClient.fetchMessages(accessToken, DEFAULT_MAX_RESULTS);
+        List<NormalizedEmail> normalizedEmails = googleMessages.stream().map(this::normalize).toList();
+        List<NormalizedEmail> relevantEmails = emailRuleEngine.filterRelevantEmails(oauthAccount, normalizedEmails);
+
+        return relevantEmails.stream()
+                .map(this::convertToDto)
+                .toList();
+    }
+
     private GmailMessageDto convertToDto(GoogleGmailMessage googleMessage) {
+        return convertToDto(normalize(googleMessage));
+    }
+
+    private GmailMessageDto convertToDto(NormalizedEmail email) {
         return new GmailMessageDto(
+                email.id(),
+                email.threadId(),
+                email.from(),
+                email.subject(),
+                email.date(),
+                email.snippet()
+        );
+    }
+
+    private NormalizedEmail normalize(GoogleGmailMessage googleMessage) {
+        return new NormalizedEmail(
                 googleMessage.id(),
                 googleMessage.threadId(),
                 googleMessage.from(),

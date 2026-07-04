@@ -16,8 +16,8 @@ public class GooglePeopleClientImpl implements GooglePeopleClient {
 
     private final RestClient restClient;
 
-    public GooglePeopleClientImpl(GoogleProperties googleProperties) {
-        this.restClient = RestClient.builder()
+    public GooglePeopleClientImpl(GoogleProperties googleProperties, RestClient.Builder restClientBuilder) {
+        this.restClient = restClientBuilder
                 .baseUrl(googleProperties.apis().peopleBaseUrl())
                 .build();
     }
@@ -27,7 +27,8 @@ public class GooglePeopleClientImpl implements GooglePeopleClient {
         log.debug("Fetching {} contacts from Google People API", maxResults);
 
         Map<String, Object> response = restClient.get()
-                .uri("/people/me/connections?pageSize={pageSize}&personFields=names,emailAddresses,phoneNumbers", maxResults)
+                .uri("/people/me/connections?pageSize={pageSize}&sources=READ_SOURCE_TYPE_CONTACT&sources=READ_SOURCE_TYPE_PROFILE&personFields=names,emailAddresses,phoneNumbers",
+                        maxResults)
                 .header("Authorization", "Bearer " + accessToken)
                 .retrieve()
                 .body(Map.class);
