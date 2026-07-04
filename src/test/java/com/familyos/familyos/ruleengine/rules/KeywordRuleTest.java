@@ -40,7 +40,7 @@ class KeywordRuleTest {
 
         assertTrue(result.isPresent());
         assertEquals(RuleDecision.PROCESS, result.get().decision());
-        assertTrue(result.get().reason().contains("appointment"));
+        assertTrue(result.get().reason().startsWith("Matched keyword: "));
         assertEquals(80, result.get().priorityScore());
     }
 

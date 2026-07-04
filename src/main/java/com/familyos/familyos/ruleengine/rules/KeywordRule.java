@@ -4,6 +4,7 @@ import com.familyos.familyos.ruleengine.dto.NormalizedDocument;
 import com.familyos.familyos.ruleengine.dto.RuleDecision;
 import com.familyos.familyos.ruleengine.dto.RuleResult;
 import com.familyos.familyos.ruleengine.model.Rule;
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.stereotype.Component;
@@ -13,14 +14,14 @@ public class KeywordRule implements Rule {
 
     private static final int PRIORITY = 30;
     
-    private static final Set<String> PROCESS_KEYWORDS = Set.of(
+    private static final Set<String> PROCESS_KEYWORDS = new LinkedHashSet<>(Set.of(
         "appointment", "meeting", "deadline", "payment",
         "invoice", "permission", "vaccination", "interview",
         "application", "registration", "confirmation", "schedule",
         "reminder", "urgent", "important", "action",
         "approval", "request", "form", "sign", "submit",
         "due", "expir", "refund", "claim", "benefit"
-    );
+    ));
 
     @Override
     public int getPriority() {
