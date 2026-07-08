@@ -28,11 +28,11 @@ Rules:
 
 ## Current Status
 
-**Current Phase:** Phase 6 - Domain and Persistence
+**Current Phase:** Phase 7 - Frontend & Orchestration APIs ✅
 
-**Current Branch:** `feature/phase6-domain-persistence`
+**Current Branch:** `feature/phase7-frontend-apis`
 
-**Next Objective:** Phase 7 - Frontend APIs
+**Next Objective:** Phase 8 - Frontend Application
 
 Persist First, Process Second with SourceDocument as the operational system of record.
 
@@ -147,7 +147,7 @@ Apply the Rule Engine and extract structured information from documents.
 
 ---
 
-## Phase 6 - Domain and Persistence
+## Phase 6 - Domain and Persistence ✅
 
 **Objective**
 
@@ -155,7 +155,7 @@ Implement Persist First, Process Second so every imported document is persisted 
 
 **Feature Branch**
 
-* `feature/phase6-domain-persistence`
+* `feature/phase6-domain-persistence` (merged)
 
 **Deliverables**
 
@@ -182,27 +182,43 @@ Implement Persist First, Process Second so every imported document is persisted 
 
 ---
 
-## Phase 7 – Frontend APIs
+## Phase 7 – Frontend & Orchestration APIs ✅
 
 **Objective**
 
-Expose LifeOS data to the frontend.
+Expose persisted LifeOS domain data through frontend APIs and a single orchestration sync endpoint.
 
-**Feature Branches**
+**Feature Branch**
 
-* `feature/dashboard-api`
-* `feature/task-api`
-* `feature/event-api`
-* `feature/reminder-api`
-* `feature/search-api`
+* `feature/phase7-frontend-apis`
 
 **Deliverables**
 
-* Dashboard API
-* Task API
-* Event API
-* Reminder API
-* Search API
+* Sync orchestration API (`POST /api/sync`)
+* Internal sync APIs (`POST /api/google/sync/gmail|calendar|drive`)
+* Dashboard API (`GET /api/dashboard`)
+* Task APIs with filtering/pagination/sorting
+* Event APIs with date filtering/pagination/sorting
+* Reminder APIs with status filtering/pagination/sorting
+* SourceDocument read APIs
+* Timeline API
+* Search API across title/description
+* DTO-only controller responses (no entity exposure)
+* Unit, controller, repository, and integration tests
+* Phase 7 API testing guide (`docs/development/phase7-api-testing.md`)
+* Phase 7 Postman collection (`docs/postman/phase7.postman_collection.json`)
+* Consolidated Postman collection update (`docs/postman/LifeOS_API.postman_collection.json`)
+
+---
+
+## Backend MVP Status ✅
+
+Phases 1 through 7 complete the backend MVP scope:
+
+* Authentication and Google integrations
+* LLM abstraction and extraction pipeline
+* Persist-first domain and lifecycle processing
+* Frontend-ready read APIs on persisted business entities
 
 ---
 

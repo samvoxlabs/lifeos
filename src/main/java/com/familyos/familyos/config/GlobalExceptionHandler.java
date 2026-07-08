@@ -1,6 +1,8 @@
 package com.familyos.familyos.config;
 
 import com.familyos.familyos.authentication.exception.UnauthorizedException;
+import com.familyos.familyos.api.exception.ApiNotFoundException;
+import com.familyos.familyos.api.exception.ApiValidationException;
 import com.familyos.familyos.domain.exception.DomainPersistenceException;
 import com.familyos.familyos.domain.exception.DomainValidationException;
 import com.familyos.familyos.dto.ApiErrorResponse;
@@ -44,6 +46,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DomainPersistenceException.class)
     public ResponseEntity<ApiErrorResponse> handleDomainPersistence(DomainPersistenceException ex, HttpServletRequest request) {
         return error(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request.getRequestURI());
+    }
+
+    @ExceptionHandler(ApiValidationException.class)
+    public ResponseEntity<ApiErrorResponse> handleApiValidation(ApiValidationException ex, HttpServletRequest request) {
+        return error(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getRequestURI());
+    }
+
+    @ExceptionHandler(ApiNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleApiNotFound(ApiNotFoundException ex, HttpServletRequest request) {
+        return error(HttpStatus.NOT_FOUND, ex.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(HttpClientErrorException.Forbidden.class)
