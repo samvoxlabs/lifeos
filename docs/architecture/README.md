@@ -2,6 +2,9 @@
 
 This folder contains the canonical architecture notes for LifeOS.
 
+## Guides
+- [End-to-End Flow](./END_TO_END_FLOW.md)
+
 ## ADRs
 - [ADR-0001 Project Architecture](./ADR-0001-project-architecture.md)
 - [ADR-0002 Google OAuth](./ADR-0002-google-oauth.md)

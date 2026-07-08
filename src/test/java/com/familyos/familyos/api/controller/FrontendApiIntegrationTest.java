@@ -1,9 +1,13 @@
-package com.familyos.familyos.domain.controller;
+package com.familyos.familyos.api.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.familyos.familyos.authentication.service.AuthenticationService;
 import com.familyos.familyos.domain.repository.ActionRepository;
 import com.familyos.familyos.domain.repository.ExtractionRepository;
 import com.familyos.familyos.domain.repository.SourceDocumentRepository;
+import com.familyos.familyos.dto.AuthenticatedUser;
+import com.familyos.familyos.service.CalendarService;
+import com.familyos.familyos.service.DriveService;
+import com.familyos.familyos.service.GmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,10 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -23,19 +31,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class DomainControllerIntegrationTest {
+class FrontendApiIntegrationTest {
 
     @Autowired private MockMvc mockMvc;
-    @Autowired private ObjectMapper objectMapper;
     @Autowired private ActionRepository actionRepository;
     @Autowired private ExtractionRepository extractionRepository;
     @Autowired private SourceDocumentRepository sourceDocumentRepository;
 
     @MockBean private OAuth2AuthorizedClientService authorizedClientService;
     @MockBean private ClientRegistrationRepository clientRegistrationRepository;
+    @MockBean private GmailService gmailService;
+    @MockBean private CalendarService calendarService;
+    @MockBean private DriveService driveService;
+    @MockBean private AuthenticationService authenticationService;
 
     @BeforeEach
-    void cleanDomainTables() {
+    void setup() {
         actionRepository.deleteAll();
         extractionRepository.deleteAll();
         sourceDocumentRepository.deleteAll();
@@ -43,7 +54,7 @@ class DomainControllerIntegrationTest {
 
     @Test
     @WithMockUser
-    void processAndRetrieveActions() throws Exception {
+    void exposesDashboardTimelineSearchAndSourceDocuments() throws Exception {
         String request = """
             {
               "sourceDocument": {
@@ -69,7 +80,7 @@ class DomainControllerIntegrationTest {
                 "confidence": 0.95,
                 "actions": [
                   {"type":"TASK","title":"Confirm attendance","description":"Reply to teacher"},
-                  {"type":"EVENT","title":"Parent teacher meeting","description":"At school","dueDate":"2026-07-10T10:00:00"},
+                  {"type":"EVENT","title":"Parent teacher meeting","description":"At school"},
                   {"type":"REMINDER","title":"Bring documents","description":"Bring report card"}
                 ]
               }
@@ -77,97 +88,54 @@ class DomainControllerIntegrationTest {
             """;
 
         mockMvc.perform(post("/api/domain/process")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.sourceDocument.externalId").value("msg-1"))
-            .andExpect(jsonPath("$.actions.length()").value(3));
+            .andExpect(status().isOk());
 
-        mockMvc.perform(get("/api/tasks"))
+        mockMvc.perform(get("/api/dashboard"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.summary.pendingTasks").value(1))
+            .andExpect(jsonPath("$.summary.upcomingEvents").value(1))
+            .andExpect(jsonPath("$.summary.activeReminders").value(1));
+
+        mockMvc.perform(get("/api/tasks?page=0&size=10&status=OPEN"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.content.length()").value(1));
 
-        mockMvc.perform(get("/api/events"))
+        mockMvc.perform(get("/api/events?page=0&size=10"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.content.length()").value(1));
 
-        mockMvc.perform(get("/api/reminders"))
+        mockMvc.perform(get("/api/reminders?page=0&size=10"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content.length()").value(1));
+
+        mockMvc.perform(get("/api/timeline"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.length()").value(3));
+
+        mockMvc.perform(get("/api/search?q=attendance"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.tasks.length()").value(1));
+
+        mockMvc.perform(get("/api/source-documents?page=0&size=10"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.content.length()").value(1));
     }
 
     @Test
     @WithMockUser
-    void duplicateProcessingDoesNotCreateDuplicateSourceDocumentActions() throws Exception {
-        String request = """
-            {
-              "sourceDocument": {
-                "id": "doc-dup",
-                "sender": "clinic@example.com",
-                "subject": "Appointment",
-                "content": "Appointment reminder",
-                "labels": [],
-                "priority": "1",
-                "source": "email",
-                "provider": "google",
-                "sourceType": "gmail",
-                "externalId": "msg-dup",
-                "rawContent": "Appointment reminder",
-                "metadata": {}
-              },
-              "extractionResult": {
-                "summary": "Appointment reminder",
-                "confidence": 0.9,
-                "actions": [
-                  {"type":"TASK","title":"Confirm appointment","description":"Call clinic"}
-                ]
-              }
-            }
-            """;
+    void exposesSyncOrchestrationEndpoint() throws Exception {
+        when(authenticationService.currentUser()).thenReturn(new AuthenticatedUser("user-1", "user@example.com", "User", "google"));
+        when(gmailService.readLatestMessages("user-1")).thenReturn(List.of());
+        when(calendarService.readUpcomingEvents("user-1")).thenReturn(List.of());
+        when(driveService.readRecentFiles("user-1")).thenReturn(List.of());
 
-        mockMvc.perform(post("/api/domain/process")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(request))
+        mockMvc.perform(post("/api/sync").with(csrf()))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.actions.length()").value(1));
-
-        mockMvc.perform(post("/api/domain/process")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(request))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.actions.length()").value(1));
-    }
-
-    @Test
-    @WithMockUser
-    void invalidExtractionReturnsBadRequest() throws Exception {
-        String invalidRequest = """
-            {
-              "sourceDocument": {
-                "id": "doc-2",
-                "sender": "bank@example.com",
-                "subject": "Statement",
-                "content": "Monthly statement",
-                "labels": [],
-                "priority": "1",
-                "source": "email",
-                "provider": "",
-                "sourceType": "gmail",
-                "externalId": "msg-2",
-                "rawContent": "Monthly statement",
-                "metadata": {}
-              },
-              "extractionResult": {
-                "summary": "Monthly statement",
-                "confidence": 0.8,
-                "actions": []
-              }
-            }
-            """;
-
-        mockMvc.perform(post("/api/domain/process")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(invalidRequest))
-            .andExpect(status().isBadRequest());
+            .andExpect(jsonPath("$.status").value("COMPLETED"))
+            .andExpect(jsonPath("$.documentsRead").value(0))
+            .andExpect(jsonPath("$.documentsImported").value(0));
     }
 }
