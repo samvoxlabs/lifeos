@@ -1,0 +1,154 @@
+{
+  "info": {
+    "_postman_id": "phase10-lifeos-demo-day",
+    "name": "LifeOS - Phase 10 (Demo Day Flow)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080", "type": "string" },
+    { "key": "token", "value": "", "type": "string" },
+    { "key": "conflictId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "1. Demo Setup",
+      "item": [
+        {
+          "name": "Reset & Seed Inbox",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/demo/reset",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "demo", "reset"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Mail Sync (Gmail Only)",
+      "item": [
+        {
+          "name": "Sync Mailbox",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mailbox\": \"parentosfamily@gmail.com\",\n  \"cursor\": null,\n  \"maxResults\": 20\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/mail/sync",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mail", "sync"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. AI Review (Rule Engine → LLM → Conflicts)",
+      "item": [
+        {
+          "name": "Review Schedule",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mailbox\": \"parentosfamily@gmail.com\",\n  \"maxMessages\": 20\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/mail/review-schedule",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mail", "review-schedule"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Conflict Resolution",
+      "item": [
+        {
+          "name": "View Open Conflicts",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/conflicts?status=open",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "conflicts"],
+              "query": [{ "key": "status", "value": "open" }]
+            }
+          }
+        },
+        {
+          "name": "Resolve Conflict",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Idempotency-Key", "value": "{{conflictId}}-delay-pickup" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"optionId\": \"delay-pickup\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/conflicts/{{conflictId}}/resolve",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "conflicts", "{{conflictId}}", "resolve"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Calendar View",
+      "item": [
+        {
+          "name": "Get Calendar Events",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/calendar/events",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "calendar", "events"]
+            }
+          }
+        },
+        {
+          "name": "Publish to Calendar",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/calendar/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "calendar", "publish"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

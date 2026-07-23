@@ -1,0 +1,115 @@
+{
+  "info": {
+    "_postman_id": "lifeos-frontend-integration",
+    "name": "LifeOS Frontend Integration",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Mail",
+      "item": [
+        {
+          "name": "Sync mail",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mailbox\": \"parentosfamily@gmail.com\",\n  \"cursor\": null,\n  \"maxResults\": 20\n}"
+            },
+            "url": "{{baseUrl}}/api/mail/sync"
+          }
+        },
+        {
+          "name": "Review schedule",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mailbox\": \"parentosfamily@gmail.com\",\n  \"maxMessages\": 20\n}"
+            },
+            "url": "{{baseUrl}}/api/mail/review"
+          }
+        },
+        {
+          "name": "Resolve conflict",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{conflictId}}-delay-pickup"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"optionId\": \"delay-pickup\"\n}"
+            },
+            "url": "{{baseUrl}}/api/mail/conflicts/{{conflictId}}/resolve"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Calendar",
+      "item": [
+        {
+          "name": "List calendar events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/calendar/events"
+          }
+        },
+        {
+          "name": "Publish calendar",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/calendar/publish"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "jwt",
+      "value": ""
+    },
+    {
+      "key": "conflictId",
+      "value": "conflict-001"
+    }
+  ]
+}
+

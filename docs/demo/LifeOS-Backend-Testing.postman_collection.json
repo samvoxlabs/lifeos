@@ -1,0 +1,244 @@
+{
+  "info": {
+    "_postman_id": "lifeos-backend-testing",
+    "name": "LifeOS Backend Testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Demo Gmail",
+      "item": [
+        {
+          "name": "Reset demo Gmail",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/demo/gmail/reset"
+          }
+        },
+        {
+          "name": "Load demo Gmail",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file\": \"airport-medical-conflict.json\"\n}"
+            },
+            "url": "{{baseUrl}}/api/demo/gmail/load"
+          }
+        },
+        {
+          "name": "List demo Gmail messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/demo/gmail/messages"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Demo Events & DB",
+      "item": [
+        {
+          "name": "Extract events",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mailbox\": \"parentosfamily@gmail.com\",\n  \"maxMessages\": 20\n}"
+            },
+            "url": "{{baseUrl}}/api/demo/events/extract"
+          }
+        },
+        {
+          "name": "List DB events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/demo/db/events"
+          }
+        },
+        {
+          "name": "List DB conflicts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/demo/db/conflicts"
+          }
+        },
+        {
+          "name": "Resolve demo conflict",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{conflictId}}-delay-pickup"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"selectedOptionId\": \"delay-pickup\"\n}"
+            },
+            "url": "{{baseUrl}}/api/demo/conflicts/{{conflictId}}/resolve"
+          }
+        },
+        {
+          "name": "Demo status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/demo/status"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Demo Calendar",
+      "item": [
+        {
+          "name": "Publish demo calendar",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/demo/calendar/publish"
+          }
+        },
+        {
+          "name": "List demo calendar events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/demo/calendar/events"
+          }
+        },
+        {
+          "name": "Reset demo calendar",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/demo/calendar/reset"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Application APIs",
+      "item": [
+        {
+          "name": "Sync mail",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mailbox\": \"parentosfamily@gmail.com\",\n  \"cursor\": null,\n  \"maxResults\": 20\n}"
+            },
+            "url": "{{baseUrl}}/api/mail/sync"
+          }
+        },
+        {
+          "name": "Review schedule",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mailbox\": \"parentosfamily@gmail.com\",\n  \"maxMessages\": 20\n}"
+            },
+            "url": "{{baseUrl}}/api/mail/review"
+          }
+        },
+        {
+          "name": "Resolve conflict",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{conflictId}}-delay-pickup"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"optionId\": \"delay-pickup\"\n}"
+            },
+            "url": "{{baseUrl}}/api/mail/conflicts/{{conflictId}}/resolve"
+          }
+        },
+        {
+          "name": "List calendar events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/calendar/events"
+          }
+        },
+        {
+          "name": "Publish calendar",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/calendar/publish"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "jwt",
+      "value": ""
+    },
+    {
+      "key": "conflictId",
+      "value": "conflict-001"
+    }
+  ]
+}
+

@@ -5,7 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientResponseException;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +43,64 @@ public class GoogleCalendarClientImpl implements GoogleCalendarClient {
         return items.stream()
                 .map(this::toEvent)
                 .toList();
+    }
+
+    @Override
+    public String createCalendarEvent(String accessToken, String calendarId, MailEventForCalendar event) {
+        log.info("Creating calendar event: {}", event.title());
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("summary", event.title());
+        if (event.location() != null) body.put("location", event.location());
+        if (event.description() != null) body.put("description", event.description());
+
+        Map<String, String> start = new LinkedHashMap<>();
+        start.put("dateTime", event.start());
+        body.put("start", start);
+
+        Map<String, String> end = new LinkedHashMap<>();
+        end.put("dateTime", event.end());
+        body.put("end", end);
+        log.info("Calendar payload: {}", body);
+
+        try {
+            Map<String, Object> response = restClient.post()
+                    .uri("/calendars/{calendarId}/events", calendarId)
+                    .header("Authorization", "Bearer " + accessToken)
+                    .header("Content-Type", "application/json")
+                    .body(body)
+                    .retrieve()
+                    .body(Map.class);
+
+            String eventId = response != null ? (String) response.get("id") : null;
+            log.info("Created Google Calendar event: {}", eventId);
+            return eventId;
+        } catch (Exception e) {
+            log.error("Failed to create calendar event: {}", e.getMessage());
+            throw new RuntimeException("CALENDAR_UPDATE_FAILED: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void deleteCalendarEvent(String accessToken, String calendarId, String eventId) {
+        log.info("Deleting calendar event: {}", eventId);
+        try {
+            restClient.delete()
+                    .uri("/calendars/{calendarId}/events/{eventId}", calendarId, eventId)
+                    .header("Authorization", "Bearer " + accessToken)
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (RestClientResponseException ex) {
+            if (ex.getRawStatusCode() == 404) {
+                log.warn("Calendar event already missing: {}", eventId);
+                return;
+            }
+            log.error("Failed to delete calendar event: {}", ex.getMessage());
+            throw new RuntimeException("CALENDAR_DELETE_FAILED: " + ex.getMessage(), ex);
+        } catch (Exception e) {
+            log.error("Failed to delete calendar event: {}", e.getMessage());
+            throw new RuntimeException("CALENDAR_DELETE_FAILED: " + e.getMessage(), e);
+        }
     }
 
     private GoogleCalendarEvent toEvent(Map<String, Object> item) {

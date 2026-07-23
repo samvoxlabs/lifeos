@@ -38,14 +38,18 @@ public class SourceDocumentSeedImporter implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        if (sourceDocumentRepository.count() > 0) {
-            return;
+        importSeedData(true);
+    }
+
+    public int importSeedData(boolean onlyWhenEmpty) throws Exception {
+        if (onlyWhenEmpty && sourceDocumentRepository.count() > 0) {
+            return 0;
         }
 
         Resource[] resources = resourcePatternResolver.getResources("classpath*:seed/*/*.json");
         if (resources.length == 0) {
             log.info("No seed data files found under classpath:seed/*/*.json");
-            return;
+            return 0;
         }
 
         int imported = 0;
@@ -60,6 +64,7 @@ public class SourceDocumentSeedImporter implements ApplicationRunner {
             }
         }
         log.info("Seed import complete. Imported {} source document(s)", imported);
+        return imported;
     }
 
     private int importNode(JsonNode node, String fileName) {

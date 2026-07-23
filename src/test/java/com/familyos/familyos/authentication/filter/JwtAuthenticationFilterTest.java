@@ -69,6 +69,7 @@ class JwtAuthenticationFilterTest {
     @Test
     void shouldReturn401ForInvalidToken() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setServletPath("/api/test");
         request.addHeader("Authorization", "Bearer invalid.token.value");
         MockHttpServletResponse response = new MockHttpServletResponse();
 
@@ -83,6 +84,44 @@ class JwtAuthenticationFilterTest {
     void shouldIgnoreMissingToken() throws Exception {
         filter.doFilter(new MockHttpServletRequest(), new MockHttpServletResponse(), new MockFilterChain());
 
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    @Test
+    void shouldIgnoreInvalidTokenForPublicHealthEndpoint() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setServletPath("/api/health");
+        request.addHeader("Authorization", "Bearer invalid.token.value");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        filter.doFilter(request, response, new MockFilterChain());
+
+        assertNotEquals(401, response.getStatus());
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    @Test
+    void shouldIgnoreInvalidTokenForRootHealthEndpoint() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setServletPath("/health");
+        request.addHeader("Authorization", "Bearer invalid.token.value");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        filter.doFilter(request, response, new MockFilterChain());
+
+        assertNotEquals(401, response.getStatus());
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    @Test
+    void shouldSkipOptionsRequests() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest("OPTIONS", "/api/test");
+        request.addHeader("Authorization", "Bearer invalid.token.value");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        filter.doFilter(request, response, new MockFilterChain());
+
+        assertNotEquals(401, response.getStatus());
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 

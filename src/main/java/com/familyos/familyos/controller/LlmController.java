@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/llm")
+@RequestMapping({"/api/llm", "/llm"})
 public class LlmController {
 
   private final LlmService llmService;
@@ -45,6 +45,11 @@ public class LlmController {
       health.healthy(),
       health.message()
     );
+  }
+
+  @GetMapping("/test")
+  public LlmResponse test(@RequestParam(defaultValue = "Say hello") String prompt) {
+    return llmService.test(prompt);
   }
 
   public record ApiLlmRequest(

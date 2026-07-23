@@ -14,10 +14,10 @@ import java.util.Map;
  * Used by humans (open it in a browser) and by hosting platforms
  * (Cloud Run, Oracle, load balancers) to check the service is alive.
  *
- * GET /api/health  ->  {"status":"UP","service":"FamilyOS","timestamp":"..."}
+ * GET /api/health or /health -> {"status":"UP","service":"FamilyOS","timestamp":"..."}
  */
 @RestController
-@RequestMapping("/api/health")
+@RequestMapping({"/api/health", "/health"})
 public class HealthController {
 
     @GetMapping

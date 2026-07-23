@@ -1,0 +1,117 @@
+[
+  {
+    "id": "demo-sc-001",
+    "gmailMessageId": "demo-sc-gmail-001",
+    "from": {"name": "Lincoln Elementary School", "email": "office@lincolnelementary.example"},
+    "to": ["parentosfamily@gmail.com"],
+    "subject": "Parent-Teacher Conference Week — Sign up now",
+    "snippet": "Parent-Teacher conferences are scheduled for August 4-8. Please sign up for your time slot.",
+    "bodyText": "Dear Parents, Parent-Teacher conferences are scheduled for the week of August 4-8, 2026. Please sign up for your preferred time slot using the link below. Slots are 15 minutes each. Available times are 3:00 PM - 7:00 PM Monday through Thursday and 1:00 PM - 5:00 PM on Friday. Sign up at: https://signup.example.com/ptconference2026",
+    "receivedAt": "2026-07-26T08:00:00-05:00",
+    "labels": ["INBOX"],
+    "extractedEvent": {
+      "title": "Parent-Teacher Conference Week",
+      "start": "2026-08-04T15:00:00-05:00",
+      "end": "2026-08-08T19:00:00-05:00",
+      "timezone": "America/Chicago",
+      "location": "Lincoln Elementary School",
+      "description": "Sign up for 15-minute slot at signup.example.com",
+      "type": "education",
+      "category": "family",
+      "priority": "high",
+      "confidence": 0.92
+    }
+  },
+  {
+    "id": "demo-sc-002",
+    "gmailMessageId": "demo-sc-gmail-002",
+    "from": {"name": "Lincoln Elementary School", "email": "office@lincolnelementary.example"},
+    "to": ["parentosfamily@gmail.com"],
+    "subject": "Back-to-School Night — August 5 at 6:00 PM",
+    "snippet": "Join us for Back-to-School Night on August 5 at 6:00 PM to meet the teachers.",
+    "bodyText": "Dear Families, You are invited to Back-to-School Night on Wednesday, August 5, 2026 at 6:00 PM in the school gymnasium. You will have the opportunity to meet your child's teacher, learn about curriculum expectations, and tour the classroom. Light refreshments will be served. We look forward to seeing you!",
+    "receivedAt": "2026-07-27T09:00:00-05:00",
+    "labels": ["INBOX"],
+    "extractedEvent": {
+      "title": "Back-to-School Night",
+      "start": "2026-08-05T18:00:00-05:00",
+      "end": "2026-08-05T20:00:00-05:00",
+      "timezone": "America/Chicago",
+      "location": "Lincoln Elementary School Gymnasium",
+      "description": "Meet teacher, curriculum overview, classroom tour",
+      "type": "education",
+      "category": "family",
+      "priority": "high",
+      "confidence": 0.97
+    }
+  },
+  {
+    "id": "demo-sc-003",
+    "gmailMessageId": "demo-sc-gmail-003",
+    "from": {"name": "Mrs. Thompson", "email": "mthompson@lincolnelementary.example"},
+    "to": ["parentosfamily@gmail.com"],
+    "subject": "Your conference slot confirmed — August 6 at 4:15 PM",
+    "snippet": "Your parent-teacher conference with Mrs. Thompson is confirmed for August 6 at 4:15 PM.",
+    "bodyText": "Dear Parent/Guardian, I'm looking forward to our conference on Thursday, August 6, 2026 at 4:15 PM in Room 12. We will discuss your child's academic progress, social development, and goals for the coming school year. The meeting will be approximately 15 minutes. Please don't hesitate to email me with any questions beforehand.",
+    "receivedAt": "2026-07-28T10:00:00-05:00",
+    "labels": ["INBOX"],
+    "extractedEvent": {
+      "title": "Parent-teacher conference — Mrs. Thompson",
+      "start": "2026-08-06T16:15:00-05:00",
+      "end": "2026-08-06T16:30:00-05:00",
+      "timezone": "America/Chicago",
+      "location": "Lincoln Elementary School, Room 12",
+      "description": "15-minute conference with Mrs. Thompson",
+      "type": "education",
+      "category": "family",
+      "priority": "high",
+      "confidence": 0.98
+    }
+  },
+  {
+    "id": "demo-sc-004",
+    "gmailMessageId": "demo-sc-gmail-004",
+    "from": {"name": "Lincoln Elementary PTA", "email": "pta@lincolnelementary.example"},
+    "to": ["parentosfamily@gmail.com"],
+    "subject": "PTA Meeting — August 7 at 7:00 PM",
+    "snippet": "Monthly PTA meeting on August 7 at 7:00 PM. School year planning on the agenda.",
+    "bodyText": "Dear PTA Members, Our monthly PTA meeting will be held on Friday, August 7, 2026 at 7:00 PM in the school library. This month's agenda includes: school year planning, fundraiser discussion, and volunteer sign-ups for Back-to-School events. Light snacks will be provided. We hope to see you there!",
+    "receivedAt": "2026-07-29T11:00:00-05:00",
+    "labels": ["INBOX"],
+    "extractedEvent": {
+      "title": "PTA monthly meeting",
+      "start": "2026-08-07T19:00:00-05:00",
+      "end": "2026-08-07T20:30:00-05:00",
+      "timezone": "America/Chicago",
+      "location": "Lincoln Elementary School Library",
+      "description": "School year planning, fundraiser, volunteer sign-ups",
+      "type": "education",
+      "category": "community",
+      "priority": "medium",
+      "confidence": 0.93
+    }
+  },
+  {
+    "id": "demo-sc-005",
+    "gmailMessageId": "demo-sc-gmail-005",
+    "from": {"name": "Lincoln Elementary School", "email": "office@lincolnelementary.example"},
+    "to": ["parentosfamily@gmail.com"],
+    "subject": "School supply list for 2026-2027 school year",
+    "snippet": "Please review and purchase the attached school supply list before the first day.",
+    "bodyText": "Dear Parents, Please find attached the school supply list for the 2026-2027 school year. The first day of school is August 17, 2026. Supplies should be purchased and brought by orientation day, August 14, 2026. If you need assistance with supplies, please contact the main office. We look forward to a great school year!",
+    "receivedAt": "2026-07-30T13:00:00-05:00",
+    "labels": ["INBOX"],
+    "extractedEvent": {
+      "title": "School orientation day",
+      "start": "2026-08-14T09:00:00-05:00",
+      "end": "2026-08-14T11:00:00-05:00",
+      "timezone": "America/Chicago",
+      "location": "Lincoln Elementary School",
+      "description": "Bring school supplies, first day Aug 17",
+      "type": "education",
+      "category": "family",
+      "priority": "high",
+      "confidence": 0.88
+    }
+  }
+]

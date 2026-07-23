@@ -4,6 +4,7 @@ import com.familyos.familyos.config.TestSecurityConfig;
 import com.familyos.familyos.dto.AuthenticatedUser;
 import com.familyos.familyos.dto.CalendarEventDto;
 import com.familyos.familyos.authentication.service.AuthenticationService;
+import com.familyos.familyos.calendar.dto.CalendarResetResponse;
 import com.familyos.familyos.service.CalendarService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -50,5 +52,17 @@ class CalendarControllerTest {
         mockMvc.perform(get("/calendar/events"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].summary").value("Standup"));
+    }
+
+    @Test
+    @WithMockUser
+    void resetReturnsCalendarResetResponse() throws Exception {
+        when(authenticationService.currentUser()).thenReturn(new AuthenticatedUser("user-id", "user@example.com", "Test User", "google"));
+        when(calendarService.resetPublishedEvents("user-id")).thenReturn(new CalendarResetResponse("RESET", 1, List.of("event-1"), "2026-07-23T03:22:14-05:00"));
+
+        mockMvc.perform(post("/api/demo/calendar/reset"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.status").value("RESET"))
+                .andExpect(jsonPath("$.data.eventsReset").value(1));
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Set;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +28,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
+    private static final Set<String> PUBLIC_PATHS = Set.of(
+            "/health",
+            "/api/health",
+            "/actuator/health",
+            "/error"
+    );
+    private static final List<String> PUBLIC_PATH_PREFIXES = List.of(
+            "/oauth2/",
+            "/login/"
+    );
 
     private final JwtService jwtService;
     private final UserService userService;
@@ -36,6 +47,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.jwtService = jwtService;
         this.userService = userService;
         this.objectMapper = objectMapper;
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
+
+        String path = request.getServletPath();
+        if (path == null || path.isBlank()) {
+            path = request.getRequestURI();
+        }
+
+        if (PUBLIC_PATHS.contains(path)) {
+            return true;
+        }
+
+        return PUBLIC_PATH_PREFIXES.stream().anyMatch(path::startsWith);
     }
 
     @Override

@@ -1,0 +1,117 @@
+[
+  {
+    "id": "vacation-msg-001",
+    "gmailMessageId": "vacation-gmail-001",
+    "from": {"name": "American Airlines", "email": "noreply@aa.example"},
+    "to": ["parentosfamily@gmail.com"],
+    "subject": "Flight Booking Confirmation — AA2847 Chicago to Orlando",
+    "snippet": "Your flight AA2847 from Chicago O'Hare to Orlando is confirmed. Departure Saturday August 9 at 7:00 AM.",
+    "bodyText": "Booking Confirmation: Your flight AA2847 from Chicago O'Hare (ORD) Terminal 3 to Orlando International (MCO) is confirmed. Departure: Saturday, August 9, 2026 at 7:00 AM. Arrival: 10:45 AM. Booking reference: AA-XK8291. Check-in opens 24 hours before departure. Please arrive at the airport at least 2 hours before your flight. Seat assignments: 14A, 14B, 15A, 15B.",
+    "receivedAt": "2026-07-26T10:00:00-05:00",
+    "labels": ["INBOX"],
+    "extractedEvent": {
+      "title": "Flight AA2847 — Chicago to Orlando",
+      "start": "2026-08-09T07:00:00-05:00",
+      "end": "2026-08-09T10:45:00-04:00",
+      "timezone": "America/Chicago",
+      "location": "Chicago O'Hare International Airport, Terminal 3",
+      "description": "AA2847 ORD → MCO. Ref: AA-XK8291. Arrive 2 hours early.",
+      "type": "travel",
+      "category": "vacation",
+      "priority": "high",
+      "confidence": 0.99
+    }
+  },
+  {
+    "id": "vacation-msg-002",
+    "gmailMessageId": "vacation-gmail-002",
+    "from": {"name": "Marriott Hotels", "email": "reservations@marriott.example"},
+    "to": ["parentosfamily@gmail.com"],
+    "subject": "Hotel Reservation Confirmed — Orlando Marriott Lake Buena Vista",
+    "snippet": "Your hotel reservation at Orlando Marriott Lake Buena Vista is confirmed. Check-in Saturday August 9.",
+    "bodyText": "Reservation Confirmation: Your stay at Orlando Marriott Lake Buena Vista is confirmed. Check-in: Saturday, August 9, 2026. Check-out: Friday, August 15, 2026. Room type: 2 Queen Beds, Pool View. Confirmation number: MR-7734891. Check-in time is 3:00 PM. Early check-in is available upon request. The hotel offers free shuttle service to nearby theme parks. Pool and fitness center are open 24 hours.",
+    "receivedAt": "2026-07-26T10:30:00-05:00",
+    "labels": ["INBOX"],
+    "extractedEvent": {
+      "title": "Hotel check-in — Orlando Marriott Lake Buena Vista",
+      "start": "2026-08-09T15:00:00-04:00",
+      "end": "2026-08-09T16:00:00-04:00",
+      "timezone": "America/New_York",
+      "location": "Orlando Marriott Lake Buena Vista, Orlando FL",
+      "description": "Check-in Sat Aug 9, check-out Aug 15. Conf: MR-7734891. Free theme park shuttle.",
+      "type": "travel",
+      "category": "vacation",
+      "priority": "high",
+      "confidence": 0.98
+    }
+  },
+  {
+    "id": "vacation-msg-003",
+    "gmailMessageId": "vacation-gmail-003",
+    "from": {"name": "Enterprise Rent-A-Car", "email": "reservations@enterprise.example"},
+    "to": ["parentosfamily@gmail.com"],
+    "subject": "Car Rental Confirmation — Saturday August 9 at Orlando Airport",
+    "snippet": "Your car rental reservation at Orlando International Airport is confirmed for Saturday August 9.",
+    "bodyText": "Rental Confirmation: Your car rental reservation is confirmed at Orlando International Airport (MCO). Pick-up: Saturday, August 9, 2026 upon arrival. Return: Friday, August 15, 2026. Vehicle: Minivan (or similar). Confirmation: ENT-5519023. Follow signs to the Enterprise counter in the MCO rental car center. Your reservation includes unlimited mileage and CDW. Total estimated cost: $389.",
+    "receivedAt": "2026-07-26T11:00:00-05:00",
+    "labels": ["INBOX"],
+    "extractedEvent": {
+      "title": "Car rental pickup — Enterprise MCO",
+      "start": "2026-08-09T11:00:00-04:00",
+      "end": "2026-08-09T12:00:00-04:00",
+      "timezone": "America/New_York",
+      "location": "Orlando International Airport, Rental Car Center",
+      "description": "Minivan pickup. Conf: ENT-5519023. Return Aug 15.",
+      "type": "travel",
+      "category": "vacation",
+      "priority": "medium",
+      "confidence": 0.97
+    }
+  },
+  {
+    "id": "vacation-msg-004",
+    "gmailMessageId": "vacation-gmail-004",
+    "from": {"name": "Walt Disney World", "email": "tickets@disneyworld.example"},
+    "to": ["parentosfamily@gmail.com"],
+    "subject": "Disney World Tickets Confirmed — 4 Tickets Sunday August 10",
+    "snippet": "Your 4 tickets to Magic Kingdom for Sunday August 10 are confirmed.",
+    "bodyText": "Your Walt Disney World tickets are confirmed! Tickets: 4 x Magic Kingdom Park (1-Day). Date: Sunday, August 10, 2026. Park open: 9:00 AM - 10:00 PM. Order number: WDW-8847123. Please download the My Disney Experience app and add your tickets for Lightning Lane access. Parking is $30/day. Arrive early to enjoy shorter wait times in the morning.",
+    "receivedAt": "2026-07-26T11:30:00-05:00",
+    "labels": ["INBOX"],
+    "extractedEvent": {
+      "title": "Disney World — Magic Kingdom",
+      "start": "2026-08-10T09:00:00-04:00",
+      "end": "2026-08-10T22:00:00-04:00",
+      "timezone": "America/New_York",
+      "location": "Magic Kingdom Park, Walt Disney World, Orlando FL",
+      "description": "4 tickets. Order: WDW-8847123. Download My Disney Experience app.",
+      "type": "entertainment",
+      "category": "vacation",
+      "priority": "high",
+      "confidence": 0.99
+    }
+  },
+  {
+    "id": "vacation-msg-005",
+    "gmailMessageId": "vacation-gmail-005",
+    "from": {"name": "American Airlines", "email": "noreply@aa.example"},
+    "to": ["parentosfamily@gmail.com"],
+    "subject": "Return Flight Confirmation — AA1563 Orlando to Chicago, Friday August 15",
+    "snippet": "Your return flight AA1563 from Orlando to Chicago is confirmed. Departure Friday August 15 at 6:00 PM.",
+    "bodyText": "Booking Confirmation: Your return flight AA1563 from Orlando International (MCO) to Chicago O'Hare (ORD) is confirmed. Departure: Friday, August 15, 2026 at 6:00 PM. Arrival: 7:55 PM. Booking reference: AA-XK8291-R. Please check in online 24 hours before departure. The hotel offers a complimentary shuttle to MCO — please book with the front desk 2 hours before your departure. Seats: 18A, 18B, 19A, 19B.",
+    "receivedAt": "2026-07-26T12:00:00-05:00",
+    "labels": ["INBOX"],
+    "extractedEvent": {
+      "title": "Return flight AA1563 — Orlando to Chicago",
+      "start": "2026-08-15T18:00:00-04:00",
+      "end": "2026-08-15T19:55:00-05:00",
+      "timezone": "America/New_York",
+      "location": "Orlando International Airport (MCO)",
+      "description": "AA1563 MCO → ORD. Ref: AA-XK8291-R. Book hotel shuttle 2 hrs early.",
+      "type": "travel",
+      "category": "vacation",
+      "priority": "high",
+      "confidence": 0.99
+    }
+  }
+]

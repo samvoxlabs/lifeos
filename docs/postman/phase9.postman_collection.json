@@ -1,0 +1,277 @@
+{
+  "info": {
+    "name": "LifeOS - Phase 9 (Workflow + Demo Architecture)",
+    "_postman_id": "phase9-lifeos-workflow-demo",
+    "description": "Phase 9: Workflow orchestration, demo seeding, events, conflicts, and calendar domain APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:8080", "type": "string"},
+    {"key": "token", "value": "", "type": "string"},
+    {"key": "workflowId", "value": "", "type": "string"},
+    {"key": "scenario", "value": "airport-medical-conflict", "type": "string"},
+    {"key": "eventId", "value": "", "type": "string"},
+    {"key": "conflictId", "value": "", "type": "string"},
+    {"key": "messageId", "value": "", "type": "string"},
+    {"key": "messagesCursor", "value": "", "type": "string"}
+  ],
+  "item": [
+    {
+      "name": "Demo APIs",
+      "item": [
+        {
+          "name": "Reset Demo Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "url": {"raw": "{{baseUrl}}/api/demo/reset", "host": ["{{baseUrl}}"], "path": ["api", "demo", "reset"]},
+            "description": "Clears all demo data for the authenticated user"
+          }
+        },
+        {
+          "name": "Seed Demo Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scenario\": \"{{scenario}}\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/demo/seed", "host": ["{{baseUrl}}"], "path": ["api", "demo", "seed"]},
+            "description": "Seeds demo data for the specified scenario. Scenarios: airport-medical-conflict, school-conference, pet-care"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workflow APIs",
+      "item": [
+        {
+          "name": "Start Email Sync Workflow",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "url": {"raw": "{{baseUrl}}/api/workflows/email-sync", "host": ["{{baseUrl}}"], "path": ["api", "workflows", "email-sync"]},
+            "description": "Starts an async email sync workflow. Returns workflowId to poll status."
+          }
+        },
+        {
+          "name": "Get Workflow Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {"raw": "{{baseUrl}}/api/workflows/{{workflowId}}", "host": ["{{baseUrl}}"], "path": ["api", "workflows", "{{workflowId}}"]},
+            "description": "Poll workflow status by workflowId"
+          }
+        },
+        {
+          "name": "Approve Workflow Conflict Resolution",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conflictId\": \"{{conflictId}}\",\n  \"optionId\": \"assign-family-member\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/workflows/{{workflowId}}/approve", "host": ["{{baseUrl}}"], "path": ["api", "workflows", "{{workflowId}}", "approve"]},
+            "description": "Approve a conflict resolution option for a workflow in WAITING_FOR_USER state"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Events APIs",
+      "item": [
+        {
+          "name": "List Events",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mail-events?limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "events"],
+              "query": [
+                {"key": "limit", "value": "20"},
+                {"key": "cursor", "value": "", "disabled": true}
+              ]
+            },
+            "description": "List enriched extracted events for the authenticated user"
+          }
+        },
+        {
+          "name": "Get Event by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {"raw": "{{baseUrl}}/api/mail-events/{{eventId}}", "host": ["{{baseUrl}}"], "path": ["api", "events", "{{eventId}}"]},
+            "description": "Get a single enriched event by ID (format: event-{uuid})"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Conflicts APIs",
+      "item": [
+        {
+          "name": "List Conflicts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/conflicts?status=open",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "conflicts"],
+              "query": [
+                {"key": "status", "value": "open"}
+              ]
+            },
+            "description": "List conflicts with enriched score/reason/agenticPlan options"
+          }
+        },
+        {
+          "name": "Resolve Conflict",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"optionId\": \"assign-family-member\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/conflicts/{{conflictId}}/resolve", "host": ["{{baseUrl}}"], "path": ["api", "conflicts", "{{conflictId}}", "resolve"]},
+            "description": "Resolve a conflict by selecting an option (assign-family-member, delay-pickup, cancel-pickup)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Calendar APIs",
+      "item": [
+        {
+          "name": "Get Calendar Events",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {"raw": "{{baseUrl}}/api/calendar/events", "host": ["{{baseUrl}}"], "path": ["api", "calendar", "events"]},
+            "description": "Get upcoming events from Google Calendar via existing CalendarService"
+          }
+        },
+        {
+          "name": "Publish Events to Calendar",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "url": {"raw": "{{baseUrl}}/api/calendar/publish", "host": ["{{baseUrl}}"], "path": ["api", "calendar", "publish"]},
+            "description": "Publish all confirmed extracted events to Google Calendar (stub - logs events)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mail APIs (existing)",
+      "item": [
+        {
+          "name": "Sync Mailbox",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"maxResults\": 20\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/mail/sync", "host": ["{{baseUrl}}"], "path": ["api", "mail", "sync"]}
+          }
+        },
+        {
+          "name": "List Messages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/mail/messages?limit=20&cursor={{messagesCursor}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "mail", "messages"],
+              "query": [
+                {"key": "limit", "value": "20"},
+                {"key": "cursor", "value": "{{messagesCursor}}"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Message by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": {"raw": "{{baseUrl}}/api/mail/messages/{{messageId}}", "host": ["{{baseUrl}}"], "path": ["api", "mail", "messages", "{{messageId}}"]}
+          }
+        },
+        {
+          "name": "Patch Message Read State",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"read\": true\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/mail/messages/{{messageId}}", "host": ["{{baseUrl}}"], "path": ["api", "mail", "messages", "{{messageId}}"]}
+          }
+        },
+        {
+          "name": "Resolve Conflict (Mail API)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Authorization", "value": "Bearer {{token}}"},
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"optionId\": \"assign-family-member\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/api/mail/conflicts/{{conflictId}}/resolve", "host": ["{{baseUrl}}"], "path": ["api", "mail", "conflicts", "{{conflictId}}", "resolve"]}
+          }
+        }
+      ]
+    }
+  ]
+}

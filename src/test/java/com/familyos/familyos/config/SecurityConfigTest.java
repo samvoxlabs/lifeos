@@ -65,7 +65,20 @@ class SecurityConfigTest {
     void oauthAuthorizationEndpointRemainsPublic() throws Exception {
         mockMvc.perform(get("/oauth2/authorization/google"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(header().string("Location", org.hamcrest.Matchers.containsString("accounts.google.com")));
+                .andExpect(header().string("Location", org.hamcrest.Matchers.containsString("accounts.google.com")))
+                .andExpect(header().string("Location", org.hamcrest.Matchers.containsString("prompt=consent")));
+    }
+
+    @Test
+    void healthEndpointRemainsPublicEvenWithInvalidJwtHeader() throws Exception {
+        mockMvc.perform(get("/api/health").header("Authorization", "Bearer invalid.token.value"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void rootHealthEndpointRemainsPublicEvenWithInvalidJwtHeader() throws Exception {
+        mockMvc.perform(get("/health").header("Authorization", "Bearer invalid.token.value"))
+                .andExpect(status().isOk());
     }
 
     @Test
