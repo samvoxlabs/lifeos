@@ -1,0 +1,26 @@
+{
+  "allowedSenders": [
+    "appointments@citymedical.example",
+    "flight-status@united.example",
+    "office@lincolnelementary.example",
+    "coach@riversideyouthsoccer.example",
+    "noreply@dentistcare.example",
+    "pharmacy@walgreens.example",
+    "noreply@musicstudio.example",
+    "school@pinnaclemontessori.org",
+    "travel@school.org",
+    "appointments@citymedical.com"
+  ],
+  "keywords": [
+    "appointment", "pickup", "pick up", "flight", "reservation",
+    "lesson", "conference", "practice", "schedule", "reminder",
+    "confirmed", "delayed", "arrival", "departure", "meeting",
+    "drop off", "dropoff", "dismiss", "early release"
+  ],
+  "ignoreCategories": [
+    "promotion", "newsletter", "social", "marketing", "ads"
+  ],
+  "ignoreSubjectPatterns": [
+    "unsubscribe", "sale", "% off", "deal", "offer", "coupon"
+  ]
+}

@@ -24,12 +24,13 @@ LifeOS is a Java 21 + Spring Boot backend for persist-first personal operations 
 * Phase 5: `docs/development/phase5-api-testing.md`
 * Phase 6: `docs/development/phase6-api-testing.md`
 * Phase 7: `docs/development/phase7-api-testing.md`
+* Phase 8: `docs/development/phase8-api-testing.md`
 
 ## Postman Collections
 
 * Consolidated: `docs/postman/LifeOS_API.postman_collection.json`
 * Consolidated (legacy name): `docs/postman/FamilyOS_API.postman_collection.json`
-* Phase collections: `docs/postman/phase3.postman_collection.json`, `docs/postman/phase4.postman_collection.json`, `docs/postman/phase5.postman_collection.json`, `docs/postman/phase6.postman_collection.json`, `docs/postman/phase7.postman_collection.json`
+* Phase collections: `docs/postman/phase3.postman_collection.json`, `docs/postman/phase4.postman_collection.json`, `docs/postman/phase5.postman_collection.json`, `docs/postman/phase6.postman_collection.json`, `docs/postman/phase7.postman_collection.json`, `docs/postman/phase8.postman_collection.json`, `docs/postman/phase9.postman_collection.json`, `docs/postman/phase10.postman_collection.json`
 
 ## License
 

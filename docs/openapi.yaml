@@ -1,0 +1,577 @@
+openapi: 3.0.3
+info:
+  title: LifeOS Backend API
+  version: 2.0.0
+  description: |
+    LifeOS orchestrates Gmail, AI extraction, conflict detection, and Google Calendar publishing.
+servers:
+  - url: http://localhost:8080
+security:
+  - bearerAuth: []
+tags:
+  - name: Demo
+  - name: Mail
+  - name: Calendar
+paths:
+  /api/demo/gmail/reset:
+    post:
+      tags: [Demo]
+      summary: Reset demo Gmail
+      responses:
+        "200":
+          description: Demo reset result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseDemoReset"
+  /api/demo/gmail/load:
+    post:
+      tags: [Demo]
+      summary: Load demo Gmail scenario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemoGmailLoadRequest"
+      responses:
+        "200":
+          description: Load result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseDemoLoad"
+  /api/demo/gmail/messages:
+    get:
+      tags: [Demo]
+      summary: List demo Gmail messages
+      responses:
+        "200":
+          description: Normalized Gmail messages
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseMessages"
+  /api/demo/events/extract:
+    post:
+      tags: [Demo]
+      summary: Extract events from demo Gmail
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewScheduleRequest"
+      responses:
+        "200":
+          description: Extracted events and conflicts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseReview"
+  /api/demo/db/events:
+    get:
+      tags: [Demo]
+      summary: Inspect demo extracted events
+      responses:
+        "200":
+          description: Event records
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseDbEvents"
+  /api/demo/db/conflicts:
+    get:
+      tags: [Demo]
+      summary: Inspect demo conflicts
+      responses:
+        "200":
+          description: Conflict records
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseDbConflicts"
+  /api/demo/conflicts/{id}/resolve:
+    post:
+      tags: [Demo]
+      summary: Resolve a demo conflict
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MailResolutionRequest"
+      responses:
+        "200":
+          description: Conflict resolution result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseResolve"
+  /api/demo/calendar/publish:
+    post:
+      tags: [Demo]
+      summary: Publish demo events to Google Calendar
+      responses:
+        "200":
+          description: Publish summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponsePublish"
+  /api/demo/calendar/events:
+    get:
+      tags: [Demo]
+      summary: Read demo calendar events
+      responses:
+        "200":
+          description: Calendar events
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCalendarEvents"
+  /api/demo/calendar/reset:
+    post:
+      tags: [Demo]
+      summary: Reset demo calendar
+      responses:
+        "200":
+          description: Reset result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseGeneric"
+  /api/demo/status:
+    get:
+      tags: [Demo]
+      summary: Demo status counts
+      responses:
+        "200":
+          description: Status summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseStatus"
+  /api/mail/sync:
+    post:
+      tags: [Mail]
+      summary: Sync Gmail inbox
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MailSyncRequest"
+      responses:
+        "200":
+          description: Sync response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MailSyncResponse"
+  /api/mail/review:
+    post:
+      tags: [Mail]
+      summary: Review schedule with AI
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewScheduleRequest"
+      responses:
+        "200":
+          description: Review response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReviewScheduleResponse"
+  /api/mail/conflicts/{id}/resolve:
+    post:
+      tags: [Mail]
+      summary: Resolve a conflict
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MailResolutionRequest"
+      responses:
+        "200":
+          description: Resolution response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MailConflictResolveResponse"
+  /api/calendar/events:
+    get:
+      tags: [Calendar]
+      summary: Read calendar events
+      responses:
+        "200":
+          description: Calendar events
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponseCalendarEvents"
+  /api/calendar/publish:
+    post:
+      tags: [Calendar]
+      summary: Publish calendar events
+      responses:
+        "200":
+          description: Publish summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponsePublish"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ApiMeta:
+      type: object
+      properties:
+        requestId:
+          type: string
+        generatedAt:
+          type: string
+          format: date-time
+    ApiResponseDemoReset:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/DemoResetResponse"
+        meta:
+          $ref: "#/components/schemas/ApiMeta"
+    ApiResponseDemoLoad:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/DemoLoadResponse"
+        meta:
+          $ref: "#/components/schemas/ApiMeta"
+    ApiResponseMessages:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/DemoMessage"
+        meta:
+          $ref: "#/components/schemas/ApiMeta"
+    ApiResponseReview:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/ReviewScheduleResponse"
+        meta:
+          $ref: "#/components/schemas/ApiMeta"
+    ApiResponseDbEvents:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/DbEvent"
+        meta:
+          $ref: "#/components/schemas/ApiMeta"
+    ApiResponseDbConflicts:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/DbConflict"
+        meta:
+          $ref: "#/components/schemas/ApiMeta"
+    ApiResponseResolve:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/MailConflictResolveResponse"
+        meta:
+          $ref: "#/components/schemas/ApiMeta"
+    ApiResponsePublish:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/CalendarPublishResponse"
+        meta:
+          $ref: "#/components/schemas/ApiMeta"
+    ApiResponseCalendarEvents:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/CalendarEventDto"
+        meta:
+          $ref: "#/components/schemas/ApiMeta"
+    ApiResponseStatus:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/DemoStatusResponse"
+        meta:
+          $ref: "#/components/schemas/ApiMeta"
+    ApiResponseGeneric:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties: true
+        meta:
+          $ref: "#/components/schemas/ApiMeta"
+    DemoResetResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        details:
+          type: string
+    DemoLoadResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        emailsLoaded:
+          type: integer
+        file:
+          type: string
+    DemoStatusResponse:
+      type: object
+      properties:
+        gmailMessageCount:
+          type: integer
+        extractedEventCount:
+          type: integer
+        conflictCount:
+          type: integer
+        publishedEventCount:
+          type: integer
+        readyToPublishCount:
+          type: integer
+    DemoGmailLoadRequest:
+      type: object
+      properties:
+        file:
+          type: string
+      required: [file]
+    DemoMessage:
+      type: object
+      properties:
+        id:
+          type: string
+        threadId:
+          type: string
+        subject:
+          type: string
+        snippet:
+          type: string
+        receivedAt:
+          type: string
+          format: date-time
+    ReviewScheduleRequest:
+      type: object
+      properties:
+        mailbox:
+          type: string
+        maxMessages:
+          type: integer
+    ReviewScheduleResponse:
+      type: object
+      properties:
+        mailbox:
+          type: string
+        reviewedAt:
+          type: string
+          format: date-time
+        messagesAnalyzed:
+          type: integer
+        messagesFiltered:
+          type: integer
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventResponse"
+        conflicts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConflictResponse"
+    MailSyncRequest:
+      type: object
+      properties:
+        mailbox:
+          type: string
+        cursor:
+          type: string
+          nullable: true
+        maxResults:
+          type: integer
+    MailSyncResponse:
+      type: object
+      properties:
+        mailbox:
+          type: string
+        syncedAt:
+          type: string
+          format: date-time
+        nextCursor:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/MailMessageResponse"
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventResponse"
+        conflicts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConflictResponse"
+    MailMessageResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        subject:
+          type: string
+        snippet:
+          type: string
+        receivedAt:
+          type: string
+          format: date-time
+        processingStatus:
+          type: string
+    MailResolutionRequest:
+      type: object
+      properties:
+        optionId:
+          type: string
+        delegateToEmail:
+          type: string
+        notifyRecipientEmail:
+          type: string
+      required: [optionId]
+    MailConflictResolveResponse:
+      type: object
+      properties:
+        conflictId:
+          type: string
+        status:
+          type: string
+        selectedOptionId:
+          type: string
+        updatedEvents:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventResponse"
+        notifications:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        resolvedAt:
+          type: string
+          format: date-time
+        calendarUpdated:
+          type: boolean
+    CalendarPublishResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        eventsPublished:
+          type: integer
+        publishedEventIds:
+          type: array
+          items:
+            type: string
+        publishedAt:
+          type: string
+          format: date-time
+    CalendarEventDto:
+      type: object
+      properties:
+        id:
+          type: string
+        summary:
+          type: string
+        location:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        start:
+          type: string
+        end:
+          type: string
+    EventResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        status:
+          type: string
+        confidence:
+          type: number
+    ConflictResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        title:
+          type: string
+        recommendation:
+          type: object
+          additionalProperties: true
+        options:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+    DbEvent:
+      type: object
+      additionalProperties: true
+    DbConflict:
+      type: object
+      additionalProperties: true
+

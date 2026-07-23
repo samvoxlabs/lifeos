@@ -21,7 +21,10 @@ spring:
               - email
               - profile
               - https://www.googleapis.com/auth/gmail.readonly
+              - https://www.googleapis.com/auth/gmail.insert
+              - https://www.googleapis.com/auth/gmail.modify
               - https://www.googleapis.com/auth/calendar.readonly
+              - https://www.googleapis.com/auth/calendar.events
               - https://www.googleapis.com/auth/drive.file
               - https://www.googleapis.com/auth/tasks.readonly
               - https://www.googleapis.com/auth/contacts.readonly
@@ -71,6 +74,8 @@ jwt:
   expiration-ms: ${JWT_EXPIRATION_MS:3600000}
 
 google:
+  project-id: ${GOOGLE_PROJECT_ID:}
+  project-name: ${GOOGLE_PROJECT_NAME:}
   apis:
     gmail-base-url: ${GOOGLE_GMAIL_BASE_URL:https://gmail.googleapis.com/gmail/v1}
     calendar-base-url: ${GOOGLE_CALENDAR_BASE_URL:https://www.googleapis.com/calendar/v3}

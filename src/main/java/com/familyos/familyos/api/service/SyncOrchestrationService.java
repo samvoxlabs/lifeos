@@ -73,6 +73,26 @@ public class SyncOrchestrationService {
         return syncSources(Set.of(SOURCE_DRIVE));
     }
 
+    public SyncSummaryResponse processPendingDocuments() {
+        long start = System.currentTimeMillis();
+        SyncCounters counters = new SyncCounters();
+
+        processNewDocuments(Set.of(SOURCE_GMAIL, SOURCE_CALENDAR, SOURCE_DRIVE), counters);
+
+        long duration = System.currentTimeMillis() - start;
+        return new SyncSummaryResponse(
+            STATUS_COMPLETED,
+            0,
+            0,
+            0,
+            counters.documentsProcessed,
+            counters.tasksCreated,
+            counters.eventsCreated,
+            counters.remindersCreated,
+            duration
+        );
+    }
+
     private SyncSummaryResponse syncSources(Set<String> sources) {
         long start = System.currentTimeMillis();
         String userId = authenticationService.currentUser().id();

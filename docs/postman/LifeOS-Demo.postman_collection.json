@@ -1,0 +1,537 @@
+{
+  "info": {
+    "_postman_id": "lifeos-demo-apis",
+    "name": "LifeOS Demo APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "conflictId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Google OAuth Login",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/oauth2/authorization/google",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "oauth2",
+                "authorization",
+                "google"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Demo Gmail",
+      "item": [
+        {
+          "name": "Reset Demo Gmail",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/demo/gmail/reset",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "demo",
+                "gmail",
+                "reset"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Load Demo Gmail",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file\": \"school-week.json\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/demo/gmail/load",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "demo",
+                "gmail",
+                "load"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Insert Demo Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"from\": {\n    \"name\": \"City Medical Center\",\n    \"email\": \"appointments@citymedical.example\"\n  },\n  \"to\": [\"parentosfamily@gmail.com\"],\n  \"subject\": \"Appointment confirmed\",\n  \"snippet\": \"Your appointment is confirmed.\",\n  \"bodyText\": \"Your appointment is confirmed for July 28 at 3:30 PM.\",\n  \"receivedAt\": \"2026-07-26T14:29:00-05:00\",\n  \"labels\": [\"INBOX\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/demo/gmail/messages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "demo",
+                "gmail",
+                "messages"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Demo Gmail Messages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/demo/gmail/messages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "demo",
+                "gmail",
+                "messages"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Demo Events & DB",
+      "item": [
+        {
+          "name": "Extract Demo Events",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mailbox\": \"parentosfamily@gmail.com\",\n  \"maxMessages\": 20\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/demo/events/extract",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "demo",
+                "events",
+                "extract"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Demo DB Events",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/demo/db/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "demo",
+                "db",
+                "events"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Demo DB Conflicts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/demo/db/conflicts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "demo",
+                "db",
+                "conflicts"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Resolve Demo Conflict",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{conflictId}}-delay-pickup"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"optionId\": \"delay-pickup\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/demo/conflicts/{{conflictId}}/resolve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "demo",
+                "conflicts",
+                "{{conflictId}}",
+                "resolve"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Demo Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/demo/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "demo",
+                "status"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Demo Calendar",
+      "item": [
+        {
+          "name": "Publish Demo Calendar Events",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/demo/calendar/publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "demo",
+                "calendar",
+                "publish"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Demo Calendar Events",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/demo/calendar/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "demo",
+                "calendar",
+                "events"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Reset Demo Calendar",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/demo/calendar/reset",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "demo",
+                "calendar",
+                "reset"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Application APIs",
+      "item": [
+        {
+          "name": "Sync Mailbox",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mailbox\": \"parentosfamily@gmail.com\",\n  \"cursor\": null,\n  \"maxResults\": 20\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/mail/sync",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mail",
+                "sync"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Review Mailbox",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mailbox\": \"parentosfamily@gmail.com\",\n  \"maxMessages\": 20\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/mail/review",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mail",
+                "review"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Resolve Mail Conflict",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{conflictId}}-app-delay-pickup"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"optionId\": \"delay-pickup\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/mail/conflicts/{{conflictId}}/resolve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "mail",
+                "conflicts",
+                "{{conflictId}}",
+                "resolve"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Calendar Events",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/calendar/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "calendar",
+                "events"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Publish Calendar Events",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/calendar/publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "calendar",
+                "publish"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -34,13 +34,13 @@ public class GoogleTasksClientImpl implements GoogleTasksClient {
         Map<String, Object> response;
         try {
             response = restClient.get()
-                    .uri("/users/@me/lists/{taskListId}/tasks?maxResults={maxResults}&showCompleted=true&showHidden=false",
+                    .uri("/lists/{taskListId}/tasks?maxResults={maxResults}&showCompleted=true&showHidden=false",
                             taskListId, maxResults)
                     .header("Authorization", "Bearer " + accessToken)
                     .retrieve()
                     .body(Map.class);
-        } catch (HttpClientErrorException.Forbidden ex) {
-            log.warn("Google Tasks API returned 403 while reading tasks; returning no tasks");
+        } catch (HttpClientErrorException.Forbidden | HttpClientErrorException.NotFound ex) {
+            log.warn("Google Tasks API returned {} while reading tasks; returning no tasks", ex.getStatusCode());
             return List.of();
         }
 
@@ -60,7 +60,7 @@ public class GoogleTasksClientImpl implements GoogleTasksClient {
                     .header("Authorization", "Bearer " + accessToken)
                     .retrieve()
                     .body(Map.class);
-        } catch (HttpClientErrorException.Forbidden ex) {
+        } catch (HttpClientErrorException.Forbidden | HttpClientErrorException.NotFound ex) {
             log.warn("Google Tasks API is unavailable for this project or user; returning no tasks");
             return null;
         }
